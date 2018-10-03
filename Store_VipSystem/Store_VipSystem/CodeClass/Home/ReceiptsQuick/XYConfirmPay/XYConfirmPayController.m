@@ -230,6 +230,7 @@
     [AFNetworkManager postNetworkWithUrl:@"API/ConsumeOrder/SubmitCelerityOrder" parameters:parameters succeed:^(NSDictionary *dic) {
         if ([dic[@"success"] boolValue]) {
             dispatch_async(dispatch_get_main_queue(), ^{
+                [XYPrinterMaker sharedMaker].isPrint = print;
                 XYPaymentView *payView = [[XYPaymentView alloc] initWithTitlePrice:self.footView.priceString];
                 payView.payUrl = @"API/ConsumeOrder/PaymentCelerityOrder";
                 /*
@@ -247,30 +248,8 @@
                      */
                     jointVc.parameters = @{@"OrderGID":dic[@"data"][@"GID"], @"IS_Sms":@(msg), @"PayResult":@""}.mutableCopy;
                     [weakSelf.navigationController pushViewController:jointVc animated:YES];
-                    jointVc.paySuccessBlock = ^(NSData *printData) {
-                        if (print) {
-                            [[SEPrinterManager sharedInstance] sendPrintData:printData completion:^(CBPeripheral *connectPerpheral, BOOL completion, NSString *error) {
-                                NSLog(@"写入结：%d---错误:%@",completion,error);
-                                if (!completion) {
-                                    [XYProgressHUD showMessage:error];
-                                }
-                            }];
-                        }
-                    };
                 };
                 [weakSelf presentViewController:payView animated:YES completion:nil];
-                
-                payView.paySuccessBlock = ^(NSData *printData) {
-                    if (print) {
-                        [[SEPrinterManager sharedInstance] sendPrintData:printData completion:^(CBPeripheral *connectPerpheral, BOOL completion, NSString *error) {
-                            NSLog(@"写入结：%d---错误:%@",completion,error);
-                            if (!completion) {
-                                [XYProgressHUD showMessage:error];
-                            }
-                        }];
-                    }
-                };
-                
             });
         }
     } failure:^(NSError *error) {

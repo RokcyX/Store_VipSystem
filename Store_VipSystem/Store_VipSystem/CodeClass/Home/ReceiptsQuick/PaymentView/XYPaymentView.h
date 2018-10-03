@@ -23,7 +23,4 @@
 
 @property (nonatomic, copy) dispatch_block_t jointPayBlock;
 
-@property (nonatomic, copy) void(^paySuccessBlock)(NSData *printData);
-
-
 @end

@@ -170,14 +170,9 @@
                 }
                 
             }
-            
-            NSData *printData = [[XYPrinterMaker sharedMaker] printerValueKeys];
-            [XYPrinterMaker destroy];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf dismissView];
-                if (weakSelf.paySuccessBlock) {
-                    weakSelf.paySuccessBlock(printData);
-                }
+                [XYPrinterMaker print];
             });
         }
     } failure:^(NSError *error) {

@@ -441,6 +441,9 @@
         [AFNetworkManager postNetworkWithUrl:@"api/ConsumeOrder/SubmitFastReceipt" parameters:parameters succeed:^(NSDictionary *dic) {
             if ([dic[@"success"] boolValue]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    if ([LoginModel shareLoginModel].printSetModel.pS_IsEnabled || ![LoginModel shareLoginModel].printSetModel) {
+                        [XYPrinterMaker sharedMaker].isPrint = YES;
+                    }
                     XYPaymentView *payView = [[XYPaymentView alloc] initWithTitlePrice:self.resultLabel.text];
                     payView.isReceipts = self.isReceipts;
                     payView.payUrl = @"api/ConsumeOrder/PaymentFastReceipt";
@@ -450,17 +453,6 @@
                      */
                     payView.parameters = @{@"OrderGID":dic[@"data"][@"GID"], @"IS_Sms":@(0), @"PayResult":@""}.mutableCopy;
                     [weakSelf presentViewController:payView animated:YES completion:nil];
-                    
-                    payView.paySuccessBlock = ^(NSData *printData) {
-                        if ([LoginModel shareLoginModel].printSetModel.pS_IsEnabled || ![LoginModel shareLoginModel].printSetModel) {
-                            [[SEPrinterManager sharedInstance] sendPrintData:printData completion:^(CBPeripheral *connectPerpheral, BOOL completion, NSString *error) {
-                                NSLog(@"写入结：%d---错误:%@",completion,error);
-                                if (!completion) {
-                                    [XYProgressHUD showMessage:error];
-                                }
-                            }];
-                        }
-                    };
                 });
             }
         } failure:^(NSError *error) {

@@ -241,15 +241,20 @@
         [XYPrinterMaker sharedMaker].header.name = dic[@"data"][@"MR_Creator"];
         [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"MR_PrepaidTime"];
         [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"MR_Order"];
-        
-        
-        NSData *printData = [[XYPrinterMaker sharedMaker] printerValueKeys];
-        [XYPrinterMaker destroy];
+        if (![XYPrinterMaker sharedMaker].header.name.length) {
+            [XYPrinterMaker sharedMaker].header.name = dic[@"data"][@"CO_Creator"];
+            [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"CO_UpdateTime"];
+            [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"CO_OrderCode"];
+            if (![XYPrinterMaker sharedMaker].header.name.length) {
+                [XYPrinterMaker sharedMaker].header.name = dic[@"data"][@"MC_Creator"];
+                [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"MC_UpdateTime"];
+                [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"MC_Order"];
+            }
+            
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.navigationController popViewControllerAnimated:YES];
-            if (self.paySuccessBlock) {
-                self.paySuccessBlock(printData);
-            }
+            [XYPrinterMaker print];
         });
         
     } failure:^(NSError *error) {

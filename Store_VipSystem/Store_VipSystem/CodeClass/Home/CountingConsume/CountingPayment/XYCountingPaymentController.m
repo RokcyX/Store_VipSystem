@@ -145,6 +145,7 @@
     WeakSelf;
     [AFNetworkManager postNetworkWithUrl:@"api/WouldOrder/AddWouldOrder" parameters:parameters succeed:^(NSDictionary *dic) {
         if ([dic[@"success"] boolValue]) {
+            [XYPrinterMaker sharedMaker].isPrint = print;
             [XYPrinterMaker sharedMaker].header.name = dic[@"data"][@"WO_Creator"];
             [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"WO_UpdateTime"];
             [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"WO_OrderCode"];
@@ -159,15 +160,9 @@
                 //                    vc.dataOverload();
                 //                }
                 // 打印
-                NSData *printData = [[XYPrinterMaker sharedMaker] printerValueKeys];
-                [XYPrinterMaker destroy];
+                
                 if (print) {
-                    [[SEPrinterManager sharedInstance] sendPrintData:printData completion:^(CBPeripheral *connectPerpheral, BOOL completion, NSString *error) {
-                        NSLog(@"写入结：%d---错误:%@",completion,error);
-                        if (!completion) {
-                            [XYProgressHUD showMessage:error];
-                        }
-                    }];
+                    [XYPrinterMaker print];
                 }
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             });

@@ -95,4 +95,36 @@ static dispatch_once_t onceToken;
     return printer.getFinalData;
 }
 
++ (void)print {
+    if ([XYPrinterMaker sharedMaker].isPrint) {
+        if (![[SEPrinterManager sharedInstance] isConnected]) {
+            [self connectLastPeripheral];
+        } else {
+            [self printFinalData];
+        }
+    }
+}
+
++ (void)connectLastPeripheral {
+    [[SEPrinterManager sharedInstance] autoConnectLastPeripheralTimeout:10 completion:^(CBPeripheral *perpheral, NSError *error) {
+        if (error) {
+            NSLog(@"%@",error);
+        }
+        [self printFinalData];
+        NSLog(@"成功");
+    }];
+}
+
++ (void)printFinalData {
+    NSData *printData = [[XYPrinterMaker sharedMaker] printerValueKeys];
+    [XYPrinterMaker destroy];
+    
+    [[SEPrinterManager sharedInstance] sendPrintData:printData completion:^(CBPeripheral *connectPerpheral, BOOL completion, NSString *error) {
+        NSLog(@"写入结：%d---错误:%@",completion,error);
+        if (!completion) {
+            [XYProgressHUD showMessage:error];
+        }
+    }];
+}
+
 @end

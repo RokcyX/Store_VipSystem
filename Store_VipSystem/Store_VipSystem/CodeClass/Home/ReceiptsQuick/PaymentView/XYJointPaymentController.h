@@ -16,7 +16,4 @@
 
 @property (nonatomic, copy)NSString *payUrl; // 支付Url
 
-@property (nonatomic, copy) void(^paySuccessBlock)(NSData *printData);
-
-
 @end

@@ -433,19 +433,7 @@
 
 - (NSData *)getFinalData
 {
-    [self connectLastPeripheral];
     return _printerData;
-}
-
-- (void)connectLastPeripheral {
-    if (![[SEPrinterManager sharedInstance] isConnected]) {
-        [[SEPrinterManager sharedInstance] autoConnectLastPeripheralTimeout:10 completion:^(CBPeripheral *perpheral, NSError *error) {
-            if (error) {
-                NSLog(@"%@",error);
-            }
-            NSLog(@"成功");
-        }];
-    }
 }
 
 @end

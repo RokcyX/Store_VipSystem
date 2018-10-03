@@ -18,6 +18,8 @@
 
 @interface XYPrinterMaker : NSObject
 
+@property (nonatomic, assign)BOOL isPrint;
+
 @property (nonatomic, strong)XYPrintHeader *header;
 @property (nonatomic, strong)NSMutableArray *bodylist;
 @property (nonatomic, strong)NSMutableArray *paymentlist;
@@ -27,5 +29,7 @@
 - (NSData *)printerValueKeys;
 // 用完销毁
 + (void)destroy;
+
++ (void)print;
 
 @end
