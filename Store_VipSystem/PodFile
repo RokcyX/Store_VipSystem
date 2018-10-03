@@ -1,0 +1,13 @@
+target 'Store_VipSystem' do
+
+	pod 'Masonry', '~> 1.0.2'
+	pod 'SDWebImage', '~> 3.8.0'
+	pod 'AFNetworking', '~> 3.0'
+	pod 'MJRefresh', '~> 3.1.15.3'
+        pod 'BAWKWebView', '~> 1.0.8'
+#    pod 'SDCycleScrollView','~> 1.65'
+    pod 'MBProgressHUD', '~> 1.1.0'
+    pod 'MJExtension', '~> 3.0.13'
+
+
+end

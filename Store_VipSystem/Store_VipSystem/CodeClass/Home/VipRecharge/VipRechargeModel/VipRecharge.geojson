@@ -1,0 +1,64 @@
+{
+    "data": [{
+             "title": "充值金额",
+             "textColor":"000000",
+             "systemAllow":0,
+             "modelKey":"MR_Amount",
+             "updateValue":"",
+             "detail": "",
+             "rightMode":0,
+             "isWritable": 0
+             },
+             {
+             "title": "赠送金额",
+             "textColor":"000000",
+             "systemAllow":0,
+             "modelKey": "MR_GivenAmount",
+             "updateValue":"",
+             "detail": "0.00",
+             "rightMode":0,
+             "isWritable": 0
+             },
+             {
+             "title": "赠送积分",
+             "textColor":"000000",
+             "systemAllow":8,
+             "modelKey": "MR_Integral",
+             "updateValue":"",
+             "detail": "0",
+             "rightMode":0,
+             "isWritable": 0
+             },
+             {
+             "title": "充值合计",
+             "textColor":"FF2600",
+             "systemAllow":0,
+             "modelKey": "MR_Total",
+             "updateValue":"",
+             "detail": "0.00",
+             "rightMode":0,
+             "isWritable": 0
+             },
+             {
+             "title": "提成员工",
+             "textColor":"000000",
+             "systemAllow":0,
+             "modelKey": "EM_GIDList",
+             "updateValue":"",
+             "detail":"",
+             "placeholder":"选择提成员工",
+             "rightMode":1,
+             "isWritable":0
+             },
+             {
+             "title": "备注",
+             "textColor":"000000",
+             "systemAllow":0,
+             "modelKey": "MR_Remark",
+             "detail": "",
+             "enabled":0,
+             "rightMode":0,
+             "isWritable": 1
+             }
+             ]
+}

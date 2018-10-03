@@ -1,0 +1,63 @@
+//
+//  Macro.pch
+//  Store_VipSystem
+//
+//  Created by Wcaulpl on 2018/7/21.
+//  Copyright © 2018年 Wcaulpl. All rights reserved.
+//
+
+#ifndef Macro_pch
+#define Macro_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+/*公共库 与 文件*/
+#import <Masonry.h>
+#import <MJRefresh.h>
+#import <UIImageView+WebCache.h>
+#import "AFNetworkManager.h"
+#import "LoginModel.h"
+#import "SEPrinterManager.h"
+
+/*颜色*/
+#import "UIColor+Hex.h"
+#import "NSDate+String.h"
+#import "NSString+Chinese.h"
+#import "UILabel+Calculate.h"
+#import "NSObject+Empty.h"
+
+/*AppDelegate*/
+#import "AppDelegate.h"
+
+#define  XYAppDelegate ((AppDelegate *)[UIApplication sharedApplication].delegate)
+
+#define ApplicationRootVC(viewController) XYAppDelegate.window.rootViewController = viewController
+
+#define ScreenHeight [UIScreen mainScreen].bounds.size.height
+#define ScreenWidth [UIScreen mainScreen].bounds.size.width
+#define WeakSelf __weak typeof(self) weakSelf = self
+
+
+/*UserDefaults 存储 */
+#define Get_UserDefaults(key) [[NSUserDefaults standardUserDefaults] objectForKey:key]
+#define Remove_UserDefaults(key) [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];NSLog(@"移除%@", key)
+#define Set_UserDefaults(object, key) [[NSUserDefaults standardUserDefaults] setObject:object forKey:key];[NSUserDefaults standardUserDefaults].synchronize
+
+#define Gesture_Password_Open @"gesture_password_open"
+
+#define UserAcount(key) [key stringByAppendingFormat:@"_%@", [LoginModel shareLoginModel].uM_Acount]
+
+#define ParameterSets UserAcount(@"parameterSets")
+#define PrintIsOn UserAcount(@"PrintIsOn")
+#define MsgIsOn UserAcount(@"MsgIsOn")
+
+
+#define ToDo @"待开发"
+
+#define RGBColor(r, g, b) [UIColor colorWithRed:(CGFloat)r / 255.0 green:(CGFloat)g / 255.0 blue:(CGFloat)b / 255.0 alpha:1.0]
+#define RGBAColor(r, g, b, a) [UIColor colorWithRed:(CGFloat)r / 255.0 green:(CGFloat)g / 255.0 blue:(CGFloat)b / 255.0 alpha:(CGFloat)a]
+
+#define KPageSize @20
+
+#endif /* Macro_pch */

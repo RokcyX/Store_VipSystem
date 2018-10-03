@@ -1,0 +1,705 @@
+{
+    "VipBasicInfo": {
+        "1": [{
+              "title": "会员手机",
+              "placeholder": "请输入手机号码",
+              "keyboardType":4,
+              "modelKey": "VIP_CellPhone",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 1,
+              "isWritable": 1
+              },
+              {
+              "title": "会员姓名",
+              "placeholder": "请输入姓名",
+              "keyboardType":0,
+              "modelKey": "VIP_Name",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 1,
+              "isWritable": 1
+              },
+              {
+              "title": "会员卡号",
+              "placeholder": "请输入卡号",
+              "keyboardType":0,
+              "modelKey": "VCH_Card",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 2,
+              "isWritable": 1
+              }
+              ],
+        "2": [{
+              "title": "卡面号码",
+              "placeholder": "请输入卡面号码",
+              "keyboardType":0,
+              "modelKey": "VIP_FaceNumber",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "会员等级",
+              "placeholder": "请点击选择",
+              "keyboardType":0,
+              "modelKey": "VG_Name",
+              "detail": "",
+              "updateKey": "VG_GID",
+              "updateValue": "",
+              "isRequired": 1,
+              "rightViewType": 3,
+              "isWritable": 1
+              },
+              {
+              "title": "会员性别",
+              "placeholder": "",
+              "keyboardType":0,
+              "modelKey": "VIP_Sex",
+              "detail": "男",
+              "updateKey": "VIP_Sex",
+              "updateValue": "0",
+              "isRequired": 0,
+              "rightViewType": 3,
+              "isWritable": 1
+              }
+              ],
+        "3": [{
+              "title": "开卡费用",
+              "placeholder": "",
+              "keyboardType":0,
+              "modelKey": "VCH_Fee",
+              "detail": "0.00",
+              "isRequired": 0,
+              "rightViewType": 3,
+              "isWritable": 0
+              },
+              {
+              "title": "初始金额",
+              "placeholder": "",
+              "keyboardType":0,
+              "modelKey": "MA_AggregateAmount",
+              "detail": "0.00",
+              "updateKey": "",
+              "updateValue": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 0
+              },
+              {
+              "title": "初始积分",
+              "placeholder": "",
+              "keyboardType":0,
+              "modelKey": "MA_AvailableIntegral",
+              "detail": "0",
+              "updateKey": "",
+              "updateValue": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 0
+              },
+              {
+              "title": "过期时间",
+              "placeholder": "不选默认永久有效",
+              "keyboardType":0,
+              "modelKey": "VIP_Overdue",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 4,
+              "isWritable": 1
+              },
+              {
+              "title": "开卡人员",
+              "placeholder": "请选择员工",
+              "keyboardType":0,
+              "modelKey": "VIP_Creator",
+              "detail": "",
+              "updateKey": "EM_GIDList",
+              "updateValue": "",
+              "isRequired": 0,
+              "rightViewType": 3,
+              "isWritable": 0
+              }
+              ],
+        "4": [{
+              "title": "会员生日",
+              "placeholder": "请选择生日",
+              "keyboardType":0,
+              "modelKey": "VIP_Birthday",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 4,
+              "isWritable": 1
+              },
+              {
+              "title": "推荐人",
+              "placeholder": "请输入推荐人卡号",
+              "keyboardType":0,
+              "modelKey": "VIP_Referee",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "电子邮箱",
+              "placeholder": "请输入电子邮箱",
+              "keyboardType":0,
+              "modelKey": "VIP_Email",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "身份证号",
+              "placeholder": "请输入身份证号",
+              "keyboardType":0,
+              "modelKey": "VIP_ICCard",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "会员地址",
+              "placeholder": "请输入会员地址",
+              "keyboardType":0,
+              "modelKey": "VIP_Addr",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "备注信息",
+              "placeholder": "请输入备注信息",
+              "keyboardType":0,
+              "modelKey": "VIP_Remark",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              }
+              ]
+    },
+    "GoodsInfo": {
+        "1": [{
+              "title": "商品编码",
+              "placeholder": "请输入商品编码",
+              "keyboardType":0,
+              "modelKey": "PM_Code",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 2,
+              "isWritable": 1
+              },
+              {
+              "title": "商品名称",
+              "placeholder": "请输入商品名称",
+              "keyboardType":0,
+              "modelKey": "PM_Name",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 1,
+              "isWritable": 1
+              },
+              {
+              "title": "商品分类",
+              "placeholder": "请选择商品分类",
+              "keyboardType":0,
+              "modelKey": "PT_Name",
+              "detail": "",
+              "updateKey": "PT_ID",
+              "updateValue": "",
+              "isRequired": 1,
+              "rightViewType": 3,
+              "isWritable": 0
+              },
+              {
+              "title": "商品简码",
+              "placeholder": "请输入商品简码",
+              "keyboardType":0,
+              "modelKey": "PM_SimpleCode",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              }
+              ],
+        "2": [{
+              "title": "商品售价",
+              "placeholder": "请输入商品售价",
+              "keyboardType":8,
+              "modelKey": "PM_UnitPrice",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "参考进价",
+              "placeholder": "请输入参考进价",
+              "keyboardType":8,
+              "modelKey": "PM_PurchasePrice",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "商品库存",
+              "placeholder": "请输入商品库存",
+              "keyboardType":4,
+              "modelKey": "PM_Repertory",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "计量单位",
+              "placeholder": "请输入计量单位",
+              "keyboardType":0,
+              "modelKey": "PM_Metering",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "规格型号",
+              "placeholder": "请输入规格型号",
+              "keyboardType":0,
+              "modelKey": "PM_Modle",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "会员价格",
+              "placeholder": "请输入会员价格",
+              "keyboardType":8,
+              "modelKey": "PM_MemPrice",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "商品折扣",
+              "placeholder": "",
+              "keyboardType":0,
+              "modelKey": "PM_IsDiscount",
+              "detail": "",
+              "updateKey": "PM_IsDiscount",
+              "updateValue": "0",
+              "isRequired": 0,
+              "rightViewType": 4,
+              "isWritable": 0
+              },
+              {
+              "title": "特价折扣",
+              "placeholder": "取值范围0-1之间",
+              "keyboardType":8,
+              "modelKey": "PM_SpecialOfferValue",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 0
+              },
+              {
+              "title": "最低折扣",
+              "placeholder": "取值范围0-1之间",
+              "keyboardType":8,
+              "modelKey": "PM_MinDisCountValue",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 0
+              },
+              {
+              "title": "商品积分",
+              "placeholder": "点击选择积分规则",
+              "keyboardType":0,
+              "modelKey": "PM_IsPoint",
+              "detail": "按会员等级积分",
+              "selectList": ["按会员等级积分", "按商品固定积分", "不积分"],
+              "updateKey": "PM_IsPoint",
+              "updateValue": "1",
+              "isRequired": 0,
+              "rightViewType": 3,
+              "isWritable": 1
+              },
+              {
+              "title": "固定积分",
+              "placeholder": "",
+              "keyboardType":4,
+              "modelKey": "PM_FixedIntegralValue",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 0
+              },
+              {
+              "title": "商品品牌",
+              "placeholder": "请输入商品品牌",
+              "keyboardType":0,
+              "modelKey": "PM_Brand",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "库存警戒值",
+              "placeholder": "请输入库存警戒值",
+              "keyboardType":4,
+              "modelKey": "PM_StockPoliceValue",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "同步状态",
+              "placeholder": "",
+              "keyboardType":0,
+              "modelKey": "PM_SynType",
+              "detail": "不同步",
+              "selectList": ["不同步", "同步"],
+              "updateKey": "PM_SynType",
+              "updateValue": "0",
+              "isRequired": 0,
+              "rightViewType": 3,
+              "isWritable": 0
+              }
+              ]
+    },
+    "ServiceInfo": {
+        "1": [{
+              "title": "商品编码",
+              "placeholder": "请输入商品编码",
+              "keyboardType":0,
+              "modelKey": "PM_Code",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 2,
+              "isWritable": 1
+              },
+              {
+              "title": "商品名称",
+              "placeholder": "请输入商品名称",
+              "keyboardType":0,
+              "modelKey": "PM_Name",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 1,
+              "isWritable": 1
+              },
+              {
+              "title": "商品分类",
+              "placeholder": "请选择商品分类",
+              "keyboardType":0,
+              "modelKey": "PT_Name",
+              "detail": "",
+              "updateKey": "PT_ID",
+              "updateValue": "",
+              "isRequired": 1,
+              "rightViewType": 3,
+              "isWritable": 0
+              },
+              {
+              "title": "商品简码",
+              "placeholder": "请输入商品简码",
+              "keyboardType":0,
+              "modelKey": "PM_SimpleCode",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              }
+              ],
+        "2": [{
+              "title": "商品售价",
+              "placeholder": "请输入商品售价",
+              "keyboardType":8,
+              "modelKey": "PM_UnitPrice",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "参考进价",
+              "placeholder": "请输入参考进价",
+              "keyboardType":8,
+              "modelKey": "PM_PurchasePrice",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "商品库存",
+              "placeholder": "",
+              "keyboardType":4,
+              "modelKey": "PM_Repertory",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 0
+              },
+              {
+              "title": "计量单位",
+              "placeholder": "请输入计量单位",
+              "keyboardType":0,
+              "modelKey": "PM_Metering",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "规格型号",
+              "placeholder": "请输入规格型号",
+              "keyboardType":0,
+              "modelKey": "PM_Modle",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "会员价格",
+              "placeholder": "请输入会员价格",
+              "keyboardType":8,
+              "modelKey": "PM_MemPrice",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "商品折扣",
+              "placeholder": "",
+              "keyboardType":0,
+              "modelKey": "PM_IsDiscount",
+              "detail": "",
+              "updateKey": "PM_IsDiscount",
+              "updateValue": "0",
+              "isRequired": 0,
+              "rightViewType": 4,
+              "isWritable": 0
+              },
+              {
+              "title": "特价折扣",
+              "placeholder": "取值范围0-1之间",
+              "keyboardType":8,
+              "modelKey": "PM_SpecialOfferValue",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 0
+              },
+              {
+              "title": "最低折扣",
+              "placeholder": "取值范围0-1之间",
+              "keyboardType":8,
+              "modelKey": "PM_MinDisCountValue",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 0
+              },
+              {
+              "title": "商品积分",
+              "placeholder": "点击选择积分规则",
+              "keyboardType":0,
+              "modelKey": "PM_IsPoint",
+              "detail": "按会员等级积分",
+              "selectList": ["按会员等级积分", "按商品固定积分", "不积分"],
+              "updateKey": "PM_IsPoint",
+              "updateValue": "1",
+              "isRequired": 0,
+              "rightViewType": 3,
+              "isWritable": 1
+              },
+              {
+              "title": "固定积分",
+              "placeholder": "",
+              "keyboardType":4,
+              "modelKey": "PM_FixedIntegralValue",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 0
+              },
+              {
+              "title": "商品品牌",
+              "placeholder": "请输入商品品牌",
+              "keyboardType":0,
+              "modelKey": "PM_Brand",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "库存警戒值",
+              "placeholder": "",
+              "keyboardType":4,
+              "modelKey": "PM_StockPoliceValue",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 0
+              },
+              {
+              "title": "同步状态",
+              "placeholder": "",
+              "keyboardType":0,
+              "modelKey": "PM_SynType",
+              "detail": "不同步",
+              "selectList": ["不同步", "同步"],
+              "updateKey": "PM_SynType",
+              "updateValue": "0",
+              "isRequired": 0,
+              "rightViewType": 3,
+              "isWritable": 0
+              }
+              ]
+    },
+    "GiftsInfo": {
+        "1": [{
+              "title": "礼品编码",
+              "placeholder": "请输入礼品编码",
+              "keyboardType":0,
+              "modelKey": "PM_Code",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 2,
+              "isWritable": 1
+              },
+              {
+              "title": "礼品名称",
+              "placeholder": "请输入礼品名称",
+              "keyboardType":0,
+              "modelKey": "PM_Name",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 1,
+              "isWritable": 1
+              },
+              {
+              "title": "礼品分类",
+              "placeholder": "请选择礼品分类",
+              "keyboardType":0,
+              "modelKey": "PT_Name",
+              "detail": "",
+              "updateKey": "PT_ID",
+              "updateValue": "",
+              "isRequired": 1,
+              "rightViewType": 3,
+              "isWritable": 0
+              },
+              {
+              "title": "礼品简码",
+              "placeholder": "请输入礼品简码",
+              "keyboardType":0,
+              "modelKey": "PM_SimpleCode",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              }
+              ],
+        "2": [{
+              "title": "兑换积分",
+              "placeholder": "请输入兑换积分",
+              "keyboardType":4,
+              "modelKey": "PM_UnitPrice",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "参考进价",
+              "placeholder": "请输入参考进价",
+              "keyboardType":8,
+              "modelKey": "PM_PurchasePrice",
+              "detail": "",
+              "isRequired": 1,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "礼品库存",
+              "placeholder": "请输入礼品库存",
+              "keyboardType":0,
+              "modelKey": "PM_Repertory",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "计量单位",
+              "placeholder": "请输入计量单位",
+              "keyboardType":0,
+              "modelKey": "PM_Metering",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "规格型号",
+              "placeholder": "请输入规格型号",
+              "keyboardType":0,
+              "modelKey": "PM_Modle",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "礼品品牌",
+              "placeholder": "请输入礼品品牌",
+              "keyboardType":0,
+              "modelKey": "PM_Brand",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "库存警戒值",
+              "placeholder": "请输入库存警戒值",
+              "keyboardType":0,
+              "modelKey": "PM_StockPoliceValue",
+              "detail": "",
+              "isRequired": 0,
+              "rightViewType": 0,
+              "isWritable": 1
+              },
+              {
+              "title": "同步状态",
+              "placeholder": "",
+              "keyboardType":0,
+              "modelKey": "PM_SynType",
+              "detail": "不同步",
+              "selectList": ["不同步", "同步"],
+              "updateKey": "PM_SynType",
+              "updateValue": "0",
+              "isRequired": 0,
+              "rightViewType": 3,
+              "isWritable": 0
+              }
+              ]
+    }
+}

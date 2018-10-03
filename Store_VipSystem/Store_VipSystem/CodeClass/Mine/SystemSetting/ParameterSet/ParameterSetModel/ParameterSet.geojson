@@ -1,0 +1,303 @@
+{
+    "data":[{
+            "title": "支付开关",
+            "parameters": [
+                           {
+                           "title":"现金支付",
+                           "sS_Code":"101",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":1
+                           },
+                           {
+                           "title":"余额支付",
+                           "sS_Code": "102",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":1
+                           },
+                           {
+                           "title":"微信记账",
+                           "sS_Code": "105",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"支付宝记账",
+                           "sS_Code": "106",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"银联支付",
+                           "sS_Code": "103",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":1
+                           },
+                           {
+                           "title":"优惠券",
+                           "sS_Code": "110",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"扫码支付",
+                           "sS_Code": "111",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"其他支付",
+                           "sS_Code": "113",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"积分支付",
+                           "sS_Code": "107",
+                           "hasValue":1,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "keyboardType":4,
+                           "placeholder":"用多少积分抵扣1元",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"积分支付限制",
+                           "sS_Code": "109",
+                           "hasValue":1,
+                           "rightMode":1,
+                           "enabled":0,
+                           "sS_Value":"",
+                           "keyboardType":8,
+                           "placeholder":"每次最多可用剩余积分",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"默认支付",
+                           "sS_Code": "108",
+                           "hasValue":1,
+                           "rightMode":2,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"选择支付方式",
+                           "sS_State":0
+                           }
+                           ]
+            },
+            {
+            "title": "会员开关",
+            "parameters": [
+                           {
+                           "title":"会员卡号同手机号",
+                           "sS_Code":"201",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"卡面号码",
+                           "sS_Code": "208",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"初始金额和初始积分",
+                           "sS_Code": "203",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"会员查询弹窗",
+                           "sS_Code": "209",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"显示它店会员",
+                           "sS_Code": "210",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           
+                           },
+                           {
+                           "title":"必填手机号",
+                           "sS_Code": "211",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":1
+                           }
+                           ]
+            },
+            {
+            "title": "员工开关",
+            "parameters": [
+                           {
+                           "title":"员工提成",
+                           "sS_Code":"301",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"折后金额修改",
+                           "sS_Code": "601",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           }
+                           ]
+            },
+            {
+            "title": "密码开关",
+            "parameters": [{
+                           "title":"开卡初始密码",
+                           "sS_Code":"202",
+                           "hasValue":1,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"123456",
+                           "placeholder":"请输入开卡默认密码",
+                           "keyboardType":0,
+                           "sS_State":0
+                           },
+                           {
+                           "title":"消费密码验证",
+                           "sS_Code": "204",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":0,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"转账密码验证",
+                           "sS_Code": "205",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":0,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"兑换密码验证",
+                           "sS_Code": "206",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":0,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"换卡密码验证",
+                           "sS_Code": "207",
+                           "hasValue":0,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "placeholder":"",
+                           "sS_State":0
+                           }
+                           ]
+            },
+            {
+            "title": "返利开关",
+            "parameters": [{
+                           "title":"会员推荐返利",
+                           "sS_Code":"503",
+                           "hasValue":1,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "keyboardType":4,
+                           "placeholder":"推荐会员可以获得多少积分",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"按消费金额返利",
+                           "sS_Code": "501",
+                           "hasValue":1,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "keyboardType":8,
+                           "placeholder":"下线每消费多少元,上线获得1积分",
+                           "sS_State":0
+                           },
+                           {
+                           "title":"按获得积分返利",
+                           "sS_Code": "502",
+                           "hasValue":1,
+                           "rightMode":0,
+                           "enabled":1,
+                           "sS_Value":"",
+                           "keyboardType":4,
+                           "placeholder":"下线每获得多少积分,上线获得1积分",
+                           "sS_State":0
+                           }
+                           ]
+            }
+            ]
+}

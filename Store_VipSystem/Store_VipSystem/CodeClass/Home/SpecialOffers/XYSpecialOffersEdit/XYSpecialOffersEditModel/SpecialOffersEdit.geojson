@@ -1,0 +1,116 @@
+{
+    "data": [{
+             "title": "活动名称",
+             "placeholder": "如：消费满100送20",
+             "keyboardType":0,
+             "modelKey": "RP_Name",
+             "detail": "",
+             "selectList":[],
+             "isRequired": 1,
+             "isWritable": 1
+             },
+             {
+             "title": "消费金额",
+             "placeholder": "请输入消费金额",
+             "keyboardType":8,
+             "modelKey": "RP_RechargeMoney",
+             "detail": "",
+             "selectList":[],
+             "isRequired": 1,
+             "isWritable": 1
+             },
+             {
+             "title": "优惠规则",
+             "placeholder": "请输入优惠金额",
+             "keyboardType":8,
+             "seletTitle":"减少金额",
+             "modelKey": "RP_ReduceMoney",
+             "detail": "",
+             "seletDatas":[{
+                           "title": "减少金额",
+                           "placeholder": "请输入优惠金额",
+                           "modelKey": "RP_ReduceMoney"
+                           },
+                           {
+                           "title": "赠送金额",
+                           "placeholder": "请输入优惠金额",
+                           "modelKey": "RP_GiveMoney"
+                           },
+                           
+                           {
+                           "title": "优惠折扣",
+                           "placeholder": "请输入优惠折扣",
+                           "modelKey": "RP_Discount"
+                           }
+                           ],
+             "isRequired": 1,
+             "isWritable": 1
+             },
+             {
+             "title": "赠送积分",
+             "placeholder": "请输入赠送积分",
+             "keyboardType":4,
+             "modelKey": "RP_GivePoint",
+             "detail": "",
+             "selectList": [],
+             "isRequired": 1,
+             "isWritable": 1
+             },
+             {
+             "title": "是否翻倍",
+             "placeholder": "",
+             "keyboardType":0,
+             "modelKey": "RP_ISDouble",
+             "detail": "翻倍",
+             "updateKey": "RP_ISDouble",
+             "updateValue": "1",
+             "selectList": [],
+             "isRequired": 0,
+             "isWritable": 0
+             },
+             {
+             "title": "有效时间",
+             "placeholder": "",
+             "keyboardType":0,
+             "modelKey": "RP_ValidType",
+             "detail":"",
+             "selectList": [{
+                            "title":"永久有效",
+                            "isSelected":1,
+                            "rP_ValidType":0,
+                            "rightType":0
+                            },
+                            {
+                            "title":"会员生日当天",
+                            "rP_ValidType":4,
+                            "rightType":0
+                            },
+                            {
+                            "title":"固定时间",
+                            "modelKey": "RP_ValidStartTime",
+                            "detail":"",
+                            "endModelKey": "RP_ValidEndTime",
+                            "endDetail":"",
+                            "rP_ValidType":1,
+                            "rightType":2
+                            },
+                            {
+                            "title":"按每周",
+                            "modelKey": "RP_ValidWeekMonth",
+                            "detail":"",
+                            "rP_ValidType":2,
+                            "rightType":1
+                            },
+                            {
+                            "title":"按每月",
+                            "modelKey": "RP_ValidWeekMonth",
+                            "detail":"",
+                            "rP_ValidType":3,
+                            "rightType":1
+                            }
+                            ],
+             "isRequired": 1,
+             "isWritable": 0
+             }
+             ]
+}

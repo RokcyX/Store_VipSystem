@@ -1,0 +1,173 @@
+{
+    "data": [{
+             "title": "订单编号：",
+             "textColor":"000000",
+             "keyboardType":0,
+             "modelKey":"CO_OrderCode",
+             "updateValue":"",
+             "detail": "",
+             "enabled":1,
+             "rightMode":0,
+             "isWritable": 1
+             },
+             {
+             "title": "订单日期：",
+             "textColor":"FF2600",
+             "keyboardType":-1,
+             "modelKey": "OrderTime",
+             "updateValue":"",
+             "detail": "",
+             "enabled":1,
+             "rightMode":0,
+             "isWritable": 1
+             },
+             {
+             "title": "订单金额：",
+             "textColor":"FF2600",
+             "keyboardType":8,
+             "modelKey": "CO_TotalPrice",
+             "updateValue":"",
+             "detail": "",
+             "enabled":0,
+             "rightMode":0,
+             "isWritable": 0
+             },
+             {
+             "title": "优惠活动：",
+             "textColor":"FF2600",
+             "keyboardType":0,
+             "modelKey": "CC_GID",
+             "updateValue":"",
+             "detail": "",
+             "enabled":1,
+             "rightMode":1,
+             "isWritable": 0
+             },
+             {
+             "title": "折后金额：",
+             "textColor":"FF9300",
+             "keyboardType":8,
+             "modelKey": "DisMoney",
+             "updateValue":"",
+             "detail":"",
+             "enabled":1,
+             "rightMode":0,
+             "isWritable":1
+             },
+             {
+             "title": "获得积分：",
+             "textColor":"FF2600",
+             "keyboardType":4,
+             "detail": "0",
+             "enabled":0,
+             "rightMode":0,
+             "isWritable": 0
+             },
+             {
+             "title": "员工提成",
+             "textColor":"FF2600",
+             "keyboardType":0,
+             "modelKey": "EM_GIDList",
+             "updateValue":"",
+             "detail":"",
+             "enabled":1,
+             "rightMode":1,
+             "isWritable":0
+             }],
+    "consume": [{
+             "title": "订单金额：",
+             "textColor":"FF2600",
+             "keyboardType":8,
+             "modelKey": "CO_TotalPrice",
+             "updateValue":"",
+             "detail": "",
+             "enabled":0,
+             "rightMode":0,
+             "isWritable": 0
+             },
+             {
+             "title": "优惠活动：",
+             "textColor":"FF2600",
+             "keyboardType":0,
+             "modelKey": "CC_GID",
+             "updateValue":"",
+             "detail": "",
+             "enabled":1,
+             "rightMode":1,
+             "isWritable": 0
+             },
+             {
+             "title": "折后金额：",
+             "textColor":"FF9300",
+             "keyboardType":8,
+             "modelKey": "DisMoney",
+             "updateValue":"",
+             "detail":"",
+             "enabled":1,
+             "rightMode":0,
+             "isWritable":0
+             },
+             {
+             "title": "获得积分：",
+             "textColor":"FF2600",
+             "keyboardType":4,
+             "detail": "0",
+             "enabled":0,
+             "rightMode":0,
+             "isWritable": 0
+             },
+             {
+             "title": "员工提成",
+             "textColor":"FF2600",
+             "keyboardType":0,
+             "modelKey": "EM_GIDList",
+             "updateValue":"",
+             "detail":"",
+             "enabled":1,
+             "rightMode":1,
+             "isWritable":0
+             }],
+    "punching": [{
+                "title": "订单金额：",
+                "textColor":"FF2600",
+                "keyboardType":8,
+                "modelKey": "CO_TotalPrice",
+                "updateValue":"",
+                "detail": "",
+                "enabled":0,
+                "rightMode":0,
+                "isWritable": 0
+                },
+                {
+                "title": "折后金额：",
+                "textColor":"FF9300",
+                "keyboardType":8,
+                "modelKey": "DisMoney",
+                "updateValue":"",
+                "detail":"",
+                "enabled":1,
+                "rightMode":0,
+                "isWritable":0
+                },
+                {
+                "title": "获得积分：",
+                "textColor":"FF2600",
+                "keyboardType":4,
+                "detail": "0",
+                "enabled":0,
+                "rightMode":0,
+                "isWritable": 0
+                },
+                {
+                "title": "员工提成",
+                "textColor":"FF2600",
+                "keyboardType":0,
+                "modelKey": "EM_GIDList",
+                "updateValue":"",
+                "detail":"",
+                "enabled":1,
+                "rightMode":1,
+                "isWritable":0
+                }
+                ]
+}

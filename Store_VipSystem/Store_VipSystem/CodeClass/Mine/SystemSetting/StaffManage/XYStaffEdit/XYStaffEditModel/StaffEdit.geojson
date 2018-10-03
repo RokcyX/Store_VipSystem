@@ -1,0 +1,93 @@
+{
+    "data": [{
+                    "title": "员工姓名",
+                    "placeholder": "请输入员工姓名",
+                    "keyboardType":0,
+                    "modelKey": "EM_Name",
+                    "detail": "",
+                    "isRequired": 1,
+                    "rightViewType": 0,
+                    "isWritable": 1
+                    },
+                    {
+                    "title": "员工编号",
+                    "placeholder": "请输入员工编号",
+                    "keyboardType":0,
+                    "modelKey": "EM_Code",
+                    "detail": "",
+                    "isRequired": 0,
+                    "rightViewType": 0,
+                    "isWritable": 1
+                    },
+                    {
+                    "title": "所属部门",
+                    "placeholder": "请选择所属部门",
+                    "keyboardType":0,
+                    "modelKey": "DM_Name",
+                    "detail": "",
+                    "selectList":[],
+                    "updateKey": "DM_GID",
+                    "updateValue": "",
+                    "isRequired": 1,
+                    "rightViewType": 1,
+                    "isWritable": 1
+                    },
+                    {
+                    "title": "所属店铺",
+                    "placeholder": "",
+                    "keyboardType":4,
+                    "modelKey": "SM_Name",
+                    "detail": "",
+                    "selectList": [],
+                    "updateKey": "SM_GID",
+                    "updateValue": "",
+                    "isRequired": 0,
+                    "rightViewType": 1,
+                    "isWritable": 1
+                    },
+                    {
+                    "title": "性别",
+                    "placeholder": "",
+                    "keyboardType":0,
+                    "modelKey": "EM_Sex",
+                    "detail": "男",
+                    "selectList": ["男", "女"],
+                    "updateKey": "EM_Sex",
+                    "updateValue": "0",
+                    "isRequired": 0,
+                    "rightViewType": 1,
+                    "isWritable": 1
+                    },
+                    {
+                    "title": "手机号码",
+                    "placeholder": "请输入手机号码",
+                    "keyboardType":4,
+                    "modelKey": "EM_Phone",
+                    "detail": "",
+                    "isRequired": 0,
+                    "rightViewType": 0,
+                    "isWritable": 1
+                    },
+                    {
+                    "title": "联系地址",
+                    "placeholder": "请输入联系地址",
+                    "keyboardType":0,
+                    "modelKey": "EM_Addr",
+                    "detail": "",
+                    "isRequired": 0,
+                    "rightViewType": 0,
+                    "isWritable": 1
+                    },
+                    {
+                    "title": "员工生日",
+                    "placeholder": "请选择生日",
+                    "keyboardType":0,
+                    "modelKey": "EM_Birthday",
+                    "detail": "",
+                    "isRequired": 0,
+                    "rightViewType": 2,
+                    "isWritable": 1
+                    }
+        
+    ]
+}

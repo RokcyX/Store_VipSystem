@@ -1,0 +1,88 @@
+{
+    "data": [{
+             "title": "充值名称",
+             "placeholder": "如：充值满100送20",
+             "keyboardType":0,
+             "modelKey": "RP_Name",
+             "detail": "",
+             "selectList":[],
+             "isRequired": 1,
+             "isWritable": 1
+             },
+             {
+             "title": "充值金额",
+             "placeholder": "请输入充值金额",
+             "keyboardType":8,
+             "modelKey": "RP_RechargeMoney",
+             "detail": "",
+             "selectList":[],
+             "isRequired": 1,
+             "isWritable": 1
+             },
+             {
+             "title": "赠送金额",
+             "placeholder": "请输入赠送金额",
+             "keyboardType":8,
+             "modelKey": "RP_GiveMoney",
+             "detail": "",
+             "selectList":[],
+             "isRequired": 1,
+             "isWritable": 1
+             },
+             {
+             "title": "赠送积分",
+             "placeholder": "请输入赠送积分",
+             "keyboardType":4,
+             "modelKey": "RP_GivePoint",
+             "detail": "",
+             "selectList": [],
+             "isRequired": 1,
+             "isWritable": 1
+             },
+             {
+             "title": "有效时间",
+             "placeholder": "",
+             "keyboardType":0,
+             "modelKey": "RP_ValidType",
+             "detail":"",
+             "selectList": [{
+                            "title":"永久有效",
+                            "isSelected":1,
+                            "rP_ValidType":0,
+                            "rightType":0
+                            },
+                            {
+                            "title":"会员生日当天",
+                            "rP_ValidType":4,
+                            "rightType":0
+                            },
+                            {
+                            "title":"固定时间",
+                            "modelKey": "RP_ValidStartTime",
+                            "detail":"",
+                            "endModelKey": "RP_ValidEndTime",
+                            "endDetail":"",
+                            "rP_ValidType":1,
+                            "rightType":2
+                            },
+                            {
+                            "title":"按每周",
+                            "modelKey": "RP_ValidWeekMonth",
+                            "detail":"",
+                            "rP_ValidType":2,
+                            "rightType":1
+                            },
+                            {
+                            "title":"按每月",
+                            "modelKey": "RP_ValidWeekMonth",
+                            "detail":"",
+                            "rP_ValidType":3,
+                            "rightType":1
+                            }
+                            ],
+             "isRequired": 1,
+             "rightViewType": 1,
+             "isWritable": 0
+             }
+             ]
+}

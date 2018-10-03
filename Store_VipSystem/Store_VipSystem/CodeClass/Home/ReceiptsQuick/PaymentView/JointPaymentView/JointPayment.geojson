@@ -1,0 +1,89 @@
+{
+    "data": [{
+             "title": "应收金额:",
+             "placeholder": "",
+             "modelKey": "",
+             "detail": "",
+             "selectEnable": 0
+             },
+             {
+             "title": "找零金额",
+             "placeholder": "请输入支付金额",
+             "modelKey": "",
+             "detail": "",
+             "selectEnable": 0
+             },
+             {
+             "iconImage":"payment_XJZF",
+             "title": "现金",
+             "placeholder": "请输入支付金额",
+             "modelKey": "XJZF",
+             "detail": "",
+             "selectEnable": 0
+             },
+             {
+             "iconImage":"payment_YLZF",
+             "title": "银联",
+             "placeholder": "请输入支付金额",
+             "modelKey": "YLZF",
+             "detail": "",
+             "selectEnable": 0
+             },
+             {
+             "iconImage":"payment_YEZF",
+             "title": "余额",
+             "placeholder": "请输入支付金额",
+             "modelKey": "YEZF",
+             "detail": "",
+             "selectEnable": 0
+             },
+             {
+             "iconImage":"payment_WXJZ",
+             "title": "微信记账",
+             "placeholder": "请输入支付金额",
+             "modelKey": "WXJZ",
+             "detail": "",
+             "selectEnable": 0
+             },
+             {
+             "iconImage":"payment_ZFBJZ",
+             "title": "支付宝记账",
+             "placeholder": "请输入支付金额",
+             "modelKey": "ZFBJZ",
+             "detail": "",
+             "selectEnable": 0
+             },
+             {
+             "iconImage":"payment_JFZF",
+             "title": "积分",
+             "placeholder": "请输入支付金额",
+             "modelKey": "",
+             "detail": "",
+             "selectEnable": 0
+             },
+             {
+             "iconImage":"payment_SMZF",
+             "title": "扫码",
+             "placeholder": "请输入支付金额",
+             "modelKey": "SMZF",
+             "detail": "",
+             "selectEnable": 0
+             },
+             {
+             "iconImage":"payment_QTZF",
+             "title": "其他",
+             "placeholder": "请输入支付金额",
+             "modelKey": "QTZF",
+             "detail": "",
+             "selectEnable": 0
+             },
+             {
+             "iconImage":"payment_YHQDH",
+             "title": "优惠券",
+             "placeholder": "请输入支付金额",
+             "modelKey": "",
+             "detail": "",
+             "selectEnable": 3
+             }
+             ]
+}
