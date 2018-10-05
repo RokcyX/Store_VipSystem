@@ -58,7 +58,6 @@
 }
 
 - (void)loadData {
-    self.vipPrice = self.priceString.floatValue;
     NSString *strPath = [[NSBundle mainBundle] pathForResource:@"ConfirmPay" ofType:@"geojson"];
     NSString *parseJason = [[NSString alloc] initWithContentsOfFile:strPath encoding:NSUTF8StringEncoding error:nil];
     NSDictionary *parseDic = [AFNetworkManager parseJSONStringToNSDictionary:parseJason];
@@ -67,7 +66,7 @@
     } else {
         self.datalist = [XYConfirmPayModel modelConfigureWithArray:parseDic[@"punching"] priceString:self.priceString];
     }
-    
+    [self getDiscountedAmount];
 }
 
 - (void)viewDidLoad {
@@ -75,10 +74,9 @@
     // Do any additional setup after loading the view.
     self.title = @"支付确认";
     self.isOpen = YES;
-    [self loadData];
     [self setNaviUI];
     [self setupUI];
-    
+    [self loadData];
 }
 
 - (void)setNaviUI {
@@ -102,31 +100,20 @@
 - (void)setVipModel:(XYMemberManageModel *)vipModel {
     _vipModel = vipModel;
     self.rechargeModel = nil;
-    self.vipPrice = self.priceString.floatValue;
     self.vipNum = 0;
-    
-    
-    // 折后金额
-    XYConfirmPayModel *priceModel = self.datalist[self.datalist.count-3];
-    priceModel.detail = self.priceString;
-    self.footView.priceString = priceModel.detail;
+    [self getDiscountedAmount];
+
     // 优惠活动
     if (self.isConsume) {
         XYConfirmPayModel *offersModel = self.datalist[3];
         offersModel.detail = @"";
         offersModel.updateValue = @"";
-        offersModel.updateValue = priceModel.detail;
+        offersModel.updateValue = [NSString stringWithFormat:@"%.2lf",self.vipPrice];
     }
     // 获得积分
     XYConfirmPayModel *numModel = self.datalist[self.datalist.count-2];
     numModel.detail = @"0";
-    
     if (vipModel) {
-        if (vipModel.dS_Value) {
-            self.vipPrice = self.priceString.floatValue *vipModel.dS_Value;
-            priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice];
-            self.footView.priceString = priceModel.detail;
-        }
         if (vipModel.vS_Value) {
             self.vipNum = @(self.priceString.floatValue *vipModel.vS_Value).integerValue;
             numModel.detail = @(self.vipNum).stringValue;
@@ -134,6 +121,23 @@
     }
     [self.tableView reloadData];
     
+}
+
+- (void)getDiscountedAmount {
+    CGFloat discountAmount = 0.0;
+    for (XYCommodityModel *obj in self.goodslist) {
+        if (self.vipModel.vG_IsDiscount) {
+            [obj discountMembershipWithLevel:self.vipModel.dS_Value];
+        } else {
+            [obj discountWithOutMembership];
+        }
+        discountAmount += obj.discountPrice;
+    }
+    // 折后金额
+    XYConfirmPayModel *priceModel = self.datalist[self.datalist.count-3];
+    self.vipPrice =  discountAmount;
+    priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice];
+    self.footView.priceString = priceModel.detail;
 }
 
 - (void)setRechargeModel:(XYRechargeModel *)rechargeModel {

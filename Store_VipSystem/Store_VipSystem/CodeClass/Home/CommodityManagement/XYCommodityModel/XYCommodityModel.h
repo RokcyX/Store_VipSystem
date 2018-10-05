@@ -24,7 +24,7 @@
 @property (nonatomic , assign) CGFloat              stock_Number;
 @property (nonatomic , copy) NSString              * pM_Code;
 @property (nonatomic , copy) NSString              * cY_GID;
-@property (nonatomic , copy) NSString              * pM_MemPrice;
+@property (nonatomic , assign) CGFloat              pM_MemPrice;
 @property (nonatomic , copy) NSString              * pT_Name;
 @property (nonatomic , copy) NSString              * pM_SimpleCode;
 @property (nonatomic , copy) NSString              * pM_BigImg;
@@ -52,7 +52,14 @@
 
 @property (nonatomic, assign)NSInteger count;
 
+
+@property (nonatomic, copy)NSString *discountStr;
+@property (nonatomic, assign)CGFloat discountPrice;
+
 + (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist;
 
 + (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist alldataList:(NSMutableArray *)datalist;
+
+- (void)discountWithOutMembership;
+- (void)discountMembershipWithLevel:(CGFloat)level;
 @end

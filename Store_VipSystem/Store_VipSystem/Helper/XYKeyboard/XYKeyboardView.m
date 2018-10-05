@@ -161,7 +161,7 @@
 - (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     if (self.titleForRow) {
         NSString *title = self.titleForRow(row);
-        if (!self.seletedNum) {
+        if (!self.seletedNum.length) {
             if (component == 0 && row == 0) {
                 self.string = title;
             }
