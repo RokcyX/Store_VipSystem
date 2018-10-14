@@ -83,16 +83,24 @@
     _model = model;
     self.iconView.image = [UIImage imageNamed:model.iconImage];
     self.titleLabel.text = model.title;
+    self.detailField.enabled = !model.readonly;
     self.detailField.placeholder = model.placeholder;
     self.detailField.rightViewMode = model.selectEnable;
 }
 
 
 - (void)textFieldEditingChanged:(UITextField *)textField {
-    self.model.detail = textField.text;
-//    self.model.updateValue = textField.text;
-    if (self.priceChanged) {
-        self.priceChanged();
+    if ([self.model.title isEqualToString:@"余额"]) {
+        if (textField.text.floatValue > self.balance) {
+            textField.text = @(self.balance).stringValue;
+        }
+    }
+    if ([self.model.detail isEqualToString:textField.text]) {
+        self.model.detail = textField.text;
+        //    self.model.updateValue = textField.text;
+        if (self.priceChanged) {
+            self.priceChanged();
+        }
     }
 }
 

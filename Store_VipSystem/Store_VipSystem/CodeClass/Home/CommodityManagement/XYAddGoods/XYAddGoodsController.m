@@ -318,6 +318,7 @@
                 if (isFromContinue) {
                     [weakSelf.handofflView emptyData];
                     [weakSelf loadData];
+                    weakSelf.classiVc = nil;
                 } else {
                     [weakSelf.navigationController popToViewController:vc animated:YES];
                     if (self.model) {
@@ -356,9 +357,11 @@
     if (self.model) {
         [parameters setValue:self.model.gID forKey:@"GID"];
     }
-    if (imageUrl) {
-        [parameters setValue:imageUrl ? imageUrl : @"/img/product.png" forKey:@"PM_BigImg"];
-    }
+    
+    [parameters setValue:imageUrl ? imageUrl : @"/img/product.png" forKey:@"PM_BigImg"];
+    [parameters setValue:@"" forKey:@"VIP_RegSource"];
+
+    
     return parameters;
     
 }

@@ -59,6 +59,9 @@
     if (!JSONResponse) {
         NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         string = [string stringByReplacingOccurrencesOfString:@"00:00:00" withString:@""];
+//        "PS_PrintTimes": "[{\"PT_Code\":\"\",\"PT_Times\":0}]",
+//        "PS_PrintTimes": "[{\"PT_Code\": "",\"PT_Times\":0}]",
+        string = [string stringByReplacingOccurrencesOfString:@"\\\":null" withString:@"\\\":\\\"\\\""];
         string = [string stringByReplacingOccurrencesOfString:@":null" withString:@":\"\""];
         dic = [self parseJSONStringToNSDictionary:string];
     }
@@ -72,11 +75,11 @@
             ApplicationRootVC([XYAppDelegate rootViewController]);
         });
     }
-    if ([dic[@"success"] boolValue]) {
+//    if ([dic[@"success"] boolValue]) {
         if (succeed && responseObject != NULL) {
             succeed(dic);
         }
-    }
+//    }
 }
 
 + (void)returnError:(NSError *)error failure:(void (^)(NSError *))failure showMsg:(BOOL)showMsg {

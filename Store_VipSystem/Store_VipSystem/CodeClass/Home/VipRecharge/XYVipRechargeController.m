@@ -69,7 +69,11 @@
     [self loadData];
     [self setNaviUI];
     [self setupUI];
-    
+    WeakSelf;
+    self.dataOverload = ^{
+        weakSelf.check.screenView.selected = YES;
+        [weakSelf screenDel:weakSelf.check.screenView];
+    };
 }
 
 - (void)setNaviUI {
@@ -98,7 +102,10 @@
     XYVipRechargeModel *pointModel = self.datalist[2];
     // 充值合计
     XYVipRechargeModel *combinedModel = self.datalist[3];
-    
+    for (XYRechargeModel *obj in self.schemelist) {
+        obj.selected = NO;
+    }
+
     self.footView.priceString = @"0.00";
     amountModel.detail = @"0.00";
     pointModel.detail = @"0";
@@ -187,6 +194,9 @@
     for (XYVipRechargeModel *model in self.datalist) {
         if (model.modelKey) {
             [parameters setValue:model.detail forKey:model.modelKey];
+            if (model.updateValue.length) {
+                [parameters setValue:model.updateValue forKey:model.modelKey];
+            }
         }
     }
     if (![parameters[@"EM_GIDList"] length]) {
@@ -194,6 +204,7 @@
     } else {
         [parameters setValue:[parameters[@"EM_GIDList"] componentsSeparatedByString:@","] forKey:@"EM_GIDList"];
     }
+    
     [parameters setValue:@1 forKey:@"CC_GID"];
     if (self.recharge) {
         [parameters setValue:self.recharge.gID forKey:@"CC_GID"];
@@ -223,6 +234,7 @@
                  OrderGID    订单GID    Bool    否    0-100
                  IS_Sms    是否发送短信    string    是    0-500
                  */
+                payView.balance = self.vipModel.mA_AvailableBalance;
                 payView.parameters = @{@"OrderGID":dic[@"data"][@"GID"], @"IS_Sms":@(msg), @"PayResult":@""}.mutableCopy;
                 payView.jointPayBlock = ^{
                     XYJointPaymentController *jointVc = [[XYJointPaymentController alloc] init];
@@ -232,6 +244,8 @@
                      OrderGID    订单GID    Bool    否    0-100
                      IS_Sms    是否发送短信    string    是    0-500
                      */
+                    jointVc.balance = self.vipModel.mA_AvailableBalance;
+
                     jointVc.parameters = @{@"OrderGID":dic[@"data"][@"GID"], @"IS_Sms":@(msg), @"PayResult":@""}.mutableCopy;
                     [weakSelf.navigationController pushViewController:jointVc animated:YES];
                 };
@@ -273,17 +287,17 @@
             pointModel.detail = @(@(result.floatValue *self.vipModel.rS_Value).integerValue).stringValue;
             amountModel.detail = @"0.00";
             if (recharge) {
-                pointModel.detail = @(recharge.rP_GivePoint).stringValue;
-                if (recharge.rP_Discount) {
+                pointModel.detail = @(recharge.rP_GivePoint + @(result.floatValue *self.vipModel.rS_Value).integerValue).stringValue;
+                if (recharge.rP_Discount > 0) {
                     //                优惠
                     weakSelf.footView.priceString = [NSString stringWithFormat:@"%.2lf", result.floatValue *(recharge.rP_Discount/10)];
                     
-                } else if (recharge.rP_GiveMoney) {
+                } else if (recharge.rP_GiveMoney > 0) {
                     //                赠送
                     amountModel.detail = [NSString stringWithFormat:@"%.2lf",recharge.rP_GiveMoney];
                     combinedModel.detail = [NSString stringWithFormat:@"%.2lf",result.floatValue + recharge.rP_GiveMoney];
                     
-                } else if (recharge.rP_ReduceMoney) {
+                } else if (recharge.rP_ReduceMoney > 0) {
                     //                减少
                     weakSelf.footView.priceString = [NSString stringWithFormat:@"%.2lf",result.floatValue -recharge.rP_ReduceMoney];
                 }
@@ -312,7 +326,7 @@
     if (indexPath.row) {
         return  50;
     }
-    return 50 + (self.schemelist.count/3 + (self.schemelist.count%3 ? 1:0)) * 60;
+    return 50 + ((self.schemelist.count + 1)/3 + ((self.schemelist.count+1)%3 ? 1:0)) * 60;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

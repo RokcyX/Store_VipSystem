@@ -52,71 +52,95 @@
     return nil;
 }
 
+// 设置 折扣金额
+- (void)setOfferValue:(CGFloat)offerValue {
+    self.discountStr = [NSString stringWithFormat:@"%.1f折", offerValue*10];
+    self.discountPrice = self.pM_UnitPrice * offerValue;
+    self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+}
+
+- (void)hasSpecialOfferValue {
+    // 有特价折扣
+    if (self.pM_MinDisCountValue && self.pM_MinDisCountValue < 1) {
+        // 有最低折扣
+        [self hasMinDisCountValueCompWithValue:self.pM_SpecialOfferValue];
+    } else {
+        self.offerValue = self.pM_SpecialOfferValue;
+    }
+    
+}
+
+- (void)hasMinDisCountValueCompWithValue:(CGFloat)value {
+    // 有最低折扣
+    if (value > self.pM_MinDisCountValue) { // 特价大于最低
+        self.offerValue = value;
+    } else { // 特价小于最低
+        self.offerValue = self.pM_MinDisCountValue;
+    }
+}
+
 - (void)discountWithOutMembership {
-    if (self.pM_IsDiscount) {
-        if (self.pM_SpecialOfferValue && self.pM_SpecialOfferValue < 1) {// 有特价折扣
-            if (self.pM_MinDisCountValue && self.pM_MinDisCountValue < 1) {// 有最低折扣
-                if (self.pM_SpecialOfferValue > self.pM_MinDisCountValue) { // 特价大于最低
-                    self.discountStr = [NSString stringWithFormat:@"%.1f折", self.pM_SpecialOfferValue*10];
-                    self.discountPrice = self.pM_UnitPrice * self.pM_SpecialOfferValue;
-                } else { // 特价小于最低
-                    self.discountStr = [NSString stringWithFormat:@"%.1f折", self.pM_MinDisCountValue*10];
-                    self.discountPrice = self.pM_UnitPrice * self.pM_MinDisCountValue;
-                }
-            } else { // 无最低折扣
-                self.discountStr = [NSString stringWithFormat:@"%.1f折", self.pM_SpecialOfferValue*10];
-                self.discountPrice = self.pM_UnitPrice * self.pM_SpecialOfferValue;
-            }
+    if (self.pM_IsDiscount) { // 商品折扣开启
+        if (self.pM_SpecialOfferValue && self.pM_SpecialOfferValue < 1) {
+            // 有特价折扣
+            [self hasSpecialOfferValue];
         } else {
+            // 无特价折扣
             self.discountStr = @"不打折";
             self.discountPrice = self.pM_UnitPrice;
+            self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
         }
     } else {
+        // 商品折扣关闭
         self.discountStr = @"不打折";
         self.discountPrice = self.pM_UnitPrice;
+        self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
     }
 }
 
 - (void)discountMembershipWithLevel:(CGFloat)level {
-    if (self.pM_IsDiscount) {
-        if (self.pM_SpecialOfferValue && self.pM_SpecialOfferValue < 1) {// 有特价折扣
-            if (self.pM_MinDisCountValue && self.pM_MinDisCountValue < 1) {// 有最低折扣
-                if (self.pM_SpecialOfferValue > self.pM_MinDisCountValue) { // 特价大于最低
-                    self.discountStr = [NSString stringWithFormat:@"%.1f折", self.pM_SpecialOfferValue*10];
-                    self.discountPrice = self.pM_UnitPrice * self.pM_SpecialOfferValue;
-                } else { // 特价小于最低
-                    self.discountStr = [NSString stringWithFormat:@"%.1f折", self.pM_MinDisCountValue*10];
-                    self.discountPrice = self.pM_UnitPrice * self.pM_MinDisCountValue;
+    if (self.pM_IsDiscount) { // 商品折扣开启
+        if (self.pM_SpecialOfferValue && self.pM_SpecialOfferValue < 1) {
+            // 有特价折扣
+            [self hasSpecialOfferValue];
+        } else {
+            if (self.pM_MemPrice) { // 有会员价
+                self.discountStr = @"会员折扣";
+                self.discountPrice = self.pM_MemPrice;
+                self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+            } else {
+                // 无会员价
+                if (level && level < 1) {
+                    // 等级折扣
+                    if (self.pM_MinDisCountValue && self.pM_MinDisCountValue < 1) {
+                        // 有最低折扣
+                        [self hasMinDisCountValueCompWithValue:level];
+                    } else {
+                        // 无最低折扣
+                        self.offerValue = level;
+                    }
+                } else {
+                    // 无等级折扣 原价
+                    self.discountStr = @"不打折";
+                    self.discountPrice = self.pM_UnitPrice;
+                    self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+
                 }
-            } else { // 无最低折扣
-                self.discountStr = [NSString stringWithFormat:@"%.1f折", self.pM_SpecialOfferValue*10];
-                self.discountPrice = self.pM_UnitPrice * self.pM_SpecialOfferValue;
             }
-        } else if (self.pM_MemPrice && self.pM_MemPrice < 1) {
+        }
+    } else {
+        // 商品折扣关闭
+        if (self.pM_MemPrice) { // 有会员价
             self.discountStr = @"会员折扣";
-            self.discountPrice = self.pM_UnitPrice;
-        } else if (level && level < 1) {
-            if (self.pM_MinDisCountValue && self.pM_MinDisCountValue < 1) {// 有最低折扣
-                if (level > self.pM_MinDisCountValue) { // 特价大于最低
-                    self.discountStr = [NSString stringWithFormat:@"%.1f折", level*10];
-                    self.discountPrice = self.pM_UnitPrice * level;
-                } else { // 特价小于最低
-                    self.discountStr = [NSString stringWithFormat:@"%.1f折", self.pM_MinDisCountValue*10];
-                    self.discountPrice = self.pM_UnitPrice * self.pM_MinDisCountValue;
-                }
-            } else { // 无最低折扣
-                self.discountStr = [NSString stringWithFormat:@"%.1f折", self.pM_SpecialOfferValue*10];
-                self.discountPrice = self.pM_UnitPrice * self.pM_SpecialOfferValue;
-           
-            }
-            
+            self.discountPrice = self.pM_MemPrice;
+            self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
         } else {
             self.discountStr = @"不打折";
             self.discountPrice = self.pM_UnitPrice;
+            self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+
         }
-    } else {
-        self.discountStr = @"不打折";
-        self.discountPrice = self.pM_UnitPrice;
+    
     }
 }
 

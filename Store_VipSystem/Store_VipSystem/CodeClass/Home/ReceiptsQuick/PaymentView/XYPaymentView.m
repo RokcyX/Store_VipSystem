@@ -100,6 +100,18 @@
     } else {
         BOOL canPay = NO;
         NSString *btnStr = [_datalist[sender.tag -101] stringWithCode];
+        if ([btnStr isEqualToString:@"余额支付"]) {
+            if ([self.payUrl isEqualToString:@"api/Recharge/PaymentRecharge"]) {
+                [XYProgressHUD showMessage:@"会员充值不能使用余额支付"];
+                return;
+            }
+            
+            if (self.balance < self.priceString.floatValue) {
+                [XYProgressHUD showMessage:@"余额不足"];
+                return;
+            }
+        }
+        
         for (XYParameterSetModel *obj in [LoginModel shareLoginModel].parameterSets.firstObject[@"models"]) {
             if ([obj.title isEqualToString:btnStr]) {
                 canPay = obj.sS_State;
@@ -171,8 +183,13 @@
                 
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf dismissView];
-                [XYPrinterMaker print];
+                [UIView animateWithDuration:.1 animations:^{
+                    weakSelf.view.backgroundColor = [UIColor colorWithWhite:0.1f alpha:0];
+                } completion:^(BOOL finished) {
+                    [weakSelf dismissViewControllerAnimated:YES completion:^{
+                        [XYPrinterMaker print];
+                    }];
+                }];
             });
         }
     } failure:^(NSError *error) {

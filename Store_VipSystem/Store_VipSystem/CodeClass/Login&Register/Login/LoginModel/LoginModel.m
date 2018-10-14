@@ -92,13 +92,15 @@
 
 - (void)loadPreloadedData {
     //    api/Report/PreloadingData
+//    api/SetSwitch/GetSysSwitchList
+    
     NSArray *array = Get_UserDefaults(ParameterSets);
     WeakSelf;
     [AFNetworkManager postNetworkWithUrl:@"api/Report/PreloadingData" parameters:nil succeed:^(NSDictionary *dic) {
         if ([dic[@"success"] boolValue]) {
             weakSelf.printSetModel = [XYPrintSetModel modelConfigureDic:dic[@"data"][@"PrintSet"]];
             weakSelf.parameterSets = [XYParameterSetModel modelConfigureWithArray:dic[@"data"][@"GetSysSwitchList"]];
-            Set_UserDefaults([XYParameterSetModel parametersWithDataList:weakSelf.parameterSets], ParameterSets);
+            Set_UserDefaults([XYParameterSetModel parametersWithSaveList:weakSelf.parameterSets], ParameterSets);
             // 暂时关闭 防止 刚添加的 活动 在可用的 界面没显示
 //            weakSelf.rechargeValidList = [XYRechargeModel modelConfigureWithArray:dic[@"data"][@"Active"] type:1];
 //            weakSelf.reducedValidList = [XYRechargeModel modelConfigureWithArray:dic[@"data"][@"Active"] type:2];

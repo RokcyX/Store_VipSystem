@@ -137,7 +137,7 @@
 }
 
 - (void)updataWithSave:(BOOL)isSave {
-    NSString *url = @"api/ProductTypeManager/EditProductType";
+    NSString *url = @"api/ProductTypeManager/DelProductType";
     NSDictionary *parameters =@{@"GID":self.model.gID};
     if (isSave) {
         url = @"api/ProductTypeManager/EditProductType";
@@ -148,7 +148,6 @@
                       @"PT_Remark":self.model.pT_Remark,
                       @"PT_SynType":@(self.model.pT_SynType)
                       };
-        
     }
     WeakSelf;
     [AFNetworkManager postNetworkWithUrl:url parameters:parameters succeed:^(NSDictionary *dic) {

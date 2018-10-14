@@ -138,7 +138,7 @@
             make.top.left.right.bottom.equalTo(cell.contentView);
         }];
         
-        UIView *rightLine = [[UIView alloc] init];
+        rightLine = [[UIView alloc] init];
         rightLine.backgroundColor = RGBColor(222, 222, 222);
         rightLine.tag = 102;
         [cell addSubview:rightLine];
@@ -147,7 +147,7 @@
             make.width.mas_equalTo(1);
         }];
         
-        UIButton *checkBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
+        checkBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
         checkBtn.tag = 103;
         [checkBtn setImage:[UIImage imageNamed:@"check_box_circle_normal"] forState:(UIControlStateNormal)];
         [checkBtn setImage:[UIImage imageNamed:@"check_box_circle_selected"] forState:(UIControlStateSelected)];

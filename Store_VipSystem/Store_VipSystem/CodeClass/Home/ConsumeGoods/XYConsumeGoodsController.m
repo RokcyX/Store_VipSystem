@@ -116,6 +116,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
+    [self setFootViewModel];
 }
 
 - (void)viewDidLoad {
@@ -362,19 +363,21 @@
     return _layers;
 }
 
--(void)startAnimationWithCell:(XYCommodityViewCell *)cell {
+-(void)startAnimationWithCell:(XYCommodityViewCell *)currCell {
+    CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:[self.tableView indexPathForCell:currCell]];
+    CGRect rectInSuperView = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
     CALayer *layer = [CALayer layer];
     layer.contentsGravity = kCAGravityResizeAspectFill;
-    layer.bounds = cell.commodityImageView.bounds;
+    layer.bounds = currCell.commodityImageView.bounds;
     [layer setCornerRadius:CGRectGetHeight([layer bounds]) / 2];
     layer.opacity = 1;
     layer.masksToBounds = YES;
     [self.view.layer addSublayer:layer];
-    layer.position = cell.frame.origin;
-    layer.contents = (__bridge id)cell.commodityImageView.image.CGImage;
+    layer.position = rectInSuperView.origin;
+    layer.contents = (__bridge id)currCell.commodityImageView.image.CGImage;
     
     UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(CGRectGetMaxX(cell.frame), CGRectGetMaxY(cell.frame))];
+    [path moveToPoint:CGPointMake(CGRectGetMaxX(rectInSuperView) - 20, CGRectGetMaxY(rectInSuperView) - 20)];
     [path addQuadCurveToPoint:CGPointMake(40, CGRectGetMidY(self.shopCarView.frame)) controlPoint:CGPointMake(150, 20)];
 
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
@@ -415,6 +418,13 @@
             layer = subLayer;
         }
     }
+    [self setFootViewModel];
+    [layer removeFromSuperlayer];
+    [self.layers removeObject:layer];
+    layer = nil;
+}
+
+- (void)setFootViewModel {
     NSInteger goodsNum = 0;
     CGFloat amount = 0.00;
     for (XYCommodityModel *obj in self.dataALLlist) {
@@ -423,9 +433,6 @@
     }
     self.shopCarView.goodsNum = goodsNum;
     self.shopCarView.amountString = [NSString stringWithFormat:@"%.2lf", amount];
-    [layer removeFromSuperlayer];
-    [self.layers removeObject:layer];
-    layer = nil;
 }
 
 - (void)didReceiveMemoryWarning {

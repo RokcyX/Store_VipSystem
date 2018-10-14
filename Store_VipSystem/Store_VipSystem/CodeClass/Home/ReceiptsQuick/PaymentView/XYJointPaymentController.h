@@ -16,4 +16,7 @@
 
 @property (nonatomic, copy)NSString *payUrl; // 支付Url
 
+@property (nonatomic, assign) CGFloat balance;
+
+
 @end

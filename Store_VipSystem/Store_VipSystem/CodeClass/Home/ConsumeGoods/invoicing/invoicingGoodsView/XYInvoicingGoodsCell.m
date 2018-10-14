@@ -14,7 +14,9 @@
 @property (nonatomic, weak)UILabel *titleLabel;
 @property (nonatomic, weak)UILabel *priceLabel;
 
-@property (nonatomic, weak)UILabel *countLabel;
+@property (nonatomic, weak)UITextField *countField;
+
+@property (nonatomic, weak)UITextField *detailField;
 
 @end
 
@@ -55,35 +57,85 @@
     UILabel *priceLabel = [[UILabel alloc] init];
     priceLabel.textColor = RGBColor(249, 0, 0);
     priceLabel.font = [UIFont systemFontOfSize:15];
-    [self.contentView addSubview:self.priceLabel=priceLabel];
-    [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    UITextField *countField = [[UITextField alloc] init];
+    countField.font = [UIFont systemFontOfSize:14];
+    [countField addTarget:self action:@selector(countFieldEditingChanged:) forControlEvents:(UIControlEventEditingChanged)];
+    countField.keyboardType = 4;
+    countField.leftViewMode = UITextFieldViewModeAlways;
+    countField.leftView = self.priceLabel=priceLabel;
+    [self.contentView addSubview:self.countField=countField];
+    
+    
+    UITextField *textField = [[UITextField alloc] init];
+    textField.font = [UIFont systemFontOfSize:14];
+    [textField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:(UIControlEventEditingChanged)];
+    textField.keyboardType = 8;
+    textField.leftViewMode = UITextFieldViewModeAlways;
+    textField.textColor = [UIColor redColor];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 25)];
+    nameLabel.text = @"￥";
+    nameLabel.textColor = [UIColor redColor];
+    textField.leftView = nameLabel;
+    [self.contentView addSubview:self.detailField=textField];
+    
+    for (XYParameterSetModel *obj in [LoginModel shareLoginModel].parameterSets[2][@"models"]) {
+        if ([obj.title isEqualToString:@"折后金额修改"]) {
+            textField.enabled = obj.sS_State;
+        }
+    }
+    
+    [textField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(weakSelf.contentView.mas_right).offset(-30);
+        make.centerY.equalTo(countField.mas_centerY);
+        make.width.mas_equalTo(80);
+    }];
+    
+    
+    [countField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(commodityImageView.mas_centerY);
         make.left.equalTo(titleLabel.mas_left);
         make.bottom.equalTo(commodityImageView.mas_bottom);
-        make.width.equalTo(titleLabel.mas_width);
+        make.right.equalTo(textField.mas_left).offset(-10);
     }];
-    
-    UILabel *countLabel = [[UILabel alloc] init];
-    countLabel.textColor = RGBColor(143, 144, 145);
-    countLabel.textAlignment = NSTextAlignmentCenter;
-    countLabel.font = [UIFont systemFontOfSize:15];
-    [self.contentView addSubview:self.countLabel=countLabel];
-    [countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(weakSelf.contentView.mas_right).offset(-30);
-        make.centerY.equalTo(priceLabel.mas_centerY);
-        make.width.mas_equalTo(40);
-    }];
-    
 }
 
 - (void)setModel:(XYCommodityModel *)model {
     _model = model;
     [self.commodityImageView sd_setImageWithURL:[NSURL URLWithString:model.pM_BigImg] placeholderImage:[UIImage imageNamed:@"commodity_product_placeholder"]];
     self.titleLabel.text = model.pM_Name;
-    self.priceLabel.text = [@"¥ " stringByAppendingString:@(model.pM_UnitPrice).stringValue];
-    self.countLabel.text = [NSString stringWithFormat:@"x%ld", model.count];
+    NSString *text = [NSString stringWithFormat:@"¥ %@     x", @(model.pM_UnitPrice).stringValue];
+    NSMutableAttributedString * attributedStr = [[NSMutableAttributedString alloc] initWithString:text];
+    //给富文本添加属性2-字体颜色
+    [attributedStr addAttribute:NSForegroundColorAttributeName
+                          value:[UIColor blackColor]
+                          range:NSMakeRange(text.length-2, 2)];
+    self.priceLabel.attributedText = attributedStr;
+    
+    self.priceLabel.frame = CGRectMake(0, 0, [self.priceLabel calculateWidth], 25);
+    
+    self.countField.text = @(model.count).stringValue;
+    self.detailField.text = model.discountPriceStr;
 }
 
+- (void)textFieldEditingChanged:(UITextField *)textField {
+    self.model.discountPriceStr = textField.text;
+    if (textField.text.floatValue > self.model.pM_UnitPrice) {
+        [XYProgressHUD showMessage:@"折后金额不能大于原价"];
+        textField.text = self.model.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.model.discountPrice];
+    }
+    textField.text = self.model.discountPriceStr;
+    if (self.changeDiscount) {
+        self.changeDiscount();
+    }
+}
+
+- (void)countFieldEditingChanged:(UITextField *)textField {
+    self.model.count = textField.text.integerValue;
+    if (self.changeDiscount) {
+        self.changeDiscount();
+    }
+}
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

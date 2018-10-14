@@ -24,6 +24,9 @@
         XYVipBasicInfoModel *model = [[XYVipBasicInfoModel alloc] init];
         [model setValuesForKeysWithDictionary:dic];
         if (memberModel) {
+            if (model.rightViewType == 5) {
+                model.rightViewType = 0;
+            }
             if (model.updateKey.length && ![model.updateKey isEqualToString:@"EM_GIDList"]) {
                 id value = [memberModel valueForKey:model.updateKey.lowerHeadCaseString];
                 if (value) {
@@ -42,6 +45,13 @@
             }
         }
         
+        if ([model.title isEqualToString:@"会员手机"]) {
+            for (XYParameterSetModel *obj in [LoginModel shareLoginModel].parameterSets[1][@"models"]) {
+                if (obj.sS_Code.integerValue == 211) {
+                    model.isRequired = obj.sS_State;
+                }
+            }
+        }
         return model;
     }
     return nil;
@@ -55,15 +65,24 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     for (NSArray *array in dataList) {
         for (XYVipBasicInfoModel *model in array) {
+            if (model.vCH_Fee_PayTypeText.length) {
+                [parameters setValue:model.vCH_Fee_PayTypeText.codeWithString forKey:@"VCH_Fee_PayType"];
+                [parameters setValue:model.vCH_Fee_PayTypeText forKey:@"VCH_Fee_PayTypeText"];
+            }
             if ([model.modelKey isEqualToString:@"VIP_Overdue"]) {
                 NSString *value = model.detail.integerValue ? @"0":@"1";
                 [parameters setValue:value forKey:@"VIP_IsForver"];
             }
             
-            if ([model.modelKey isEqualToString:@"VIP_CellPhone"] && !model.detail.trimming) {
+            if ([model.modelKey isEqualToString:@"VIP_CellPhone"] && !model.detail.trimming && model.isRequired) {
                 [XYProgressHUD showMessage:@"手机号格式不对"];
                 return nil;
             }
+            NSString *key = model.modelKey;
+            if (model.updateKey) {
+                key = model.updateKey;
+            }
+            [parameters setValue:@"" forKey:key];
             
             if (!model.detail.length && !model.updateValue.length) {
                 if (model.isRequired) {
@@ -81,6 +100,7 @@
             }
         }
     }
+    
     return parameters;
 }
 

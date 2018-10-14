@@ -15,10 +15,11 @@
 @property (nonatomic, weak)UITextField *detailField;
 @property (nonatomic, weak)UIButton *rightBtn;
 @property (nonatomic, weak)UILabel *requiredView;
+@property (nonatomic, weak)UITextField *endDetailField;
 @end
 
 @implementation XYVipBasicInfoCell
-
+#define endDetailFieldWidth 100
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         // 60
@@ -65,6 +66,54 @@
     [rightBtn addTarget:self action:@selector(rightBtnAction) forControlEvents:(UIControlEventTouchUpInside)];
     textField.rightView = self.rightBtn=rightBtn;
     
+    UITextField *endDetailField = [[UITextField alloc] init];
+    endDetailField.font = [UIFont systemFontOfSize:14];
+    endDetailField.placeholder = @"选择支付方式";
+    endDetailField.rightViewMode = UITextFieldViewModeAlways;
+    endDetailField.leftViewMode = UITextFieldViewModeAlways;
+    endDetailField.textAlignment = NSTextAlignmentCenter;
+    endDetailField.hidden = YES;
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, CGRectGetHeight(self.frame))];
+    lineView.backgroundColor = RGBColor(244, 245, 246);
+    endDetailField.leftView = lineView;
+    
+    UIButton *endRightBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    endRightBtn.tintColor = RGBColor(5, 139, 234);
+    endDetailField.rightView = endRightBtn;
+    endRightBtn.frame = CGRectMake(0, 0, 20, CGRectGetHeight(self.frame));
+    endRightBtn.imageEdgeInsets = UIEdgeInsetsMake((CGRectGetHeight(self.frame) - 17.5)/2, 10, (CGRectGetHeight(self.frame) - 17.5)/2, 0);
+    [endRightBtn setImage:[UIImage imageNamed:@"vip_basicInfo_right"] forState:(UIControlStateNormal)];
+    XYKeyboardToolbar *toolbar;
+    XYKeyboardView *keyboard;
+    keyboard = [XYKeyboardView keyBoardWithType:(KeyboardTypeStringPicker)];
+    keyboard.count = 3;
+    NSMutableArray *array = [NSMutableArray array];
+    for (XYParameterSetModel *obj in [LoginModel shareLoginModel].parameterSets.firstObject[@"models"]) {
+        if (obj.sS_State) {
+            [array addObject:obj];
+        }
+    }
+    keyboard.titleForRow = ^NSString *(NSInteger row) {
+        return [array[row] sS_Name];
+    };
+    keyboard.seletedNum = self.detailField.text;
+    toolbar = [XYKeyboardToolbar defaultToolbar];
+    toolbar.finished = ^(BOOL success) {
+        if (success) {
+            weakSelf.model.vCH_Fee_PayTypeText = keyboard.string;
+            weakSelf.endDetailField.text = keyboard.string;
+        }
+        [weakSelf.endDetailField resignFirstResponder];
+    };
+    endDetailField.inputAccessoryView = toolbar;
+    endDetailField.inputView = keyboard;
+    [self.contentView addSubview:self.endDetailField = endDetailField];
+    [endDetailField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.top.bottom.equalTo(textField);
+        make.width.mas_equalTo(endDetailFieldWidth+20);
+    }];
+    
 }
 
 - (void)setModel:(XYVipBasicInfoModel *)model readOnly:(BOOL)readOnly {
@@ -74,6 +123,7 @@
     self.detailField.text = model.detail;
     self.requiredView.hidden = !model.isRequired;
     self.detailField.rightViewMode = UITextFieldViewModeAlways;
+    self.endDetailField.hidden = YES;
     if (readOnly) {
         self.detailField.placeholder = @"";
         self.detailField.enabled = NO;
@@ -130,6 +180,11 @@
         self.rightBtn.frame = CGRectMake(0, 0, 30.8, CGRectGetHeight(self.frame));
         self.rightBtn.imageEdgeInsets = UIEdgeInsetsMake((CGRectGetHeight(self.frame) - 18)/2, 10, (CGRectGetHeight(self.frame) - 18)/2, 0);
         [self.rightBtn setImage:[UIImage imageNamed:@"vip_basicInfo_calender"] forState:(UIControlStateNormal)];
+    } else if (model.rightViewType == RightViewTypeTextField) {
+        self.rightBtn.frame = CGRectMake(0, 0, endDetailFieldWidth + 20 + 10, CGRectGetHeight(self.frame));
+        self.rightBtn.enabled = NO;
+        self.endDetailField.hidden = NO;
+        self.endDetailField.text = model.vCH_Fee_PayTypeText;
     }
     
     if ([self.model.title isEqualToString:@"会员性别"]) {

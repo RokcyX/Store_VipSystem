@@ -69,6 +69,7 @@
     onControl.title = @"开启打印";
     onControl.selectControl = ^{
         weakSelf.offControl.selected = !weakSelf.onControl.selected;
+        [weakSelf.tableView reloadData];
     };
     [self.view addSubview:weakSelf.onControl=onControl];
     [onControl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -82,6 +83,7 @@
     offControl.selected = YES;
     offControl.selectControl = ^{
         weakSelf.onControl.selected = !weakSelf.offControl.selected;
+        [weakSelf.tableView reloadData];
     };
     [self.view addSubview:self.offControl=offControl];
     [offControl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -135,6 +137,9 @@
 
 #pragma mark -TableViewDataSource && Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.offControl.selected) {
+        return 0;
+    }
     return 2;
 }
 
@@ -174,17 +179,19 @@
         } else {
             PrintTimes *times = self.model.printTimesList[indexPath.row-1];
             title = times.title;
-            UILabel *titleLabel = [cell.contentView viewWithTag:102];
-            if (!titleLabel) {
-                titleLabel = [[UILabel alloc] init];
-                titleLabel.tag = 102;
-                [cell.contentView addSubview:titleLabel];
-                [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            UITextField *titleField = [cell.contentView viewWithTag:102];
+            if (!titleField) {
+                titleField = [[UITextField alloc] init];
+                titleField.tag = 102;
+                titleField.keyboardType = 4;
+                [titleField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:(UIControlEventEditingChanged)];
+                [cell.contentView addSubview:titleField];
+                [titleField mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.top.bottom.right.equalTo(cell.contentView);
                     make.left.equalTo(cell.contentView.mas_centerX).offset(50);
                 }];
             }
-            titleLabel.text = @(times.pT_Times).stringValue;
+            titleField.text = @(times.pT_Times).stringValue;
         }
         
     }
@@ -192,6 +199,13 @@
     cell.detailTextLabel.text = detail;
     return cell;
 }
+
+- (void)textFieldEditingChanged:(UITextField *)textField {
+    UITableViewCell *cell = (UITableViewCell *)textField.superview.superview;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    PrintTimes *times = self.model.printTimesList[indexPath.row-1];
+    times.pT_Times = textField.text.integerValue;
+ }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return  50;

@@ -28,6 +28,9 @@
             for (NSDictionary *setDic in diclist) {
                 if (model.sS_Code.integerValue == [setDic[@"SS_Code"] integerValue]) {
                     [model setValuesForKeysWithDictionary:setDic];
+                    if (model.sS_Code.integerValue ==202 && !model.sS_Value.length) {
+                        model.sS_Value = @"123456";
+                    }
                 }
             }
             [models addObject:model];
@@ -54,13 +57,27 @@
     
 }
 
++ (NSArray *)parametersWithSaveList:(NSArray *)dataList {
+    return [self parametersWithList:dataList isSave:YES];
+}
+
 + (NSArray *)parametersWithDataList:(NSArray *)dataList {
+    return [self parametersWithList:dataList isSave:NO];
+}
+
++ (NSArray *)parametersWithList:(NSArray *)dataList isSave:(BOOL)isSave {
     NSMutableArray *parameters = [NSMutableArray array];
     for (NSDictionary *parDic in dataList) {
         for (XYParameterSetModel *model in parDic[@"models"]) {
             model.sS_Name = model.title;
             model.sS_Update = [LoginModel shareLoginModel].uM_Acount;
             model.sS_UpdateTime = [[NSDate date] stringWithFormatter:@" yyyy-MM-dd HH:mm:ss"];
+            if (model.hasValue && model.sS_State && !model.sS_Value.length) {
+                if (!isSave) {
+                    [XYProgressHUD showMessage:[@"请输入" stringByAppendingString:model.sS_Name]];
+                    return nil;
+                }
+            }
             NSMutableDictionary *dic = [NSMutableDictionary dictionary];
             unsigned int count;
             objc_property_t *propertyList = class_copyPropertyList(self, &count);

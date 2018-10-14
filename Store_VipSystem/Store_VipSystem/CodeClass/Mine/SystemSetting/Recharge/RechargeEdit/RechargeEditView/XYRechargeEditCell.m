@@ -181,6 +181,9 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (!self.model.rightType) {
+        return NO;
+    }
     if (!self.model.isSelected) {
         [XYProgressHUD showMessage:[NSString stringWithFormat:@"选择’%@‘后,可选择",self.model.title]];
         [XYAppDelegate.window endEditing:YES];

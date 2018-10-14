@@ -53,6 +53,10 @@
     [self loadData];
     [self setNaviUI];
     [self setupUI];
+    WeakSelf;
+    self.dataOverload = ^{
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    };
 
 }
 
@@ -95,8 +99,8 @@
             priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice];
         }
         if (vipModel.vS_Value) {
-            self.vipNum = @(self.priceString.floatValue *vipModel.vS_Value).integerValue;
-            numModel.detail = @(self.vipNum).stringValue;
+            self.vipNum = @(priceModel.detail.floatValue *vipModel.vS_Value).floatValue;
+            numModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipNum];
         }
     }
     [self.tableView reloadData];
@@ -109,14 +113,16 @@
     XYConfirmPayModel *numModel = self.datalist[5];
     if (rechargeModel) {
         if (priceModel.detail.floatValue > rechargeModel.rP_RechargeMoney) {
-            numModel.detail = @(self.vipNum + rechargeModel.rP_GivePoint).stringValue;
-            if (rechargeModel.rP_Discount) {
+            if (self.vipModel) {
+                numModel.detail = @(self.vipNum + rechargeModel.rP_GivePoint).stringValue;
+            }
+            if (rechargeModel.rP_Discount > 0) {
                 //                优惠
                 priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
                 
-            } else if (rechargeModel.rP_GiveMoney) {
+            } else if (rechargeModel.rP_GiveMoney > 0) {
                 //                赠送
-            } else if (rechargeModel.rP_ReduceMoney) {
+            } else if (rechargeModel.rP_ReduceMoney > 0) {
                 //                减少
                 priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];
             }
@@ -237,6 +243,7 @@
                  OrderGID    订单GID    Bool    否    0-100
                  IS_Sms    是否发送短信    string    是    0-500
                  */
+                payView.balance = self.vipModel.mA_AvailableBalance;
                 payView.parameters = @{@"OrderGID":dic[@"data"][@"GID"], @"IS_Sms":@(msg), @"PayResult":@""}.mutableCopy;
                 payView.jointPayBlock = ^{
                     XYJointPaymentController *jointVc = [[XYJointPaymentController alloc] init];
@@ -246,6 +253,8 @@
                      OrderGID    订单GID    Bool    否    0-100
                      IS_Sms    是否发送短信    string    是    0-500
                      */
+                    jointVc.balance = self.vipModel.mA_AvailableBalance;
+
                     jointVc.parameters = @{@"OrderGID":dic[@"data"][@"GID"], @"IS_Sms":@(msg), @"PayResult":@""}.mutableCopy;
                     [weakSelf.navigationController pushViewController:jointVc animated:YES];
                 };

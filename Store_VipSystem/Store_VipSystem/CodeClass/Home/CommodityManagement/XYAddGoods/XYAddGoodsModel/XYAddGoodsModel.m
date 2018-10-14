@@ -75,15 +75,18 @@
     for (NSArray *array in dataList) {
         for (XYAddGoodsModel *model in array) {
             if (!model.detail.length && !model.updateValue.length) {
+                if (model.updateKey) {
+                    [parameters setValue:@"" forKey:model.updateKey];
+                } else {
+                    [parameters setValue:@"" forKey:model.modelKey];
+                }
                 if (model.isRequired) {
                     [XYProgressHUD showMessage:@"带 ＊ 为必填"];
                     return nil;
                 }
             } else {
                 if (model.updateKey) {
-                    if (model.updateKey.length > 0 && model.updateValue.length > 0) {
-                        [parameters setValue:model.updateValue forKey:model.updateKey];
-                    }
+                    [parameters setValue:model.updateValue forKey:model.updateKey];
                 } else {
                     [parameters setValue:model.detail forKey:model.modelKey];
                 }

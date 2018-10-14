@@ -19,6 +19,7 @@
 #import "AFNetworkManager.h"
 #import "LoginModel.h"
 #import "SEPrinterManager.h"
+#import "XYBasicViewController.h"
 
 /*颜色*/
 #import "UIColor+Hex.h"

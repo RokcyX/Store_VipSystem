@@ -31,6 +31,17 @@
         if (model.iconImage.length && !model.selectEnable) {
             price += model.detail.floatValue;
         }
+        
+        if ([model.title isEqualToString:@"余额"]) {
+            if ([self.payUrl isEqualToString:@"api/Recharge/PaymentRecharge"]) {
+                model.readonly = YES;
+            }
+            
+            if (!self.balance) {
+                model.readonly = YES;
+            }
+        }
+        
     }
     XYJointPaymentModel *obj = self.dataList[1];
     obj.detail = [NSString stringWithFormat:@"%.2lf", price - self.priceString.floatValue];
@@ -58,7 +69,6 @@
     if (CGRectGetMaxY(cell.frame) > showHeight) {
         [self.tableView setContentOffset:CGPointMake(0, CGRectGetMaxY(cell.frame) - showHeight) animated:YES];
     }
-    
 }
 
 - (void)keyboardDidHide:(NSNotification *)noti {
@@ -125,6 +135,7 @@
     UITableViewCell *cell;
     if (model.iconImage.length) {
         XYJointPaymentCell *JointCell = [tableView dequeueReusableCellWithIdentifier:@"XYJointPaymentCell" forIndexPath:indexPath];
+        JointCell.balance = self.balance;
         JointCell.model = model;
         WeakSelf;
         JointCell.priceChanged = ^{

@@ -26,19 +26,17 @@
         self.datalist = [LoginModel shareLoginModel].reducedValidList.mutableCopy;
     }
     WeakSelf;
-    if (!self.datalist) {
-        [AFNetworkManager postNetworkWithUrl:url parameters:parameters succeed:^(NSDictionary *dic) {
-            if ([dic[@"success"] boolValue]) {
-                weakSelf.datalist = [XYRechargeModel modelConfigureWithArray:dic[@"data"] type:2];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf.tableView reloadData];
-                });
-            }
-            
-        } failure:^(NSError *error) {
-            
-        } showMsg:NO];
-    }
+    [AFNetworkManager postNetworkWithUrl:url parameters:parameters succeed:^(NSDictionary *dic) {
+        if ([dic[@"success"] boolValue]) {
+            weakSelf.datalist = [XYRechargeModel modelConfigureWithArray:dic[@"data"] type:2];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.tableView reloadData];
+            });
+        }
+        
+    } failure:^(NSError *error) {
+        
+    } showMsg:NO];
 }
 
 - (void)viewDidLoad {

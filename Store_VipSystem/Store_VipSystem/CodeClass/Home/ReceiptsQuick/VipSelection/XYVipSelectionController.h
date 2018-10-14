@@ -13,4 +13,6 @@
 
 @property (nonatomic, copy)void(^selectModel)(XYMemberManageModel *model);
 
+- (void)searchFromLastPageWithCode:(NSString *)code;
+
 @end

@@ -44,7 +44,10 @@
     self.title = @"支付确认";
     [self loadData];
     [self setupUI];
-    
+//    WeakSelf;
+//    self.dataOverload = ^{
+//        [weakSelf.navigationController popViewControllerAnimated:YES];
+//    };
 }
 
 - (void)setupUI {

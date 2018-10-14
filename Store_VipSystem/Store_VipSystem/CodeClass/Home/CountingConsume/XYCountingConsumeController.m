@@ -39,12 +39,10 @@
     [AFNetworkManager postNetworkWithUrl:@"api/WouldOrder/QueryChargeAccountList" parameters:@{@"Card":card} succeed:^(NSDictionary *dic) {
         if ([dic[@"success"] boolValue]) {
             weakSelf.datalist = [XYCountingConsumeModel modelConfigureWithArray:dic[@"data"]];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.tableView reloadData];
-            });
         }
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
     } failure:^(NSError *error) {
         
     } showMsg:NO];
@@ -112,6 +110,8 @@
     XYHomeBasicView *basicView = [[XYHomeBasicView alloc] init];
     self.view = self.basicView = basicView;
     [basicView.scanBtn addTarget:self action:@selector(scanAction) forControlEvents:(UIControlEventTouchUpInside)];
+//    basicView.searchField.placeholder = @"请输入会员卡号/手机号";
+//    basicView.searchField.keyboardType = 4;
     [basicView.searchField addTarget:self action:@selector(searchDataAcion:) forControlEvents:(UIControlEventEditingChanged)];
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:(UITableViewStylePlain)];
     tableView.delegate = self;
@@ -163,7 +163,7 @@
     __weak typeof(self) weakSelf = self;
     [sqVC setSendTask:^(NSString *string) {
         weakSelf.basicView.searchField.text = string;
-        [weakSelf loadDataWithCard:string];
+        [weakSelf searchVipWithCode:string];
     }];
     UINavigationController * nVC = [[UINavigationController alloc]initWithRootViewController:sqVC];
     [self presentViewController:nVC animated:YES completion:nil];
@@ -171,7 +171,12 @@
 
 // 搜索
 - (void)searchDataAcion:(UITextField *)textField {
-    [self loadDataWithCard:textField.text];
+    [self searchVipWithCode:textField.text];
+}
+
+// 搜索会员
+- (void)searchVipWithCode:(NSString *)code {
+    [self.vipSelect searchFromLastPageWithCode:code];
 }
 
 - (void)confirmAction {
@@ -265,9 +270,14 @@
         return 50;
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
+    [self setCount];
 }
 
 - (void)didReceiveMemoryWarning {

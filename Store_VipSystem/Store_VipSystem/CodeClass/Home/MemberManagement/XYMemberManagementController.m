@@ -145,8 +145,10 @@
         _screenView = [[XYScreenViewController alloc] init];
         WeakSelf;
         _screenView.screenWithData = ^(NSDictionary *dic) {
-            [weakSelf.parameters setValuesForKeysWithDictionary:dic];
+            [weakSelf.parameters removeAllObjects];
             [weakSelf.parameters setValue:@1 forKey:@"PageIndex"];
+            [weakSelf.parameters setValue:KPageSize forKey:@"PageSize"];
+            [weakSelf.parameters setValuesForKeysWithDictionary:dic];
             [weakSelf loadData];
         };
     }

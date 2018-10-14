@@ -18,6 +18,10 @@
 
 @implementation XYParameterSetController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)loadData {
     if ([LoginModel shareLoginModel].parameterSets.count) {
         self.dataList = [LoginModel shareLoginModel].parameterSets;
@@ -60,6 +64,9 @@
     //  api/SetSwitch/EditSysSwitch
     
     NSArray *parameters = [XYParameterSetModel parametersWithDataList:self.dataList];
+    if (parameters == nil) {
+        return;
+    }
 //    NSData *data = [NSJSONSerialization dataWithJSONObject:parameters options:NSJSONWritingPrettyPrinted error:nil];
 //    if (!data) {
 //        return;

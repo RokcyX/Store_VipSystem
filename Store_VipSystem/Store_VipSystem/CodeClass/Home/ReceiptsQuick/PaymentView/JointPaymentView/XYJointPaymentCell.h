@@ -16,4 +16,6 @@
 
 @property (nonatomic, copy) dispatch_block_t priceChanged;
 
+@property (nonatomic, assign) CGFloat balance;
+
 @end

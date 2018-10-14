@@ -85,7 +85,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.rightVerticalSegmentedControl reloadData];}
+    [self.leftVerticalSegmentedControl reloadData];
+    [self.rightVerticalSegmentedControl reloadData];
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -201,14 +204,15 @@
         XYVerticalSegmentedControl *rightVerticalSegmentedControl = [[XYVerticalSegmentedControl alloc] init];
         WeakSelf;
         // 右边👉
-        rightVerticalSegmentedControl.sectionColor = [UIColor whiteColor];
-        rightVerticalSegmentedControl.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        rightVerticalSegmentedControl.rowColor = [UIColor whiteColor];
-        rightVerticalSegmentedControl.tableView.backgroundColor = [UIColor whiteColor];
         if (self.selectViewModel) {
             rightVerticalSegmentedControl.sectionHeight = 0;
             rightVerticalSegmentedControl.selelctShow = YES;
         }
+        rightVerticalSegmentedControl.sectionColor = [UIColor whiteColor];
+        rightVerticalSegmentedControl.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        rightVerticalSegmentedControl.rowColor = [UIColor whiteColor];
+        rightVerticalSegmentedControl.tableView.backgroundColor = [UIColor whiteColor];
+        
         if (!self.selectViewModel) {
             rightVerticalSegmentedControl.viewForHeaderInSection = ^UIView *(NSInteger section) {
                 return [weakSelf addClassifyBtnWithIndex:2];

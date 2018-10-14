@@ -166,17 +166,17 @@
             if (i < schemelist.count) {
                 XYRechargeModel *obj = schemelist[i];
                 NSAttributedString *title;
-                if (obj.rP_Discount) {
+                if (obj.rP_Discount > 0) {
                     //                优惠
                     title = [self attributedStrWithTitle:[NSString stringWithFormat:@"%.2lf元\n", obj.rP_RechargeMoney] detail:[NSString stringWithFormat:@"优惠%.2lf折", obj.rP_Discount]];
 //                    RP_RechargeMoney
 //                    priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
 //                    self.footView.priceString = priceModel.detail;
                     
-                } else if (obj.rP_GiveMoney) {
+                } else if (obj.rP_GiveMoney > 0) {
                     //                赠送
                     title = [self attributedStrWithTitle:[NSString stringWithFormat:@"%.2lf元\n", obj.rP_RechargeMoney] detail:[NSString stringWithFormat:@"赠送%.2lf元", obj.rP_GiveMoney]];
-                } else if (obj.rP_ReduceMoney) {
+                } else if (obj.rP_ReduceMoney > 0) {
                     //                减少
                     title = [self attributedStrWithTitle:[NSString stringWithFormat:@"%.2lf元\n", obj.rP_RechargeMoney] detail:[NSString stringWithFormat:@"减少%.2lf元", obj.rP_ReduceMoney]];
 //                    priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];

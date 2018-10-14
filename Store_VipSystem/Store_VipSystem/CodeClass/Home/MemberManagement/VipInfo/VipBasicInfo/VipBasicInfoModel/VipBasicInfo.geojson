@@ -46,7 +46,7 @@
               "placeholder": "请点击选择",
               "keyboardType":0,
               "modelKey": "VG_Name",
-              "detail": "",
+              "detail": "默认等级",
               "updateKey": "VG_GID",
               "updateValue": "",
               "isRequired": 1,
@@ -73,7 +73,7 @@
               "modelKey": "VCH_Fee",
               "detail": "0.00",
               "isRequired": 0,
-              "rightViewType": 3,
+              "rightViewType": 5,
               "isWritable": 0
               },
               {

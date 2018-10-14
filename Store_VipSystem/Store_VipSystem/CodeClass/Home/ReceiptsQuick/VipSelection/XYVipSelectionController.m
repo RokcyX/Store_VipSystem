@@ -24,12 +24,12 @@
 
 @implementation XYVipSelectionController
 
-- (void)loadData {
+- (void)loadDataWithLastPage:(BOOL)islast {
     // /api/VIP/QueryDataList
     WeakSelf;
     
     BOOL showMsg = YES;
-    if ([self.parameters[@"PageIndex"] integerValue] > 1 || [self.parameters[@"CardOrNameOrCellPhoneOrFace"] length] > 0) {
+    if ([self.parameters[@"PageIndex"] integerValue] > 1 || [self.parameters[@"CardOrNameOrCellPhoneOrFace"] length] > 0 || islast) {
         showMsg = NO;
     }
     
@@ -38,6 +38,18 @@
             weakSelf.pageTotal = [dic[@"data"][@"PageTotal"] integerValue];
             if ([dic[@"data"][@"PageIndex"] integerValue] == 1) {
                 weakSelf.datalist = [XYMemberManageModel modelConfigureWithArray:dic[@"data"][@"DataList"] isSelected:weakSelf.checkAllBtn.selected];
+                if (islast) {
+                    if (weakSelf.datalist.count == 1) {
+                        XYMemberManageModel *model = self.datalist.firstObject;
+                        if (model.isHaveVG) {
+                            if (self.selectModel) {
+                                self.selectModel(model);
+                            }
+                        } else {
+                            [self loadSingleModel:model lastPage:islast];
+                        }
+                    }
+                }
             } else {
                 [weakSelf.datalist addObjectsFromArray:[XYMemberManageModel modelConfigureWithArray:dic[@"data"][@"DataList"] isSelected:NO]];
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -61,6 +73,30 @@
     } showMsg:showMsg];
 }
 
+- (NSMutableDictionary *)parameters {
+    if (!_parameters) {
+        _parameters = @{
+                       @"PageIndex":@1,
+                       @"PageSize":KPageSize
+                       //                                     ,
+                       //                                     @"CardOrNameOrCellPhoneOrFace":@"",
+                       //                                     @"VG_GID":@"",
+                       //                                     @"VIP_Label":@"",
+                       //                                     @"SM_GID":@"",
+                       //                                     @"VIP_IsForver":@"",
+                       //                                     @"VIP_State":@"",
+                       //                                     @"VIP_CellPhone":@"",
+                       //                                     @"DayType":@"",
+                       //                                     @"ExpireDayType":@"",
+                       //                                     @"DayRegisterType":@"",
+                       //                                     @"NewAddType":@"",
+                       //                                     @"CustDataType":@"",
+                       //                                     @"EM_GID":@"",
+                       //                                     @"EC_GID":@""
+                       }.mutableCopy;
+    }
+    return _parameters;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -68,33 +104,14 @@
     
     self.datalist = [NSMutableArray array];
     self.title = @"选择会员";
-    self.parameters = @{
-                        @"PageIndex":@1,
-                        @"PageSize":KPageSize
-                        //                                     ,
-                        //                                     @"CardOrNameOrCellPhoneOrFace":@"",
-                        //                                     @"VG_GID":@"",
-                        //                                     @"VIP_Label":@"",
-                        //                                     @"SM_GID":@"",
-                        //                                     @"VIP_IsForver":@"",
-                        //                                     @"VIP_State":@"",
-                        //                                     @"VIP_CellPhone":@"",
-                        //                                     @"DayType":@"",
-                        //                                     @"ExpireDayType":@"",
-                        //                                     @"DayRegisterType":@"",
-                        //                                     @"NewAddType":@"",
-                        //                                     @"CustDataType":@"",
-                        //                                     @"EM_GID":@"",
-                        //                                     @"EC_GID":@""
-                        }.mutableCopy;
-    [self loadData];
+    [self loadDataWithLastPage:NO];
 //    [self setNaviUI];
     [self setupUI];
     WeakSelf;
     // 下拉刷新
     self.tableView.mj_header = [MJRefreshStateHeader headerWithRefreshingBlock:^{
         [weakSelf.parameters setValue:@1 forKey:@"PageIndex"];
-        [weakSelf loadData];
+        [weakSelf loadDataWithLastPage:NO];
         [weakSelf.tableView.mj_header endRefreshing];
         
     }];
@@ -105,7 +122,7 @@
         NSInteger pageIndex = [weakSelf.parameters[@"PageIndex"] integerValue];
         if (pageIndex < weakSelf.pageTotal) {
             [weakSelf.parameters setValue:@(pageIndex+1) forKey:@"PageIndex"];
-            [weakSelf loadData];
+            [weakSelf loadDataWithLastPage:NO];
         }
         [weakSelf.tableView.mj_footer endRefreshing];
     }];
@@ -155,7 +172,7 @@
         [weakSelf.parameters setValue:@1 forKey:@"PageIndex"];
         [weakSelf.parameters setValue:string forKey:@"CardOrNameOrCellPhoneOrFace"];
         weakSelf.basicView.searchField.text = string;
-        [weakSelf loadData];
+        [weakSelf loadDataWithLastPage:NO];
     }];
     UINavigationController * nVC = [[UINavigationController alloc]initWithRootViewController:sqVC];
     [self presentViewController:nVC animated:YES completion:nil];
@@ -165,7 +182,13 @@
 - (void)searchDataAcion:(UITextField *)textField {
     [self.parameters setValue:@1 forKey:@"PageIndex"];
     [self.parameters setValue:textField.text forKey:@"CardOrNameOrCellPhoneOrFace"];
-    [self loadData];
+    [self loadDataWithLastPage:NO];
+}
+
+- (void)searchFromLastPageWithCode:(NSString *)code {
+    [self.parameters setValue:@1 forKey:@"PageIndex"];
+    [self.parameters setValue:code forKey:@"CardOrNameOrCellPhoneOrFace"];
+    [self loadDataWithLastPage:YES];
 }
 
 #pragma mark tableView dataSouce delegate
@@ -205,7 +228,7 @@
         }
         [self.navigationController popViewControllerAnimated:YES];
     } else {
-        [self loadSingleModel:model];
+        [self loadSingleModel:model lastPage:NO];
     }
     
 //    XYVipInfoViewController *vipInfo = [[XYVipInfoViewController alloc] init];
@@ -214,7 +237,7 @@
 //    [XYAppDelegate.window endEditing:YES];
 }
 
-- (void)loadSingleModel:(XYMemberManageModel *)model {
+- (void)loadSingleModel:(XYMemberManageModel *)model lastPage:(BOOL)islast {
 //    api/VIP/QuerySingle
 //    VCH_Card
 //    isNeedVG
@@ -226,7 +249,9 @@
                 if (weakSelf.selectModel) {
                     weakSelf.selectModel(model);
                 }
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+                if (!islast) {
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
+                }
             }
         });
     } failure:^(NSError *error) {

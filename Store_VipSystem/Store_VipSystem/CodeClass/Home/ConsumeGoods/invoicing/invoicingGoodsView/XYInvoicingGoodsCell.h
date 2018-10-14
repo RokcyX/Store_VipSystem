@@ -13,4 +13,6 @@
 
 @property (nonatomic, weak)XYCommodityModel *model;
 
+@property (nonatomic, copy) dispatch_block_t changeDiscount;
+
 @end

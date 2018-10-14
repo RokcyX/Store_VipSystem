@@ -55,7 +55,7 @@
 
 @property (nonatomic, copy)NSString *discountStr;
 @property (nonatomic, assign)CGFloat discountPrice;
-
+@property (nonatomic, copy)NSString *discountPriceStr;
 + (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist;
 
 + (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist alldataList:(NSMutableArray *)datalist;

@@ -14,6 +14,7 @@ typedef enum : NSUInteger {
     RightViewTypeScan,
     RightViewTypeIndicator,
     RightViewTypeCalendar,
+    RightViewTypeTextField,
 } RightViewType;
 
 @interface XYVipBasicInfoModel : NSObject
@@ -28,6 +29,9 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign)BOOL isRequired;
 @property (nonatomic, assign)BOOL isWritable;
 @property (nonatomic, assign)RightViewType rightViewType;
+
+
+@property (nonatomic, copy)NSString *vCH_Fee_PayTypeText;
 
 + (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist memberModel:(XYMemberManageModel *)memberModel;
 + (NSMutableDictionary *)parametersWithDataList:(NSArray *)dataList;

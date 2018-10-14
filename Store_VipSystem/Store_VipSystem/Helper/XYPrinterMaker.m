@@ -95,7 +95,39 @@ static dispatch_once_t onceToken;
     return printer.getFinalData;
 }
 
+
++ (XYBasicViewController *)getCurrentVC
+{
+    UIViewController* vc = [UIApplication sharedApplication].keyWindow.rootViewController;
+    while (1)
+    {
+        //根据不同的页面切换方式，逐步取得最上层的viewController
+        if ([vc isKindOfClass:[UITabBarController class]]) {
+            vc = ((UITabBarController*)vc).selectedViewController;
+        }
+        if ([vc isKindOfClass:[UINavigationController class]]) {
+            vc = ((UINavigationController*)vc).visibleViewController;
+        } else{
+            break;
+        }
+    }
+    
+    if ([vc isKindOfClass:[XYBasicViewController class]]) {
+        return vc;
+    }
+    
+    return nil;
+}
+
 + (void)print {
+    // 最后 一个 视图 接收信号
+    XYBasicViewController *result = [self getCurrentVC];
+    if (result) {
+        if (result.dataOverload) {
+            result.dataOverload();
+        }
+    }
+    
     if ([XYPrinterMaker sharedMaker].isPrint) {
         if (![[SEPrinterManager sharedInstance] isConnected]) {
             [self connectLastPeripheral];

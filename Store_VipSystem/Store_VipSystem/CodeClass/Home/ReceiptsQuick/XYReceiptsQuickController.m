@@ -55,6 +55,14 @@
         [self setNaviUI];
         self.title = @"快捷收款";
     }
+    WeakSelf;
+    self.dataOverload = ^{
+        if (weakSelf.check.screenView.selected) {
+            [weakSelf screenDel:weakSelf.check.screenView];
+        }
+        weakSelf.resultLabel.string = @"";
+        weakSelf.resultLabel.text = @"";
+    };
 }
 
 - (void)setNaviUI {
@@ -416,12 +424,6 @@
         // 快捷收款
 //        api/ConsumeOrder/SubmitFastReceipt
         
-//        XYPaymentView *payView = [[XYPaymentView alloc] initWithTitlePrice:self.resultLabel.text];
-//        payView.isReceipts = self.isReceipts;
-//
-//        payView.submitOrderUrl =@"api/ConsumeOrder/SubmitFastReceipt";
-//        payView.payUrl = @"api/ConsumeOrder/PaymentFastReceipt";
-//        [self presentViewController:payView animated:YES completion:nil];
         NSString *VIP_Card = @"00000";
         NSString *price = [@"￥" stringByAppendingString:self.resultLabel.text];
         NSString *priceValue = @"不打折";
@@ -451,6 +453,7 @@
                      OrderGID    订单GID    Bool    否    0-100
                      IS_Sms    是否发送短信    string    是    0-500
                      */
+                    payView.balance = self.model.mA_AvailableBalance;
                     payView.parameters = @{@"OrderGID":dic[@"data"][@"GID"], @"IS_Sms":@(0), @"PayResult":@""}.mutableCopy;
                     [weakSelf presentViewController:payView animated:YES completion:nil];
                 });

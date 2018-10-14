@@ -32,5 +32,5 @@
 + (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist;
 
 + (NSArray *)parametersWithDataList:(NSArray *)dataList;
-
++ (NSArray *)parametersWithSaveList:(NSArray *)dataList;
 @end

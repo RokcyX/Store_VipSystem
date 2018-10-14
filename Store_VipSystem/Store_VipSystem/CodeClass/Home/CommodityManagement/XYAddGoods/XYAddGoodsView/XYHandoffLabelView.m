@@ -177,6 +177,7 @@
 - (void)emptyData {
     self.headerImage = nil;
     [self.dataList removeAllObjects];
+    
 }
 
 /*

@@ -42,10 +42,16 @@
 
 @property (nonatomic, copy)NSString *priceString;
 
+@property (nonatomic, strong) XYInvoicingGoodsFooterView *sectionFootView;
+
 @end
 
 @implementation XYInvoicingViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
 - (NSString *)priceString {
     if (!_priceString) {
         CGFloat amount = 0.00;
@@ -77,6 +83,32 @@
     [self setNaviUI];
     [self setupUI];
     [self loadData];
+    WeakSelf;
+    self.dataOverload = ^{
+        for (XYCommodityModel *obj in weakSelf.goodslist) {
+            obj.count = 0;
+        }
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    };
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+}
+
+#pragma mark --- 键盘弹出 消失 通知
+- (void)keyboardWillShow:(NSNotification *)noti {
+    CGRect keyboardRect = [[noti.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIWindow * keyWindow = [[UIApplication sharedApplication] keyWindow];
+    UITextField * firstResponder = [keyWindow performSelector:@selector(firstResponder)];
+    UITableViewCell *cell = (UITableViewCell *)firstResponder.superview.superview;
+    CGFloat showHeight = CGRectGetHeight(self.tableView.frame) + 70 - keyboardRect.size.height;
+    if (CGRectGetMaxY(cell.frame) > showHeight) {
+        [self.tableView setContentOffset:CGPointMake(0, CGRectGetMaxY(cell.frame) - showHeight) animated:YES];
+    }
+    
+}
+
+- (void)keyboardDidHide:(NSNotification *)noti {
+//    [self.tableView reloadData];
 }
 
 - (void)setNaviUI {
@@ -103,9 +135,9 @@
     self.vipNum = 0;
     [self getDiscountedAmount];
 
+    XYConfirmPayModel *offersModel = self.datalist[1];
     // 优惠活动
     if (self.isConsume) {
-        XYConfirmPayModel *offersModel = self.datalist[3];
         offersModel.detail = @"";
         offersModel.updateValue = @"";
         offersModel.updateValue = [NSString stringWithFormat:@"%.2lf",self.vipPrice];
@@ -115,12 +147,42 @@
     numModel.detail = @"0";
     if (vipModel) {
         if (vipModel.vS_Value) {
-            self.vipNum = @(self.priceString.floatValue *vipModel.vS_Value).integerValue;
+            self.vipNum = @(self.vipPrice *vipModel.vS_Value).integerValue;
             numModel.detail = @(self.vipNum).stringValue;
         }
     }
     [self.tableView reloadData];
     
+}
+
+- (void)setDiscountedAmount {
+    CGFloat discountAmount = 0.0;
+    CGFloat amount = 0.00;
+
+    for (XYCommodityModel *obj in self.goodslist) {
+        discountAmount += obj.discountPriceStr.floatValue * obj.count;
+        amount += (obj.count * obj.pM_UnitPrice);
+    }
+    
+    // 折后金额
+    XYConfirmPayModel *amountModel = self.datalist.firstObject;
+    amountModel.detail = _priceString = [NSString stringWithFormat:@"%.2lf", amount];
+;
+    
+    XYConfirmPayCell *amountcell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    amountcell.model = amountModel;
+    // 折后金额
+    XYConfirmPayModel *priceModel = self.datalist[self.datalist.count-3];
+    priceModel.enabled = 0;
+    priceModel.isWritable = 0;
+    self.vipPrice =  discountAmount;
+    priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice];
+    
+    XYConfirmPayCell *pricecell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.datalist.count-3]];
+    pricecell.model = priceModel;
+    
+    self.sectionFootView.attributedStr = self.sectionStr;
+    self.footView.priceString = priceModel.detail;
 }
 
 - (void)getDiscountedAmount {
@@ -131,10 +193,12 @@
         } else {
             [obj discountWithOutMembership];
         }
-        discountAmount += obj.discountPrice;
+        discountAmount += obj.discountPriceStr.floatValue * obj.count;
     }
     // 折后金额
     XYConfirmPayModel *priceModel = self.datalist[self.datalist.count-3];
+    priceModel.enabled = 0;
+    priceModel.isWritable = 0;
     self.vipPrice =  discountAmount;
     priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice];
     self.footView.priceString = priceModel.detail;
@@ -142,24 +206,30 @@
 
 - (void)setRechargeModel:(XYRechargeModel *)rechargeModel {
     _rechargeModel = rechargeModel;
-    // 折后金额
+//    // 折后金额
     XYConfirmPayModel *priceModel = self.datalist[self.datalist.count-3];
     // 获得积分
     XYConfirmPayModel *numModel = self.datalist[self.datalist.count-2];
     if (rechargeModel) {
         if (priceModel.detail.floatValue > rechargeModel.rP_RechargeMoney) {
-            numModel.detail = @(self.vipNum + rechargeModel.rP_GivePoint).stringValue;
-            if (rechargeModel.rP_Discount) {
+            if (self.vipModel) {
+                numModel.detail = @(self.vipNum + rechargeModel.rP_GivePoint).stringValue;
+                if (rechargeModel.rP_ISDouble) {
+                    numModel.detail =  [NSString stringWithFormat:@"%.lf", self.vipNum +priceModel.detail.floatValue / rechargeModel.rP_RechargeMoney *rechargeModel.rP_GivePoint];
+                    
+                }
+            }
+            if (rechargeModel.rP_Discount > 0) {
                 //                优惠
-                priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
-                self.footView.priceString = priceModel.detail;
+//                priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
+//                self.footView.priceString = priceModel.detail;
 
-            } else if (rechargeModel.rP_GiveMoney) {
+            } else if (rechargeModel.rP_GiveMoney > 0) {
                 //                赠送
-            } else if (rechargeModel.rP_ReduceMoney) {
+            } else if (rechargeModel.rP_ReduceMoney > 0) {
                 //                减少
-                priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];
-                self.footView.priceString = priceModel.detail;
+//                priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];
+//                self.footView.priceString = priceModel.detail;
             }
         }
         [self.tableView reloadData];
@@ -174,10 +244,6 @@
             weakSelf.vipModel = model;
             weakSelf.check.title = model.vIP_Name.length ? model.vIP_Name:model.vCH_Card;
             weakSelf.check.screenView.selected = YES;
-            //            DS_Value    快速消费折扣比例
-            //            VS_Value    快速消费积分比例
-            
-            // titleView hidden
         };
     }
     return _vipSelect;
@@ -245,9 +311,11 @@
         
         [parameters setValue:@"SP".orderCode forKey:@"CO_OrderCode"];
         [parameters setValue:[[NSDate date] stringWithFormatter:@"yyyy-MM-dd hh:mm:ss"] forKey:@"OrderTime"];
-        [parameters setValue:@"00000" forKey:@"VIP_Card"];
         if (self.vipModel) {
             [parameters setValue:self.vipModel.vCH_Card forKey:@"VIP_Card"];
+            [parameters setValue:self.vipModel.gID forKey:@"VIP_GID"];
+        } else {
+            [parameters setValue:@"00000" forKey:@"VIP_Card"];
         }
         for (XYConfirmPayModel *model in self.datalist) {
             if ([model.modelKey isEqualToString:@"CC_GID"]) {
@@ -259,7 +327,7 @@
             NSMutableDictionary *dic = [NSMutableDictionary dictionary];
             [dic setValue:obj.gID forKey:@"PM_GID"];
             [dic setValue:@(obj.count) forKey:@"PM_Number"];
-            [dic setValue:@(obj.pM_UnitPrice *(model.detail.floatValue / self.totalAmount)) forKey:@"PM_Money"];
+            [dic setValue:@(obj.discountPriceStr.floatValue *obj.count) forKey:@"PM_Money"];
             if (empModel.updateValue.length) {
                 [dic setValue:[empModel.updateValue componentsSeparatedByString:@","] forKey:@"EM_GIDList"];
             }
@@ -268,7 +336,7 @@
         }
         [parameters setValue:array forKey:@"Goods"];
         [parameters setValue:@"" forKey:@"CO_Remark"];
-        
+        [parameters setValue:@"0" forKey:@"isGuadan"];
         submitOrderUrl = @"api/ConsumeOrder/SubmitConsumOrder";
         payUrl = @"api/ConsumeOrder/PaymentConsumOrder";
     } else {
@@ -284,6 +352,7 @@
          OrderTime    订单时间    string    是    0-500
          */
         [parameters setValue:@"CC".orderCode forKey:@"MC_Order"];
+        [parameters setValue:self.vipModel.gID forKey:@"VIP_GID"];
         [parameters setValue:self.vipModel.vCH_Card forKey:@"VIP_Card"];
         [parameters setValue:@"" forKey:@"MC_Remark"];
         [parameters setValue:model.detail forKey:@"AfterDiscount"];
@@ -301,7 +370,7 @@
             NSMutableDictionary *dic = [NSMutableDictionary dictionary];
             [dic setValue:obj.gID forKey:@"PM_GID"];
             [dic setValue:@(obj.count) forKey:@"PM_Number"];
-            [dic setValue:@(obj.pM_UnitPrice*obj.count *(model.detail.floatValue / self.totalAmount)) forKey:@"PM_Money"];
+            [dic setValue:@(obj.discountPriceStr.floatValue *obj.count) forKey:@"PM_Money"];
             if (empModel.updateValue.length) {
                 [dic setValue:[empModel.updateValue componentsSeparatedByString:@","] forKey:@"EM_GIDList"];
             }
@@ -315,16 +384,7 @@
     }
     [[XYPrinterMaker sharedMaker].bodylist addObject:@[@"商品", @"单价", @"数量", @"折扣", @"小计"]];
     for (XYCommodityModel *obj in self.goodslist) {
-//        if () {
-//            <#statements#>
-//        }
-//        obj.pM_IsDiscount          商品折扣开关  1开 0关
-//        obj.pM_SpecialOfferValue   特价折扣开关的值
-//        obj.pM_MinDisCountValue    最低折扣开关的值
-//        obj.pM_MemPrice            会员价格
-        
-        
-        [[XYPrinterMaker sharedMaker].bodylist addObject:@[obj.pM_Name, [NSString stringWithFormat:@"%.2lf", obj.pM_UnitPrice], @(obj.count).stringValue, @"无", [NSString stringWithFormat:@"%.2lf", obj.pM_UnitPrice*obj.count *(model.detail.floatValue / self.totalAmount)]]];
+        [[XYPrinterMaker sharedMaker].bodylist addObject:@[obj.pM_Name, [NSString stringWithFormat:@"%.2lf", obj.pM_UnitPrice], @(obj.count).stringValue, @"无", [NSString stringWithFormat:@"%.2lf", obj.discountPriceStr.floatValue*obj.count]]];
     }
     
     WeakSelf;
@@ -338,6 +398,7 @@
                 OrderGID    订单GID    Bool    否    0-100
                 IS_Sms    是否发送短信    string    是    0-500
                 */
+                payView.balance = self.vipModel.mA_AvailableBalance;
                 payView.parameters = @{@"OrderGID":dic[@"data"][@"GID"], @"IS_Sms":@(msg), @"PayResult":@""}.mutableCopy;
                 payView.jointPayBlock = ^{
                     XYJointPaymentController *jointVc = [[XYJointPaymentController alloc] init];
@@ -347,6 +408,7 @@
                      OrderGID    订单GID    Bool    否    0-100
                      IS_Sms    是否发送短信    string    是    0-500
                      */
+                    jointVc.balance = self.vipModel.mA_AvailableBalance;
                     jointVc.parameters = @{@"OrderGID":dic[@"data"][@"GID"], @"IS_Sms":@(msg), @"PayResult":@""}.mutableCopy;
                     [weakSelf.navigationController pushViewController:jointVc animated:YES];
                 };
@@ -388,6 +450,10 @@
     
     XYInvoicingGoodsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XYInvoicingGoodsCell" forIndexPath:indexPath];
     XYCommodityModel *model = self.goodslist[indexPath.row];
+    WeakSelf;
+    cell.changeDiscount = ^{
+        [weakSelf setDiscountedAmount];
+    };
     cell.model = model;
     return cell;
     
@@ -416,6 +482,9 @@
         return nil;
     }
     XYInvoicingGoodsFooterView *footView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"XYInvoicingGoodsFooterView"];
+    if (!_sectionFootView) {
+        _sectionFootView = footView;
+    }
     footView.isOpen = self.isOpen;
     footView.attributedStr = self.sectionStr;
     WeakSelf;
@@ -431,9 +500,9 @@
     self.totalAmount = 0.00;
     for (XYCommodityModel *obj in self.goodslist) {
         count += obj.count;
-        self.totalAmount += (obj.count * obj.pM_UnitPrice);
+        self.totalAmount += (obj.count * obj.discountPriceStr.floatValue);
     }
-    NSString *string = [NSString stringWithFormat:@"共%ld件商品，本单合计¥%.2lf",count, self.totalAmount];
+    NSString *string = [NSString stringWithFormat:@"共%ld件商品，本单合计¥%.2lf",(long)count, self.totalAmount];
     NSString *amountStr = [NSString stringWithFormat:@"¥%.2lf", self.totalAmount];
     NSMutableAttributedString * attributedStr = [[NSMutableAttributedString alloc] initWithString:string];
     //给富文本添加属性2-字体颜色
@@ -460,12 +529,6 @@
         return;
     }
     XYConfirmPayModel *model = self.datalist[indexPath.row];
-    
-    if (!model.rightMode && !model.isWritable && model.enabled) {
-        [XYProgressHUD showMessage:[model.title stringByAppendingString:@"未开启，请通过系统管理-参数设置开启"]];
-        return;
-    }
-    
     if (model.rightMode && !model.isWritable && !model.enabled) {
         [XYProgressHUD showMessage:[model.title stringByAppendingString:@"未开启，请通过系统管理-参数设置开启"]];
         return;

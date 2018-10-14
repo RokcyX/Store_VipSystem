@@ -16,7 +16,7 @@
 @property (nonatomic, copy)NSString *modelKey;
 @property (nonatomic, copy)NSString *detail;
 @property (nonatomic, assign)NSInteger selectEnable;
-
+@property (nonatomic, assign)BOOL readonly;
 + (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist priceString:(NSString *)priceString;
 
 @end
