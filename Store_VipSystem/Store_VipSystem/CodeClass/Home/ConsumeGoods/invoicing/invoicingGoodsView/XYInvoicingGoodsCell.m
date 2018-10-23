@@ -104,7 +104,7 @@
     _model = model;
     [self.commodityImageView sd_setImageWithURL:[NSURL URLWithString:model.pM_BigImg] placeholderImage:[UIImage imageNamed:@"commodity_product_placeholder"]];
     self.titleLabel.text = model.pM_Name;
-    NSString *text = [NSString stringWithFormat:@"¥ %@     x", @(model.pM_UnitPrice).stringValue];
+    NSString *text = [NSString stringWithFormat:@"¥ %.2lf     x", model.pM_UnitPrice];
     NSMutableAttributedString * attributedStr = [[NSMutableAttributedString alloc] initWithString:text];
     //给富文本添加属性2-字体颜色
     [attributedStr addAttribute:NSForegroundColorAttributeName

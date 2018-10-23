@@ -57,6 +57,10 @@
 }
 
 - (void)finishedClassifyAction {
+    if (self.selectModel.subList.count) {
+        [XYProgressHUD showMessage:@"请继续选择二级分类"];
+        return;
+    }
     if (self.finishedSelected) {
         self.finishedSelected(self.selectModel);
     }
@@ -247,6 +251,10 @@
     addClassi.model = self.selectSuperFine;
     [self.navigationController pushViewController:addClassi animated:YES];
     addClassi.addClassifyFinished = ^(XYGoodsClassifyModel *model) {
+        if (!weakSelf.selectSuperFine.subList) {
+            weakSelf.selectSuperFine.subList = [NSMutableArray array];
+            weakSelf.subDataList = weakSelf.selectSuperFine.subList;
+        }
         [weakSelf.selectSuperFine.subList addObject:model];
         [weakSelf.rightVerticalSegmentedControl reloadData];
     };

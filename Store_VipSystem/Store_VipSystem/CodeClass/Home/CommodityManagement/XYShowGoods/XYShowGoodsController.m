@@ -98,7 +98,7 @@
         make.height.mas_equalTo(1);
     }];
     UILabel *detailLabel = [[UILabel alloc] init];
-    detailLabel.text = [@"¥ " stringByAppendingString:@(self.model.pM_UnitPrice).stringValue];
+    detailLabel.text = [@"¥ " stringByAppendingString:[NSString stringWithFormat:@"%.2lf", self.model.pM_UnitPrice]];
     detailLabel.textColor = RGBColor(249, 0, 0);
     detailLabel.font = [UIFont systemFontOfSize:16];
     [weakSelf.view addSubview:self.detailLabel=detailLabel];

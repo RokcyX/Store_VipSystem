@@ -92,10 +92,10 @@
 - (void)textFieldEditingChanged:(UITextField *)textField {
     if ([self.model.title isEqualToString:@"余额"]) {
         if (textField.text.floatValue > self.balance) {
-            textField.text = @(self.balance).stringValue;
+            textField.text = [NSString stringWithFormat:@"%.2lf", self.balance];
         }
     }
-    if ([self.model.detail isEqualToString:textField.text]) {
+    if (![self.model.detail isEqualToString:textField.text]) {
         self.model.detail = textField.text;
         //    self.model.updateValue = textField.text;
         if (self.priceChanged) {

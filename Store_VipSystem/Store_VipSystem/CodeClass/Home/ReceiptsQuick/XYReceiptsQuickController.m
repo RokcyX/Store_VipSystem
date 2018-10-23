@@ -94,8 +94,8 @@
             weakSelf.check.title = model.vIP_Name.length ? model.vIP_Name:model.vCH_Card;
             weakSelf.check.screenView.selected = YES;
             weakSelf.resultLabel.cardNum = model.vCH_Card;
-            weakSelf.resultLabel.balance = @(model.mA_AvailableBalance).stringValue;
-            weakSelf.resultLabel.integral = @(model.mA_AvailableIntegral).stringValue;
+            weakSelf.resultLabel.balance = [NSString stringWithFormat:@"%.2lf", model.mA_AvailableBalance];
+            weakSelf.resultLabel.integral = [NSString stringWithFormat:@"%.2lf", model.mA_AvailableIntegral];
             // titleView hidden
         };
     }

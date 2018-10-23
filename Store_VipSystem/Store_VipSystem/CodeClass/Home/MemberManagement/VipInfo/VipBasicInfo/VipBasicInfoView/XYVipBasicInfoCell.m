@@ -87,13 +87,15 @@
     XYKeyboardToolbar *toolbar;
     XYKeyboardView *keyboard;
     keyboard = [XYKeyboardView keyBoardWithType:(KeyboardTypeStringPicker)];
-    keyboard.count = 3;
+   
     NSMutableArray *array = [NSMutableArray array];
     for (XYParameterSetModel *obj in [LoginModel shareLoginModel].parameterSets.firstObject[@"models"]) {
-        if (obj.sS_State) {
+        if (obj.sS_State && ![obj.sS_Name isEqualToString:@"默认支付"]) {
             [array addObject:obj];
         }
     }
+    [array insertObject:[[LoginModel shareLoginModel].parameterSets.firstObject[@"models"] lastObject] atIndex:0];
+     keyboard.count = array.count;
     keyboard.titleForRow = ^NSString *(NSInteger row) {
         return [array[row] sS_Name];
     };
@@ -101,8 +103,11 @@
     toolbar = [XYKeyboardToolbar defaultToolbar];
     toolbar.finished = ^(BOOL success) {
         if (success) {
-            weakSelf.model.vCH_Fee_PayTypeText = keyboard.string;
             weakSelf.endDetailField.text = keyboard.string;
+            weakSelf.model.vCH_Fee_PayTypeText = keyboard.string;
+            if ([keyboard.string isEqualToString:@"默认支付"]) {
+                weakSelf.model.vCH_Fee_PayTypeText = [array.firstObject sS_Value].length ? [array.firstObject sS_Value] : @"现金支付";
+            }
         }
         [weakSelf.endDetailField resignFirstResponder];
     };

@@ -86,6 +86,7 @@
     WeakSelf;
     self.dataOverload = ^{
         for (XYCommodityModel *obj in weakSelf.goodslist) {
+            obj.stock_Number -= obj.count;
             obj.count = 0;
         }
         [weakSelf.navigationController popViewControllerAnimated:YES];
@@ -353,7 +354,12 @@
          */
         [parameters setValue:@"CC".orderCode forKey:@"MC_Order"];
         [parameters setValue:self.vipModel.gID forKey:@"VIP_GID"];
-        [parameters setValue:self.vipModel.vCH_Card forKey:@"VIP_Card"];
+        if (self.vipModel) {
+            [parameters setValue:self.vipModel.vCH_Card forKey:@"VIP_Card"];
+            [parameters setValue:self.vipModel.gID forKey:@"VIP_GID"];
+        } else {
+            [parameters setValue:@"00000" forKey:@"VIP_Card"];
+        }
         [parameters setValue:@"" forKey:@"MC_Remark"];
         [parameters setValue:model.detail forKey:@"AfterDiscount"];
         [parameters setValue:[[NSDate date] stringWithFormatter:@"yyyy-MM-dd hh:mm:ss"] forKey:@"OrderTime"];

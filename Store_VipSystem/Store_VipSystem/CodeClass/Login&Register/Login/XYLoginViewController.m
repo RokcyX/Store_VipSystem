@@ -74,7 +74,7 @@
     WeakSelf;
     [self.backgroundImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(weakSelf.view);
-        make.bottom.equalTo(weakSelf.view.mas_centerY);
+        make.height.mas_equalTo(ScreenWidth/1080 *1025);
     }];
     
     // 用户名
@@ -86,7 +86,7 @@
     [self.userNameField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(weakSelf.view.mas_left).offset(30);
         make.right.equalTo(weakSelf.view.mas_right).offset(-30);
-        make.top.equalTo(weakSelf.view.mas_centerY);
+        make.top.equalTo(weakSelf.backgroundImageView.mas_bottom);
         make.height.mas_equalTo(50);
     }];
     

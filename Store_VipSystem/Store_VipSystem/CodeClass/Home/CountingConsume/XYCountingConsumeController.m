@@ -247,7 +247,7 @@
 //    model.vIP_Name.length ? model.vIP_Name:model.vCH_Card
     nameLabel.attributedText = [self attributedStrWithTitle:@"姓名:" detail:self.vipModel.vIP_Name];
     cardLabel.attributedText = [self attributedStrWithTitle:@"卡号:" detail:self.vipModel.vCH_Card];
-    balanceLabel.attributedText = [self attributedStrWithTitle:@"余额:" detail:@(self.vipModel.mA_AvailableBalance).stringValue];
+    balanceLabel.attributedText = [self attributedStrWithTitle:@"余额:" detail:[NSString stringWithFormat:@"%.2lf", self.vipModel.mA_AvailableBalance]];
     integralLabel.attributedText = [self attributedStrWithTitle:@"积分:" detail:@(self.vipModel.mA_AvailableIntegral).stringValue];
     
     

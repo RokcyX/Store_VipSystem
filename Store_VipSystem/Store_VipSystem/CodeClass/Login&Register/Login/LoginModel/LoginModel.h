@@ -71,6 +71,10 @@
 
 @end
 
+@interface ComSmsStock : NSObject
+@property (nonatomic , assign) NSInteger UStorage;
+@end
+
 @interface LoginModel : NSObject
 
 @property (nonatomic , copy) NSString              * uM_Creator;
@@ -111,6 +115,7 @@
 @property (nonatomic , copy) NSString              * roleID;
 @property (nonatomic , copy) NSString              * rM_Name;
 
+@property (nonatomic, strong)ComSmsStock *smsStock;
 @property (nonatomic, strong)XYPrintSetModel *printSetModel;
 @property (nonatomic, strong)NSArray<NSDictionary *> *parameterSets;
 

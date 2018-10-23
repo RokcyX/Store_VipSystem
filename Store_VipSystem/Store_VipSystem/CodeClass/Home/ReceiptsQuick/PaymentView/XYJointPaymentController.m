@@ -1,5 +1,5 @@
 //
-//  Joint payment   Joint payment  联合支付  Joint payment  联合支付  Joint payment  联合支付  Joint payment  联合支付  Joint payment  联合支付  Joint payment XYJointPaymentController.m
+//  XYJointPaymentController.m
 //  Store_VipSystem
 //
 //  Created by Wcaulpl on 2018/9/21.

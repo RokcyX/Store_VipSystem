@@ -114,7 +114,7 @@
     _model = model;
     [self.commodityImageView sd_setImageWithURL:[NSURL URLWithString:model.pM_BigImg] placeholderImage:[UIImage imageNamed:@"commodity_product_placeholder"]];
     self.titleLabel.text = model.pM_Name;
-    self.priceLabel.text = [@"¥ " stringByAppendingString:@(model.pM_UnitPrice).stringValue];
+    self.priceLabel.text = [@"¥ " stringByAppendingString:[NSString stringWithFormat:@"%.2lf", model.pM_UnitPrice]];
     self.stockLabel.text = [@"库存： " stringByAppendingString:@(model.stock_Number).stringValue];
     self.countLabel.text = @(model.count).stringValue;
     self.consume = NO;

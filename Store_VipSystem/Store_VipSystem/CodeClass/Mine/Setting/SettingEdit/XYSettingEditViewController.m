@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"店铺设置";
+    self.title = [self.string stringByAppendingString:@"设置"];
     [self setupUI];
 }
 

@@ -143,6 +143,7 @@
 		3066D869214D4517009CDA81 /* XYParameterSetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3066D868214D4517009CDA81 /* XYParameterSetModel.m */; };
 		3066D86D214D4A24009CDA81 /* XYParameterSetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3066D86C214D4A24009CDA81 /* XYParameterSetCell.m */; };
 		307C1A19215D48E80003C5AA /* XYPrinterMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 307C1A18215D48E80003C5AA /* XYPrinterMaker.m */; };
+		3083A98D217F66C500E53193 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3083A98C217F66C500E53193 /* LaunchScreen.xib */; };
 		30D60BB62102B39000619B95 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D60BB52102B39000619B95 /* AppDelegate.m */; };
 		30D60BBE2102B39200619B95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30D60BBD2102B39200619B95 /* Assets.xcassets */; };
 		30D60BC42102B39200619B95 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D60BC32102B39200619B95 /* main.m */; };
@@ -416,6 +417,7 @@
 		3066D86C214D4A24009CDA81 /* XYParameterSetCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XYParameterSetCell.m; sourceTree = "<group>"; };
 		307C1A17215D48E80003C5AA /* XYPrinterMaker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYPrinterMaker.h; sourceTree = "<group>"; };
 		307C1A18215D48E80003C5AA /* XYPrinterMaker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XYPrinterMaker.m; sourceTree = "<group>"; };
+		3083A98C217F66C500E53193 /* LaunchScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		30D60BB12102B39000619B95 /* Store_VipSystem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Store_VipSystem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30D60BB42102B39000619B95 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		30D60BB52102B39000619B95 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1458,6 +1460,7 @@
 			children = (
 				30D60BB42102B39000619B95 /* AppDelegate.h */,
 				30D60BB52102B39000619B95 /* AppDelegate.m */,
+				3083A98C217F66C500E53193 /* LaunchScreen.xib */,
 			);
 			path = AppDelegate;
 			sourceTree = "<group>";
@@ -1679,6 +1682,7 @@
 				302F10422159E65B00E21204 /* VipRecharge.geojson in Resources */,
 				3027C0BC211B327E00E11F34 /* scanLine@2x.png in Resources */,
 				3027C0B9211B327E00E11F34 /* scanLine@3x.png in Resources */,
+				3083A98D217F66C500E53193 /* LaunchScreen.xib in Resources */,
 				302F101C2157538800E21204 /* JointPayment.geojson in Resources */,
 				30161E4B2148F509007A56A1 /* ParameterSet.geojson in Resources */,
 				3027C0BE211B327E00E11F34 /* noticeMusic.wav in Resources */,
@@ -2012,7 +2016,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "11716444-f466-4260-a392-587d3224e2ea";
 				PROVISIONING_PROFILE_SPECIFIER = StoreVipSystem;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -2035,7 +2039,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "54708294-d96a-4e77-8b75-0e4799ff468f";
 				PROVISIONING_PROFILE_SPECIFIER = StoreVipSystemAdHot;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

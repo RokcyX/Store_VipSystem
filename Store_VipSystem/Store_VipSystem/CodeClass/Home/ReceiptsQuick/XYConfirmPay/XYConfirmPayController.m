@@ -218,6 +218,7 @@
     NSString *priceValue = @"不打折";
     if (self.vipModel) {
         [parameters setValue:self.vipModel.vCH_Card forKey:@"VIP_Card"];
+        [parameters setValue:self.vipModel.gID forKey:@"VIP_GID"];
         [parameters setValue:@2 forKey:@"OrderType"];
         if (self.vipModel.dS_Value < 1) {
             priceValue = [NSString stringWithFormat:@"%.1lf折",10 *self.vipModel.dS_Value];

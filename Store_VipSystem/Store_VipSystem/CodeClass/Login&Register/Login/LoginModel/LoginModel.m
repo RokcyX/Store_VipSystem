@@ -28,6 +28,14 @@
 
 @end
 
+@implementation ComSmsStock 
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
+    
+}
+
+@end
+
 @implementation ShopModel
 
 + (NSArray *)modelConfigureArray:(NSArray *)array {
@@ -64,6 +72,7 @@
         [[self shareLoginModel] setValuesForKeysWithDictionary:dic];
         [[self shareLoginModel] loadPreloadedData];
         [[self shareLoginModel] loadShopInfo];
+        [[self shareLoginModel] loadSMSInventory];
     }
 }
 
@@ -129,6 +138,19 @@
             [weakSelf.shopModel setValuesForKeysWithDictionary:dic[@"data"]];
         }
         
+    } failure:^(NSError *error) {
+        
+    } showMsg:NO];
+}
+
+- (void)loadSMSInventory {
+    //    api/Messages/QuerySMSInventory
+    WeakSelf;
+    [AFNetworkManager postNetworkWithUrl:@"api/Messages/QuerySMSInventory" parameters:nil succeed:^(NSDictionary *dic) {
+        if (!weakSelf.shopModel) {
+            weakSelf.smsStock = [[ComSmsStock alloc] init];
+        }
+        [weakSelf.smsStock setValuesForKeysWithDictionary:dic[@"data"]];
     } failure:^(NSError *error) {
         
     } showMsg:NO];

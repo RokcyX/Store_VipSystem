@@ -16,6 +16,8 @@
 
 @implementation XYSettingViewController
 
+
+
 - (NSArray *)datalist {
     if (!_datalist) {
         NSString *storeType = [LoginModel shareLoginModel].shopModel.sM_Type == 0 ? @"免费" : [LoginModel shareLoginModel].shopModel.sM_Type == 1 ? @"高级年费" : @"高级永久";
@@ -30,7 +32,7 @@
                             @{@"title":@"会员总数", @"detail":[LoginModel shareLoginModel].shopModel.ShopMbers},
                             @{@"title":@"商品数", @"detail":[LoginModel shareLoginModel].shopModel.ShopGoods},
                             @{@"title":@"用户数", @"detail":[LoginModel shareLoginModel].shopModel.ShopUsers},
-                            @{@"title":@"短信库存", @"detail":@""},
+                            @{@"title":@"短信库存", @"detail":@([LoginModel shareLoginModel].smsStock.UStorage).stringValue},
                             @{@"title":@"到期时间", @"detail":[LoginModel shareLoginModel].shopModel.ShopOverTime}
                             ]
                           ];

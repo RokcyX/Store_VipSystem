@@ -31,6 +31,7 @@
 
 @property (nonatomic, strong)NSMutableArray *layers;
 
+@property (nonatomic, assign)BOOL isScanForGoods;
 @end
 
 @implementation XYConsumeGoodsController
@@ -43,6 +44,13 @@
             weakSelf.pageTotal = [dic[@"data"][@"PageTotal"] integerValue];
             if ([dic[@"data"][@"PageIndex"] integerValue] == 1) {
                 weakSelf.datalist = [XYCommodityModel modelConfigureWithArray:dic[@"data"][@"DataList"] alldataList:self.dataALLlist];
+                if (weakSelf.isScanForGoods) {
+                    weakSelf.isScanForGoods =NO;
+                    XYCommodityModel *model = weakSelf.datalist.firstObject;
+                    model.count = 1;
+                    [weakSelf setFootViewModel];
+
+                }
             } else {
                 [weakSelf.datalist addObjectsFromArray:[XYCommodityModel modelConfigureWithArray:dic[@"data"][@"DataList"] alldataList:self.dataALLlist]];
             }
@@ -168,6 +176,7 @@
     [sqVC setSendTask:^(NSString *string) {
         [weakSelf.parameters setValue:string forKey:@"PM_Code"];
         weakSelf.basicView.searchField.text = string;
+        weakSelf.isScanForGoods = YES;
         [weakSelf firstLoadData];
     }];
     UINavigationController * nVC = [[UINavigationController alloc]initWithRootViewController:sqVC];

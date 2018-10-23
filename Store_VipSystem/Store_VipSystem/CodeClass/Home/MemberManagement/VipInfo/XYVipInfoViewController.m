@@ -158,11 +158,11 @@
         switch (indexPath.row) {
             case 0:
                 title = @"历史消费";
-                detail = @(self.model.mA_AggregateAmount).stringValue;
+                detail =[NSString stringWithFormat:@"%.2lf", self.model.mA_AggregateAmount];
                 break;
             case 1:
                 title = @"储值余额";
-                detail = @(self.model.mA_AggregateStoredValue).stringValue;
+                detail = [NSString stringWithFormat:@"%.2lf", self.model.mA_AggregateStoredValue];
                 break;
             case 2:
                 title = @"会员积分";

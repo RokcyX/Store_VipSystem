@@ -69,20 +69,31 @@
                 [parameters setValue:model.vCH_Fee_PayTypeText.codeWithString forKey:@"VCH_Fee_PayType"];
                 [parameters setValue:model.vCH_Fee_PayTypeText forKey:@"VCH_Fee_PayTypeText"];
             }
+            if ([model.modelKey isEqualToString:@"VCH_Fee"]) {
+                
+                if (model.detail.floatValue && !model.vCH_Fee_PayTypeText.length) {
+                    [XYProgressHUD showMessage:@"请选择支付方式"];
+                    return nil;
+                }
+            }
             if ([model.modelKey isEqualToString:@"VIP_Overdue"]) {
                 NSString *value = model.detail.integerValue ? @"0":@"1";
                 [parameters setValue:value forKey:@"VIP_IsForver"];
             }
             
-            if ([model.modelKey isEqualToString:@"VIP_CellPhone"] && !model.detail.trimming && model.isRequired) {
-                [XYProgressHUD showMessage:@"手机号格式不对"];
-                return nil;
+            if ([model.modelKey isEqualToString:@"VIP_CellPhone"]) {
+                [parameters setValue:@"" forKey:@"VIP_CellPhone"];
+
+                if (!model.detail.trimming && model.isRequired) {
+                    [XYProgressHUD showMessage:@"手机号格式不对"];
+                    return nil;
+                }
             }
-            NSString *key = model.modelKey;
-            if (model.updateKey) {
-                key = model.updateKey;
-            }
-            [parameters setValue:@"" forKey:key];
+//            NSString *key = model.modelKey;
+//            if (model.updateKey.length) {
+//                key = model.updateKey;
+//            }
+//            [parameters setValue:@"" forKey:key];
             
             if (!model.detail.length && !model.updateValue.length) {
                 if (model.isRequired) {

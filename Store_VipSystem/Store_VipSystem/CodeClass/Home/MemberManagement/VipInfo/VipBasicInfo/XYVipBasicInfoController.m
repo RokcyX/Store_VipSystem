@@ -143,11 +143,11 @@
         if ([model.detail isEqualToString:vipGrade.vG_Name] && ![model.updateValue isEqualToString:vipGrade.gID]) {
             model.updateValue = vipGrade.gID;
             XYVipBasicInfoModel *model1 = self.dataList[2][0];
-            model1.detail = @(vipGrade.vG_CardAmount).stringValue;
+            model1.detail = [NSString stringWithFormat:@"%.2lf", vipGrade.vG_CardAmount];
             XYVipBasicInfoModel *model2 = self.dataList[2][1];
-            model2.detail = @(vipGrade.vG_InitialAmount).stringValue;
+            model2.detail = [NSString stringWithFormat:@"%.2lf", vipGrade.vG_InitialAmount];
             XYVipBasicInfoModel *model3 = self.dataList[2][2];
-            model3.detail = @(vipGrade.vG_InitialIntegral).stringValue;
+            model3.detail =  [NSString stringWithFormat:@"%.2lf", vipGrade.vG_InitialIntegral];
             XYVipBasicInfoModel *model4 = self.dataList[2][3];
             if (vipGrade.vG_IsTime) {
                 model4.isWritable = NO;
@@ -454,6 +454,8 @@
      GID        会员GID    String        否    0-100
      */
     NSMutableDictionary *parameters = [XYVipBasicInfoModel parametersWithDataList:self.dataList];
+    [parameters setValue:@"" forKey:@"VIP_RegSource"];
+
     if (!parameters) {
         return nil;
     }
@@ -463,8 +465,8 @@
     if (imageUrl) {
         [parameters setValue:imageUrl forKey:@"VIP_HeadImg"];
     }
-    NSMutableArray *labelArray = [NSMutableArray array]
-    ;    for (XYVipLabelModel *model in self.labelList) {
+    NSMutableArray *labelArray = [NSMutableArray array];
+    for (XYVipLabelModel *model in self.labelList) {
         if (model.isSelected) {
             NSDictionary *dic = @{@"ItemColor":model.mL_ColorValue,@"ItemGID":model.mL_GID,@"ItemName":model.mL_Name};
             [labelArray addObject:dic];
