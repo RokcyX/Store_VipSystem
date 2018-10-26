@@ -87,7 +87,7 @@
     textField.layer.borderWidth = 1;
     textField.textAlignment = NSTextAlignmentCenter;
     textField.layer.borderColor = [UIColor grayColor].CGColor;
-
+    self.textField = textField;
     return textField;
 }
 

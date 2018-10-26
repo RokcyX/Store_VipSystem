@@ -52,8 +52,14 @@
 }
 
 - (void)setNaviUI {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:(UIBarButtonItemStylePlain) target:self action:@selector(finishedClassifyAction)];
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
+    
+    UIButton *saveBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    CGFloat width = 50;
+    CGFloat height = 35;
+    saveBtn.frame = CGRectMake(0, 0, width, height);
+    [saveBtn setTitle:@"完成" forState:(UIControlStateNormal)];
+    [saveBtn addTarget:self action:@selector(finishedClassifyAction) forControlEvents:(UIControlEventTouchUpInside)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:saveBtn];
 }
 
 - (void)finishedClassifyAction {

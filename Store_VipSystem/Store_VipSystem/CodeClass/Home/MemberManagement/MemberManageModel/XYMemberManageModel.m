@@ -11,19 +11,29 @@
 @implementation XYMemberManageModel
 
 
-+ (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist isSelected:(BOOL)isSelected {
++ (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist datalist:(NSArray *)datalist isSelected:(BOOL)isSelected {
     NSMutableArray *array = [NSMutableArray array];
     for (NSDictionary *dic in diclist) {
-        [array addObject:[self modelConfigureDic:dic isSelected:isSelected]];;
+        [array addObject:[self modelConfigureDic:dic datalist:datalist isSelected:isSelected]];;
     }
     return array;
 }
 
-+ (instancetype)modelConfigureDic:(NSDictionary *)dic isSelected:(BOOL)isSelected {
++ (instancetype)modelConfigureDic:(NSDictionary *)dic datalist:(NSArray *)datalist isSelected:(BOOL)isSelected {
     if ([dic count] > 0) {
-        XYMemberManageModel *model = [[XYMemberManageModel alloc] init];
+        XYMemberManageModel *model;
+        for (XYMemberManageModel *obj in datalist) {
+            if ([obj.gID isEqualToString:dic[@"GID"]]) {
+                model = obj;
+            }
+        }
+        if (!model) {
+           model = [[XYMemberManageModel alloc] init];
+        }
         [model setValuesForKeysWithDictionary:dic];
-        model.isSelected = isSelected;
+        if (isSelected) {
+            model.isSelected = isSelected;
+        }
         return model;
     }
     return nil;

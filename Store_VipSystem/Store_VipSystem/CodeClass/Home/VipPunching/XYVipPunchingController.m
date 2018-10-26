@@ -334,6 +334,10 @@
 
 #pragma mark tableView dataSouce delegate
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.datalist.count;
 }

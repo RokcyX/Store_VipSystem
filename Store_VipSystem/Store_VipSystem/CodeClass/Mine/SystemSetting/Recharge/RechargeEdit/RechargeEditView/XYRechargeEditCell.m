@@ -86,10 +86,26 @@
     toolbar = [XYKeyboardToolbar defaultToolbar];
     toolbar.finished = ^(BOOL success) {
         if (success) {
-            weakSelf.model.endDetail = keyboard.string;
-            endDetailField.text = weakSelf.model.endDetail;
+            BOOL iswrite = YES;
+            if (weakSelf.model.detail.length) {
+                NSDate *endDate = [keyboard.string dateWithFormatter:@"yyyy-MM-dd"];
+                NSDate *startDate = [weakSelf.model.detail dateWithFormatter:@"yyyy-MM-dd"];
+                if ([endDate compare:startDate] < 0) {
+                    iswrite = NO;
+                }
+            }
+            if (iswrite) {
+                weakSelf.model.endDetail = keyboard.string;
+                endDetailField.text = weakSelf.model.endDetail;
+                [endDetailField resignFirstResponder];
+            } else {
+                [XYProgressHUD showMessage:@"无此时间段"];
+            }
+            
+
+        } else {
+            [endDetailField resignFirstResponder];
         }
-        [endDetailField resignFirstResponder];
     };
     endDetailField.inputAccessoryView = toolbar;
     endDetailField.inputView = keyboard;
@@ -139,10 +155,27 @@
         toolbar = [XYKeyboardToolbar defaultToolbar];
         toolbar.finished = ^(BOOL success) {
             if (success) {
-                model.detail = keyboard.string;
-                weakSelf.detailField.text = model.detail;
+                
             }
-            [weakSelf.detailField resignFirstResponder];
+            if (success) {
+                BOOL iswrite = YES;
+                if (weakSelf.model.endDetail.length) {
+                    NSDate *startDate = [keyboard.string dateWithFormatter:@"yyyy-MM-dd"];
+                    NSDate *endDate = [weakSelf.model.endDetail dateWithFormatter:@"yyyy-MM-dd"];
+                    if ([endDate compare:startDate] < 0) {
+                        iswrite = NO;
+                    }
+                }
+                if (iswrite) {
+                    model.detail = keyboard.string;
+                    weakSelf.detailField.text = model.detail;
+                    [weakSelf.detailField resignFirstResponder];
+                } else {
+                    [XYProgressHUD showMessage:@"无此时间段"];
+                }
+            } else {
+                [weakSelf.detailField resignFirstResponder];
+            }
         };
         self.detailField.inputAccessoryView = toolbar;
         self.detailField.inputView = keyboard;

@@ -17,5 +17,5 @@
 - (void)setModel:(XYVipRechargeModel *)model schemelist:(NSArray *)schemelist;
 
 @property (nonatomic, copy)BOOL(^amoutInput)(NSString *result, XYRechargeModel *recharge);
-
+@property (nonatomic, weak)UITextField *textField;
 @end

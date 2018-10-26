@@ -32,4 +32,5 @@
 @property (nonatomic , strong) NSMutableDictionary        * parameters;
 
 + (instancetype)modelConfigureDic:(NSDictionary *)dic;
+- (void)setDictionary:(NSDictionary *)dic;
 @end

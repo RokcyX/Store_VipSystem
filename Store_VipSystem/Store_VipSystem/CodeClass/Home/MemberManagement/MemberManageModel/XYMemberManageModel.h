@@ -13,7 +13,7 @@
 @property (nonatomic , copy) NSString              * sM_Name;
 @property (nonatomic , copy) NSString              * vIP_ICCard;
 @property (nonatomic , assign) CGFloat              mA_AggregateAmount;
-@property (nonatomic , copy) NSString              * vG_IsIntegral;
+@property (nonatomic , assign) BOOL              vG_IsIntegral;
 @property (nonatomic , copy) NSString              * vIP_Creator;
 @property (nonatomic , copy) NSString              * vIP_Label;
 @property (nonatomic , assign) NSInteger              vIP_IsForver;
@@ -26,21 +26,21 @@
 @property (nonatomic , assign) NSInteger              mCA_HowMany;
 @property (nonatomic , assign) NSInteger              vIP_IsLunarCalendar;
 @property (nonatomic , copy) NSString              * vIP_Birthday;
-@property (nonatomic , copy) NSString              * vG_IsDiscount;
+@property (nonatomic , assign) BOOL              vG_IsDiscount;
 @property (nonatomic , copy) NSString              * messageVIP;
 @property (nonatomic , copy) NSString              * vIP_HeadImg;
 @property (nonatomic , assign) CGFloat              vS_Value;
 @property (nonatomic , copy) NSString              * vCH_CreateTime;
 @property (nonatomic , copy) NSString              * sM_GID;
 @property (nonatomic , copy) NSString              * vG_Name;
-@property (nonatomic , copy) NSString              * vG_IsAccount;
+@property (nonatomic , assign) BOOL              vG_IsAccount;
 @property (nonatomic , assign) CGFloat              rS_Value;
 @property (nonatomic , assign) CGFloat              mA_AggregateStoredValue;
 @property (nonatomic , copy) NSString              * vIP_Overdue;
 @property (nonatomic , copy) NSString              * eM_ID;
 @property (nonatomic , copy) NSString              * vG_GID;
 @property (nonatomic , copy) NSString              * vIP_Addr;
-@property (nonatomic , copy) NSString              * vG_IsTime;
+@property (nonatomic , assign) BOOL              vG_IsTime;
 @property (nonatomic , assign) CGFloat              mA_AvailableIntegral;
 @property (nonatomic , assign) NSInteger              vIP_RegSource;
 @property (nonatomic , copy) NSString              * gID;
@@ -54,7 +54,7 @@
 @property (nonatomic , copy) NSString              * vCH_Card;
 @property (nonatomic , copy) NSArray              * customeFieldList;
 @property (nonatomic , copy) NSString              * vIP_FixedPhone;
-@property (nonatomic , copy) NSString              * vG_IsCount;
+@property (nonatomic , assign) BOOL              vG_IsCount;
 @property (nonatomic , assign) NSInteger              mCA_TotalCharge;
 @property (nonatomic , assign) CGFloat              dS_Value;
 @property (nonatomic , assign) NSInteger              vIP_State;
@@ -64,6 +64,6 @@
 
 @property (nonatomic, assign)BOOL isHaveVG;
 
-+ (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist isSelected:(BOOL)isSelected;
++ (NSMutableArray *)modelConfigureWithArray:(NSArray *)diclist datalist:(NSArray *)datalist isSelected:(BOOL)isSelected;
 
 @end

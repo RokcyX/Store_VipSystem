@@ -95,7 +95,7 @@
             return YES;
         }
     }
-    [XYProgressHUD showMessage:@"当前用户无此炒作权限"];
+    [XYProgressHUD showMessage:@"当前用户无此操作权限"];
     return NO;
 }
 

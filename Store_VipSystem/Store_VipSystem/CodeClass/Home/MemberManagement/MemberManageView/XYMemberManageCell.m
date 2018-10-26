@@ -14,11 +14,12 @@
 @property (nonatomic, weak)UIImageView *headerImageView;
 @property (nonatomic, weak)UILabel *titleLabel;
 @property (nonatomic, weak)UILabel *detailLabel;
-@property (nonatomic, weak)UIButton *saveBtn;
-@property (nonatomic, weak)UIButton *amassBtn;
+
 @end
 
 @implementation XYMemberManageCell
+
+
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
@@ -76,41 +77,24 @@
         make.height.mas_equalTo(20);
         make.width.equalTo(titleLabel.mas_width);
     }];
-    UIButton *amassBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    amassBtn.layer.cornerRadius = 2;
-    amassBtn.layer.masksToBounds = YES;
-    amassBtn.layer.borderWidth = 2;
-    amassBtn.layer.borderColor = RGBColor(236, 183, 173).CGColor;
-    [amassBtn setTitleColor:RGBColor(236, 183, 173) forState:(UIControlStateNormal)];
-    [amassBtn setTitle:@"积" forState:(UIControlStateNormal)];
-    amassBtn.titleLabel.font = [UIFont systemFontOfSize:10];
-    [self.contentView addSubview:self.amassBtn=amassBtn];
-    [amassBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(headerImageView.mas_centerY);
-        make.right.equalTo(weakSelf.contentView.mas_right);
-        make.width.mas_equalTo(15);
-        make.height.mas_equalTo(15);
-    }];
     
-    UIButton *saveBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    saveBtn.layer.cornerRadius = 2;
-    saveBtn.layer.masksToBounds = YES;
-    saveBtn.layer.borderWidth = 2;
-    saveBtn.layer.borderColor = RGBColor(224, 175, 62).CGColor;
-    [saveBtn setTitleColor:RGBColor(224, 175, 62) forState:(UIControlStateNormal)];
-    [saveBtn setTitle:@"储" forState:(UIControlStateNormal)];
-    saveBtn.titleLabel.font = [UIFont systemFontOfSize:10];
-    [self.contentView addSubview:self.saveBtn=saveBtn];
-    [saveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(headerImageView.mas_centerY);
-        make.right.equalTo(amassBtn.mas_left).offset(-5);
-        make.width.mas_equalTo(15);
-        make.height.mas_equalTo(15);
-    }];
-    
-    // 暂时隐藏
-    saveBtn.hidden = YES;
-    amassBtn.hidden = YES;
+    for (int i = 0; i < 5; i++) {
+        UIButton *amassBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
+        amassBtn.tag = 120 + i;
+//        amassBtn.frame = CGRectMake(CGRectGetWidth(self.contentView.frame) - 15 -20*i, CGRectGetMidY(self.contentView.bounds), 15, 15);
+        amassBtn.layer.cornerRadius = 2;
+        amassBtn.layer.masksToBounds = YES;
+        amassBtn.layer.borderWidth = 2;
+        amassBtn.titleLabel.font = [UIFont systemFontOfSize:10];
+        [self.contentView addSubview:amassBtn];
+        [amassBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(headerImageView.mas_centerY);
+            make.right.equalTo(weakSelf.contentView.mas_right).offset(-20*i);
+            make.width.mas_equalTo(15);
+            make.height.mas_equalTo(15);
+        }];
+        amassBtn.hidden = YES;
+    }
 }
 
 
@@ -121,6 +105,54 @@
     self.titleLabel.text = model.vIP_Name.length ? model.vIP_Name:model.vCH_Card;
     self.detailLabel.text = model.vIP_CellPhone;
     
+    /*
+     VG_IsAccount    是否储值
+     VG_IsIntegral    是否积分
+     VG_IsDiscount    是否打折
+     VG_IsCount    是否计次
+     VG_IsTime    是否限时
+     */
+    NSMutableArray *array = [NSMutableArray array];
+    NSMutableArray *colors = [NSMutableArray array];
+
+//    NSArray *array = @[@"储",@"积",@"折",@"计",@"限"];
+//    NSArray *colors = @[RGBColor(224, 175, 62), RGBColor(236, 183, 173), RGBColor(244, 195, 225), RGBColor(216, 163, 133), RGBColor(224, 175, 92)];
+    if (model.vG_IsAccount) {
+        [array addObject:@"储"];
+        [colors addObject:RGBColor(224, 175, 62)];
+    }
+    
+    if (model.vG_IsIntegral) {
+        [array addObject:@"积"];
+        [colors addObject:RGBColor(236, 183, 173)];
+    }
+    
+    if (model.vG_IsDiscount) {
+        [array addObject:@"折"];
+        [colors addObject:RGBColor(244, 195, 225)];
+    }
+    
+    if (model.vG_IsCount) {
+        [array addObject:@"计"];
+        [colors addObject:RGBColor(216, 163, 133)];
+    }
+    
+    if (model.vG_IsTime) {
+        [array addObject:@"限"];
+        [colors addObject:RGBColor(224, 175, 92)];
+    }
+    
+    for (int i = 0; i < 5; i++) {
+        UIButton *amassBtn = [self.contentView viewWithTag:120+i];
+        if (i < array.count) {
+            amassBtn.layer.borderColor = [colors[i] CGColor];
+            [amassBtn setTitleColor:colors[i] forState:(UIControlStateNormal)];
+            [amassBtn setTitle:array[i] forState:(UIControlStateNormal)];
+            amassBtn.hidden = NO;
+        } else {
+            amassBtn.hidden = YES;
+        }
+    }
 }
 
 - (void)checkAction:(UIButton *)btn {

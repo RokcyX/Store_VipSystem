@@ -39,6 +39,10 @@
 
 @implementation XYVipRechargeController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)loadData {
     self.schemelist = [LoginModel shareLoginModel].rechargeValidList;
     WeakSelf;
@@ -72,8 +76,36 @@
     WeakSelf;
     self.dataOverload = ^{
         weakSelf.check.screenView.selected = YES;
+        XYVipRechargeModel *model = weakSelf.datalist[self.datalist.count-2];
+        model.detail = @"";
+        model.updateValue = @"";
+        XYVipRechargeModel *remark = weakSelf.datalist.lastObject;
+        remark.detail = @"";
+        XYVipRechargeCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        cell.textField.text = @"";
+        cell.model.detail = @"";
         [weakSelf screenDel:weakSelf.check.screenView];
     };
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+}
+
+#pragma mark --- 键盘弹出 消失 通知
+- (void)keyboardWillShow:(NSNotification *)noti {
+    CGRect keyboardRect = [[noti.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIWindow * keyWindow = [[UIApplication sharedApplication] keyWindow];
+    UITextField * firstResponder = [keyWindow performSelector:@selector(firstResponder)];
+    if ([firstResponder.superview.superview isKindOfClass:[UITableViewCell class]]) {
+        UITableViewCell *cell = (UITableViewCell *)firstResponder.superview.superview;
+        CGFloat showHeight = CGRectGetHeight(self.tableView.frame) + 70 - keyboardRect.size.height;
+        if (CGRectGetMaxY(cell.frame) > showHeight) {
+            [self.tableView setContentOffset:CGPointMake(0, CGRectGetMaxY(cell.frame) - showHeight) animated:YES];
+        }
+    }    
+}
+
+- (void)keyboardDidHide:(NSNotification *)noti {
+
 }
 
 - (void)setNaviUI {
@@ -140,6 +172,11 @@
 - (void)setupUI {
     XYHomeBasicView *basicView = [[XYHomeBasicView alloc] init];
     self.view = self.basicView = basicView;
+    [basicView.scanBtn addTarget:self action:@selector(scanAction) forControlEvents:(UIControlEventTouchUpInside)];
+    //    basicView.searchField.placeholder = @"请输入会员卡号/手机号";
+    //    basicView.searchField.keyboardType = 4;
+    [basicView.searchField addTarget:self action:@selector(searchDataAcion:) forControlEvents:(UIControlEventEditingChanged)];
+    
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:(UITableViewStylePlain)];
     tableView.showsVerticalScrollIndicator = false;
@@ -170,6 +207,29 @@
     }];
     
 }
+
+// 扫描
+- (void)scanAction {
+    SLScanQCodeViewController * sqVC = [[SLScanQCodeViewController alloc]init];
+    __weak typeof(self) weakSelf = self;
+    [sqVC setSendTask:^(NSString *string) {
+        weakSelf.basicView.searchField.text = string;
+        [weakSelf searchVipWithCode:string];
+    }];
+    UINavigationController * nVC = [[UINavigationController alloc]initWithRootViewController:sqVC];
+    [self presentViewController:nVC animated:YES completion:nil];
+}
+
+// 搜索
+- (void)searchDataAcion:(UITextField *)textField {
+    [self searchVipWithCode:textField.text];
+}
+
+// 搜索会员
+- (void)searchVipWithCode:(NSString *)code {
+    [self.vipSelect searchFromLastPageWithCode:code];
+}
+
 
 - (void)placeOrderWithMsg:(BOOL)msg print:(BOOL)print {
     [super placeOrderWithMsg:msg print:print];

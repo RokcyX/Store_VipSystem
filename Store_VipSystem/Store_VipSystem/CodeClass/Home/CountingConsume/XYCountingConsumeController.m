@@ -240,6 +240,7 @@
     if (!nameLabel) {
         for (int i = 0; i< 4; i++) {
             UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10 + ((ScreenWidth - 10)/4) *i, 0, (ScreenWidth - 10)/4, 50)];
+            titleLabel.font = [UIFont systemFontOfSize:14];
             titleLabel.tag = 101 +i;
             [headerView.contentView addSubview:titleLabel];
         }

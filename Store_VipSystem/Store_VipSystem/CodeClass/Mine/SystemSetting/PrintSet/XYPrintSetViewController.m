@@ -21,6 +21,10 @@
 
 @implementation XYPrintSetViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)loadData {
     //    /api/PrintSet/GetPrintSet
     WeakSelf;
@@ -43,6 +47,30 @@
     self.title = @"打印设置";
     [self setupUI];
     [self loadData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+}
+
+#pragma mark --- 键盘弹出 消失 通知
+- (void)keyboardWillShow:(NSNotification *)noti {
+    CGRect keyboardRect = [[noti.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIWindow * keyWindow = [[UIApplication sharedApplication] keyWindow];
+    UITextField * firstResponder = [keyWindow performSelector:@selector(firstResponder)];
+    if ([firstResponder.superview.superview isKindOfClass:[UITableViewCell class]]) {
+        UITableViewCell *cell = (UITableViewCell *)firstResponder.superview.superview;
+        CGFloat showHeight = CGRectGetHeight(self.tableView.frame) + 70 - keyboardRect.size.height;
+        if (CGRectGetMaxY(cell.frame) > showHeight) {
+            [self.tableView setContentOffset:CGPointMake(0, CGRectGetMaxY(cell.frame) - showHeight) animated:YES];
+        }
+    }
+}
+
+- (void)keyboardDidHide:(NSNotification *)noti {
+    
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
 }
 
 - (void)setupUI {
@@ -122,10 +150,15 @@
 - (void)saveAction {
 //    WeakSelf;
     [self.model.parameters setValue:@(self.onControl.selected) forKey:@"PS_IsEnabled"];
+    NSMutableArray *array = [NSMutableArray array];
+    for (PrintTimes *times in self.model.printTimesList) {
+        [array addObject:@{@"":times.pT_Code, @"":@(times.pT_Times)}];
+    }
+    [self.model.parameters setValue:array forKey:@"PrintTimesList"];
     [AFNetworkManager postNetworkWithUrl:@"api/PrintSet/EditPrintSet" parameters:self.model.parameters succeed:^(NSDictionary *dic) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([dic[@"success"] boolValue]) {
-                Set_UserDefaults(@(self.onControl.selected), PrintIsOn);
+                [[LoginModel shareLoginModel].printSetModel setDictionary:dic[@"data"]];
             } else {
 //                [XYProgressHUD showSuccess:dic[@"msg"]];
             }

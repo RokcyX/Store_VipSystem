@@ -37,6 +37,11 @@
         weakSelf.model.sS_State = weakSelf.selectControl.selected;
         if (!weakSelf.model.sS_State) {
             weakSelf.model.sS_Value = @"";
+        } else {
+            if (weakSelf.model.sS_Code.integerValue == 202) {
+                weakSelf.model.sS_Value = @"123456";
+                weakSelf.textField.text = weakSelf.model.sS_Value;
+            }
         }
         if (weakSelf.selectItem) {
             weakSelf.selectItem(weakSelf.model);

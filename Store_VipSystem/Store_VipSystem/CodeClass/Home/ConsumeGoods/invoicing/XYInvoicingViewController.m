@@ -109,7 +109,7 @@
 }
 
 - (void)keyboardDidHide:(NSNotification *)noti {
-//    [self.tableView reloadData];
+    [self.tableView reloadData];
 }
 
 - (void)setNaviUI {
@@ -161,11 +161,11 @@
     CGFloat amount = 0.00;
 
     for (XYCommodityModel *obj in self.goodslist) {
-        discountAmount += obj.discountPriceStr.floatValue * obj.count;
+        discountAmount += obj.discountPriceStr.floatValue;
         amount += (obj.count * obj.pM_UnitPrice);
     }
     
-    // 折后金额
+    // 金额
     XYConfirmPayModel *amountModel = self.datalist.firstObject;
     amountModel.detail = _priceString = [NSString stringWithFormat:@"%.2lf", amount];
 ;
@@ -179,7 +179,7 @@
     self.vipPrice =  discountAmount;
     priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice];
     
-    XYConfirmPayCell *pricecell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.datalist.count-3]];
+    XYConfirmPayCell *pricecell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.datalist.count-3 inSection:1]];
     pricecell.model = priceModel;
     
     self.sectionFootView.attributedStr = self.sectionStr;
@@ -194,7 +194,7 @@
         } else {
             [obj discountWithOutMembership];
         }
-        discountAmount += obj.discountPriceStr.floatValue * obj.count;
+        discountAmount += obj.discountPriceStr.floatValue;
     }
     // 折后金额
     XYConfirmPayModel *priceModel = self.datalist[self.datalist.count-3];
@@ -296,7 +296,9 @@
     XYConfirmPayModel *model = self.datalist[self.datalist.count - 3];
     // 提成员工 model
     XYConfirmPayModel *empModel = self.datalist.lastObject;
+    NSString *consumeName;
     if (self.isConsume) {
+        consumeName = @"商品名称";
         /*
          名称：    提交订单    地址：    /api/ConsumeOrder/SubmitConsumOrder
          输入参数：
@@ -328,7 +330,7 @@
             NSMutableDictionary *dic = [NSMutableDictionary dictionary];
             [dic setValue:obj.gID forKey:@"PM_GID"];
             [dic setValue:@(obj.count) forKey:@"PM_Number"];
-            [dic setValue:@(obj.discountPriceStr.floatValue *obj.count) forKey:@"PM_Money"];
+            [dic setValue:@(obj.discountPriceStr.floatValue) forKey:@"PM_Money"];
             if (empModel.updateValue.length) {
                 [dic setValue:[empModel.updateValue componentsSeparatedByString:@","] forKey:@"EM_GIDList"];
             }
@@ -341,6 +343,7 @@
         submitOrderUrl = @"api/ConsumeOrder/SubmitConsumOrder";
         payUrl = @"api/ConsumeOrder/PaymentConsumOrder";
     } else {
+        consumeName = @"服务名称";
         /*
          名称：    提交订单    地址：    /api/Charge/ SubmitChargeBatch
          输入参数：
@@ -376,7 +379,7 @@
             NSMutableDictionary *dic = [NSMutableDictionary dictionary];
             [dic setValue:obj.gID forKey:@"PM_GID"];
             [dic setValue:@(obj.count) forKey:@"PM_Number"];
-            [dic setValue:@(obj.discountPriceStr.floatValue *obj.count) forKey:@"PM_Money"];
+            [dic setValue:@(obj.discountPriceStr.floatValue) forKey:@"PM_Money"];
             if (empModel.updateValue.length) {
                 [dic setValue:[empModel.updateValue componentsSeparatedByString:@","] forKey:@"EM_GIDList"];
             }
@@ -388,9 +391,9 @@
         payUrl = @"api/Charge/PaymentConsumOrder";
         
     }
-    [[XYPrinterMaker sharedMaker].bodylist addObject:@[@"商品", @"单价", @"数量", @"折扣", @"小计"]];
+    [[XYPrinterMaker sharedMaker].bodylist addObject:@[consumeName, @"单价", @"数量", @"小计"]];
     for (XYCommodityModel *obj in self.goodslist) {
-        [[XYPrinterMaker sharedMaker].bodylist addObject:@[obj.pM_Name, [NSString stringWithFormat:@"%.2lf", obj.pM_UnitPrice], @(obj.count).stringValue, @"无", [NSString stringWithFormat:@"%.2lf", obj.discountPriceStr.floatValue*obj.count]]];
+        [[XYPrinterMaker sharedMaker].bodylist addObject:@[obj.pM_Name, [NSString stringWithFormat:@"￥%.2lf", obj.pM_UnitPrice], @(obj.count).stringValue, [NSString stringWithFormat:@"￥%.2lf", obj.discountPriceStr.floatValue]]];
     }
     
     WeakSelf;
@@ -506,7 +509,7 @@
     self.totalAmount = 0.00;
     for (XYCommodityModel *obj in self.goodslist) {
         count += obj.count;
-        self.totalAmount += (obj.count * obj.discountPriceStr.floatValue);
+        self.totalAmount += obj.discountPriceStr.floatValue;
     }
     NSString *string = [NSString stringWithFormat:@"共%ld件商品，本单合计¥%.2lf",(long)count, self.totalAmount];
     NSString *amountStr = [NSString stringWithFormat:@"¥%.2lf", self.totalAmount];

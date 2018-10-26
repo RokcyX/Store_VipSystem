@@ -56,7 +56,7 @@
 - (void)setOfferValue:(CGFloat)offerValue {
     self.discountStr = [NSString stringWithFormat:@"%.1f折", offerValue*10];
     self.discountPrice = self.pM_UnitPrice * offerValue;
-    self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+    self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice*self.count];
 }
 
 - (void)hasSpecialOfferValue {
@@ -88,13 +88,13 @@
             // 无特价折扣
             self.discountStr = @"不打折";
             self.discountPrice = self.pM_UnitPrice;
-            self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+            self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice*self.count];
         }
     } else {
         // 商品折扣关闭
         self.discountStr = @"不打折";
         self.discountPrice = self.pM_UnitPrice;
-        self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+        self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice*self.count];
     }
 }
 
@@ -103,11 +103,11 @@
         if (self.pM_SpecialOfferValue && self.pM_SpecialOfferValue < 1) {
             // 有特价折扣
             [self hasSpecialOfferValue];
-        } else {
+        } else { // 无特价折扣
             if (self.pM_MemPrice) { // 有会员价
                 self.discountStr = @"会员折扣";
                 self.discountPrice = self.pM_MemPrice;
-                self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+                self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice*self.count];
             } else {
                 // 无会员价
                 if (level && level < 1) {
@@ -123,7 +123,7 @@
                     // 无等级折扣 原价
                     self.discountStr = @"不打折";
                     self.discountPrice = self.pM_UnitPrice;
-                    self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+                    self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice*self.count];
 
                 }
             }
@@ -133,11 +133,11 @@
         if (self.pM_MemPrice) { // 有会员价
             self.discountStr = @"会员折扣";
             self.discountPrice = self.pM_MemPrice;
-            self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+            self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice*self.count];
         } else {
             self.discountStr = @"不打折";
             self.discountPrice = self.pM_UnitPrice;
-            self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice];
+            self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice*self.count];
 
         }
     

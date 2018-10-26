@@ -70,8 +70,8 @@
     [self.contentView addSubview:self.totalLabel=totalLabel];
     [totalLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(surplusLabel);
-        make.left.equalTo(surplusLabel.mas_right).offset(10);
-        make.width.equalTo(surplusLabel.mas_width);
+        make.left.equalTo(surplusLabel.mas_right).offset(5);
+        make.width.equalTo(surplusLabel.mas_width).offset(-20);
     }];
     
     [self.contentView addSubview:self.addBtn = [self buttonWithImageName:@"consumeGoods_cell_add" action:@selector(addAction)]];
@@ -114,8 +114,8 @@
     _model = model;
     [self.commodityImageView sd_setImageWithURL:[NSURL URLWithString:model.pM_BigImg] placeholderImage:[UIImage imageNamed:@"commodity_product_placeholder"]];
     self.titleLabel.text = model.sG_Name;
-    self.totalLabel.text = [NSString stringWithFormat:@"总次数：%ld", model.mCA_TotalCharge];
-    self.surplusLabel.text = [NSString stringWithFormat:@"剩余次数：%ld", model.mCA_HowMany];
+    self.totalLabel.text = [NSString stringWithFormat:@"总次数:%ld", model.mCA_TotalCharge];
+    self.surplusLabel.text = [NSString stringWithFormat:@"剩余次数:%ld", model.mCA_HowMany];
 
     self.countLabel.text = @(model.count).stringValue;
     self.removeBtn.hidden = YES;

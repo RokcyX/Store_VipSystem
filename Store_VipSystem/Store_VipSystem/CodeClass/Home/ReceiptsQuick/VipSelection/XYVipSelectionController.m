@@ -37,7 +37,7 @@
         if ([dic[@"success"] boolValue]) {
             weakSelf.pageTotal = [dic[@"data"][@"PageTotal"] integerValue];
             if ([dic[@"data"][@"PageIndex"] integerValue] == 1) {
-                weakSelf.datalist = [XYMemberManageModel modelConfigureWithArray:dic[@"data"][@"DataList"] isSelected:weakSelf.checkAllBtn.selected];
+                weakSelf.datalist = [XYMemberManageModel modelConfigureWithArray:dic[@"data"][@"DataList"] datalist:weakSelf.datalist isSelected:weakSelf.checkAllBtn.selected];
                 if (islast) {
                     if (weakSelf.datalist.count == 1) {
                         XYMemberManageModel *model = self.datalist.firstObject;
@@ -51,7 +51,7 @@
                     }
                 }
             } else {
-                [weakSelf.datalist addObjectsFromArray:[XYMemberManageModel modelConfigureWithArray:dic[@"data"][@"DataList"] isSelected:NO]];
+                [weakSelf.datalist addObjectsFromArray:[XYMemberManageModel modelConfigureWithArray:dic[@"data"][@"DataList"] datalist:weakSelf.datalist isSelected:NO]];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if ([dic[@"data"][@"DataList"] count]) {
                         weakSelf.checkAllBtn.selected = NO;
@@ -189,6 +189,10 @@
     [self.parameters setValue:@1 forKey:@"PageIndex"];
     [self.parameters setValue:code forKey:@"CardOrNameOrCellPhoneOrFace"];
     [self loadDataWithLastPage:YES];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
 }
 
 #pragma mark tableView dataSouce delegate

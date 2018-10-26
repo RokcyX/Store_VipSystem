@@ -375,7 +375,7 @@
               "updateValue": "0",
               "isRequired": 0,
               "rightViewType": 3,
-              "isWritable": 0
+              "isWritable": 1
               }
               ]
     },
@@ -569,7 +569,7 @@
               "updateValue": "0",
               "isRequired": 0,
               "rightViewType": 3,
-              "isWritable": 0
+              "isWritable": 1
               }
               ]
     },
@@ -698,7 +698,7 @@
               "updateValue": "0",
               "isRequired": 0,
               "rightViewType": 3,
-              "isWritable": 0
+              "isWritable": 1
               }
               ]
     }

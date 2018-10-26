@@ -55,7 +55,9 @@
     [self setupUI];
     WeakSelf;
     self.dataOverload = ^{
-        [weakSelf.navigationController popViewControllerAnimated:YES];
+        XYBasicViewController *vc = weakSelf.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 2];
+        vc.dataOverload();
+        [weakSelf.navigationController popToViewController:vc animated:YES];
     };
 
 }
@@ -103,6 +105,7 @@
             numModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipNum];
         }
     }
+    self.footView.priceString = priceModel.detail;
     [self.tableView reloadData];
 
 }
@@ -114,19 +117,20 @@
     if (rechargeModel) {
         if (priceModel.detail.floatValue > rechargeModel.rP_RechargeMoney) {
             if (self.vipModel) {
-                numModel.detail = @(self.vipNum + rechargeModel.rP_GivePoint).stringValue;
+                numModel.detail = [NSString stringWithFormat:@"%.1lf", self.vipNum + rechargeModel.rP_GivePoint];
             }
             if (rechargeModel.rP_Discount > 0) {
                 //                优惠
-                priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
+//                priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
                 
             } else if (rechargeModel.rP_GiveMoney > 0) {
                 //                赠送
             } else if (rechargeModel.rP_ReduceMoney > 0) {
                 //                减少
-                priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];
+//                priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];
             }
         }
+        self.footView.priceString = priceModel.detail;
         [self.tableView reloadData];
     }
 }

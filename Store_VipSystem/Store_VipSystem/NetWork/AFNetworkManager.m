@@ -70,7 +70,9 @@
             [XYProgressHUD showSuccess:dic[@"msg"]];
         });
     }
-    if ([dic[@"code"]  isEqualToString:@"LoginTimeout"]) {
+    
+    if ([dic[@"code"] isKindOfClass:[NSString class]])
+        if ([dic[@"code"] isEqualToString:@"LoginTimeout"]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             ApplicationRootVC([XYAppDelegate rootViewController]);
         });

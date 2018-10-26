@@ -56,12 +56,12 @@ static dispatch_once_t onceToken;
 - (NSData *)printerValueKeys {
     HLPrinter *printer = [[HLPrinter alloc] init];
     NSString *title = @"欢迎光临";
-    [printer appendText:title alignment:HLTextAlignmentCenter];
+    [printer appendText:title alignment:HLTextAlignmentCenter fontSize:HLFontSizeTitleMiddle];
     [printer appendNewLine];
     
-    [printer appendTitle:@"收银员:" value:self.header.name valueOffset:150];
-    [printer appendTitle:@"结账日期:" value:self.header.date valueOffset:150];
-    [printer appendTitle:@"流水单号:" value:self.header.order valueOffset:150];
+    [printer appendTitle:@"收 银 员:" value:self.header.name valueOffset:120];
+    [printer appendTitle:@"结账日期:" value:self.header.date valueOffset:120];
+    [printer appendTitle:@"流水单号:" value:self.header.order valueOffset:120];
     
     [printer appendSeperatorLine];
     if (self.bodylist.count) {
@@ -73,25 +73,20 @@ static dispatch_once_t onceToken;
     
     if (self.paymentlist.count) {
         for (NSDictionary *dic in self.paymentlist) {
-            [printer appendTitle:dic[@"title"] value:dic[@"detail"]];
+            NSString *detail = [dic[@"detail"] stringByReplacingOccurrencesOfString:@"支付" withString:@""];
+            
+            [printer appendTitle:dic[@"title"] value:detail valueOffset:120];
         }
         [printer appendSeperatorLine];
     }
     
-    [printer appendTitle:@"打印时间:" value:[[NSDate date] stringWithFormatter:@"yyyy-MM-dd hh:mm:ss"]];
+    [printer appendTitle:@"打印时间:" value:[[NSDate date] stringWithFormatter:@"yyyy-MM-dd hh:mm:ss"] valueOffset:120];
     
     [printer appendFooter:nil];
+    [printer appendSeperatorLine];
     [printer appendNewLine];
     [printer appendNewLine];
     [printer appendNewLine];
-    [printer appendNewLine];
-    [printer appendNewLine];
-    [printer appendNewLine];
-    [printer appendNewLine];
-    [printer appendNewLine];
-    [printer appendNewLine];
-    [printer appendNewLine];
-    
     return printer.getFinalData;
 }
 

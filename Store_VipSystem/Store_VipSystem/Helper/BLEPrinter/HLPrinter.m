@@ -123,6 +123,24 @@
 }
 
 /**
+ *  添加文字，换行
+ *
+ *  @param text    文字内容
+ *  @param maxChar 最多可以允许多少个字节,后面加...
+ */
+- (void)setNewLineText:(NSString *)text maxChar:(int)maxChar
+{
+    [self setText:text];
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+    NSData *data = [text dataUsingEncoding:enc];
+    if (data.length > maxChar) {
+        [self appendNewLine];
+    }
+    
+}
+
+
+/**
  *  设置偏移文字
  *
  *  @param text 文字
@@ -300,19 +318,18 @@
         offset = 10;
     }
     NSInteger count = textlist.count;
-    CGFloat spaceWidth = 80;
+    CGFloat spaceWidth = 368.0 / count;
     int charNum = 0;
     if (5 - count > 0) {
-        spaceWidth += (5 - count)*35;
         charNum += (5 - count)*2;
     }
     
     for (int i = 0; i < count; i++) {
         if (i) {
-            [self setOffset:spaceWidth*(i) + offset];
+            [self setOffset:spaceWidth*(i) + offset +30];
             [self setText:textlist[i]];
         } else {
-            [self setText:textlist[i] maxChar:6 + charNum];
+            [self setNewLineText:textlist[i] maxChar:6 + charNum];
         }
     }
     [self appendNewLine];

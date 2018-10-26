@@ -236,10 +236,10 @@
     }
     NSString *print = [strlist componentsJoinedByString:@","];//
     
-    [[XYPrinterMaker sharedMaker].paymentlist addObject:@{@"title":@"应   收:", @"detail":[@"￥" stringByAppendingString:_priceString]}];
-    [[XYPrinterMaker sharedMaker].paymentlist addObject:@{@"title":@"实   收:", @"detail":[@"￥" stringByAppendingString: _priceString]}];
+    [[XYPrinterMaker sharedMaker].paymentlist addObject:@{@"title":@"应    收:", @"detail":[@"￥" stringByAppendingString:_priceString]}];
+    [[XYPrinterMaker sharedMaker].paymentlist addObject:@{@"title":@"实    收:", @"detail":[@"￥" stringByAppendingString: _priceString]}];
     [[XYPrinterMaker sharedMaker].paymentlist addObject:@{@"title":@"支付详情:", @"detail":print}];
-    [[XYPrinterMaker sharedMaker].paymentlist addObject:@{@"title":@"找   零:", @"detail":@"￥0.00"}];
+    [[XYPrinterMaker sharedMaker].paymentlist addObject:@{@"title":@"找    零:", @"detail":@"￥0.00"}];
     
     //    @{@"title":@"应   收:", @"detail":[@"￥" stringByAppendingString:_priceString]}
     //    @{@"title":@"实   收:", @"detail":[@"￥" stringByAppendingString: _priceString]}

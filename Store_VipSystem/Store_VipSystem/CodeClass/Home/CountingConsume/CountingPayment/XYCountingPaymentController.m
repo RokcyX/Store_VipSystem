@@ -127,7 +127,7 @@
     for (XYCountingConsumeModel *model in self.countingModels) {
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         [dic setValue:obj.detail forKey:@"WOD_EMName"];
-        [dic setValue:obj.updateValue forKey:@"EM_GIDList"];
+        [dic setValue:[obj.updateValue componentsSeparatedByString:@","] forKey:@"EM_GIDList"];
         [dic setValue:@(model.count) forKey:@"WOD_UseNumber"];
         [dic setValue:@(model.mCA_HowMany) forKey:@"WOD_ResidueDegree"];
         [dic setValue:model.sG_GID forKey:@"SG_GID"];
@@ -142,8 +142,10 @@
     
     [[XYPrinterMaker sharedMaker].bodylist addObject:@[@"服务名称", @"使用", @"剩余"]];
     for (NSDictionary *body in array) {
-        [[XYPrinterMaker sharedMaker].bodylist addObject:@[body[@"SG_Name"], [NSString stringWithFormat:@"%@次", body[@"WOD_UseNumber"]],[NSString stringWithFormat:@"%@次", body[@"WOD_ResidueDegree"]]]];
+        [[XYPrinterMaker sharedMaker].bodylist addObject:@[body[@"SG_Name"], [NSString stringWithFormat:@"%@次", body[@"WOD_UseNumber"]],[NSString stringWithFormat:@"%ld次", [body[@"WOD_ResidueDegree"] integerValue]-[body[@"WOD_UseNumber"] integerValue]]]];
     }
+    [[XYPrinterMaker sharedMaker].paymentlist addObjectsFromArray:@[@{@"title":@"会员姓名:", @"detail":self.vipModel.vIP_Name},@{@"title":@"卡内余额:", @"detail":[NSString stringWithFormat:@"￥%.2lf", self.vipModel.mA_AvailableBalance]},@{@"title":@"卡内积分:", @"detail":[NSString stringWithFormat:@"%.2lf",self.vipModel.mA_AvailableIntegral]}]];
+    
 //    XYBasicViewController *vc = self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 2];
     WeakSelf;
     [AFNetworkManager postNetworkWithUrl:@"api/WouldOrder/AddWouldOrder" parameters:parameters succeed:^(NSDictionary *dic) {
@@ -175,45 +177,6 @@
     } showMsg:YES];
     //
 //    NSDictionary *parameters = @{@"VIP_Card":self.vipModel.vCH_Card, @"WO_OrderCode":};
-}
-
-- (void)paySuccessWithData:(NSDictionary *)dic {
-    
-    HLPrinter *printer = [[HLPrinter alloc] init];
-    NSString *title = @"欢迎光临";
-    [printer appendText:title alignment:HLTextAlignmentCenter];
-    [printer appendNewLine];
-    
-    [printer appendTitle:@"收银员:" value:@"2016-04-27 10:01:50" valueOffset:150];
-    [printer appendTitle:@"结账日期:" value:@"4000020160427100150" valueOffset:150];
-    [printer appendTitle:@"流水单号:" value:@"4000020160427100150" valueOffset:150];
-    
-    [printer appendSeperatorLine];
-    [printer appendLeftText:@"服务名称" middleText:@"使用" rightText:@"剩余" isTitle:YES];
-    CGFloat total = 0.0;
-    NSDictionary *dict1 = @{@"name":@"铅笔测试一下哈哈",@"amount":@"5",@"price":@"2.0"};
-    NSDictionary *dict2 = @{@"name":@"abcdefghijfdf",@"amount":@"1",@"price":@"1.0"};
-    NSDictionary *dict3 = @{@"name":@"abcde笔记本啊啊",@"amount":@"3",@"price":@"3.0"};
-    NSArray *goodsArray = @[dict1, dict2, dict3];
-    for (NSDictionary *dict in goodsArray) {
-        [printer appendLeftText:dict[@"name"] middleText:dict[@"amount"] rightText:dict[@"price"] isTitle:NO];
-        total += [dict[@"price"] floatValue] * [dict[@"amount"] intValue];
-    }
-    
-    [printer appendSeperatorLine];
-    [printer appendTitle:@"打印时间:" value:[[NSDate date] stringWithFormatter:@"yyyy-MM-dd hh:mm:ss"]];
-    
-    [printer appendFooter:nil];
-    [printer appendNewLine];
-    [printer appendNewLine];
-    [printer appendNewLine];
-    [printer appendNewLine];
-    [printer appendNewLine];
-    
-    // 你也可以利用UIWebView加载HTML小票的方式，这样可以在远程修改小票的样式和布局。
-    // 注意点：需要等UIWebView加载完成后，再截取UIWebView的屏幕快照，然后利用添加图片的方法，加进printer
-    // 截取屏幕快照，可以用UIWebView+UIImage中的catogery方法 - (UIImage *)imageForWebView
-    
 }
 
 

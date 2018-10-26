@@ -41,20 +41,24 @@
 + (instancetype)modelConfigureDic:(NSDictionary *)dic {
     if ([dic count] > 0) {
         XYPrintSetModel *model = [[self alloc] init];
-        [model setValuesForKeysWithDictionary:dic];
-        model.printTimesList = [PrintTimes modelConfigureWithArray:model.printTimesList];
-        model.parameters = @{@"PS_IsEnabled":@(model.pS_IsEnabled),
-                             @"PS_IsPreview":@(model.pS_IsPreview),
-                             @"PS_PaperType":@(model.pS_PaperType),
-                             @"PS_PrinterName":model.pS_PrinterName,
-                             @"PS_StylusPrintingName":model.pS_StylusPrintingName,
-                             @"PrintTimesList":model.pS_PrintTimes
-                                       }.mutableCopy;
-
+        [model setDictionary:dic];
         return model;
     }
     return nil;
 }
+
+- (void)setDictionary:(NSDictionary *)dic {
+    [self setValuesForKeysWithDictionary:dic];
+    self.printTimesList = [PrintTimes modelConfigureWithArray:self.printTimesList];
+    self.parameters = @{ @"PS_IsEnabled":@(self.pS_IsEnabled),
+                         @"PS_IsPreview":@(self.pS_IsPreview),
+                         @"PS_PaperType":@(self.pS_PaperType),
+                         @"PS_PrinterName":self.pS_PrinterName,
+                         @"PS_StylusPrintingName":self.pS_StylusPrintingName,
+                         @"PrintTimesList":self.pS_PrintTimes
+                         }.mutableCopy;
+}
+
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key {
     
 }

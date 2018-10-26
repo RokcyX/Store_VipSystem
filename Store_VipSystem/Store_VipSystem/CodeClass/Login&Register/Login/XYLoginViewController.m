@@ -187,8 +187,8 @@
 // 登录
 - (void)loginAction {
     // 判断用户名 密码
-//    self.userNameField.text = @"17266666666";
-//    self.passWordField.text = @"123456";
+    self.userNameField.text = @"17266666666";
+    self.passWordField.text = @"123456";
 //     self.userNameField.text = @"13725589468";
 //     self.passWordField.text = @"147258";
 //    self.userNameField.text = @"17371729593";
