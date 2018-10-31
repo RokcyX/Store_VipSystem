@@ -41,10 +41,11 @@
     NSDictionary *dic = @{@"HYCZ":@"会员充值小票",@"HYCC":@"会员充次小票",@"SPXF":@"商品消费小票",@"KSXF":@"快速消费小票",@"JCXF":@"计次消费小票",@"JFDH":@"积分兑换小票",@"SPTH":@"",@"JB":@"",@"FTXF":@"",@"HYDJ":@"",@"JSXF":@"",@"TCXF":@"套餐消费小票",@"HYKK":@"",      @"XJZF":@"现金支付",@"YEZF":@"余额支付",@"YLZF":@"银联支付",@"WXJZ":@"微信记账",@"ZFBJZ":@"支付宝记账"};
     NSString *code = self;
     for (NSString *key in dic.allKeys) {
-        if ([self isEqualToString:dic[@"key"]]) {
+        if ([self isEqualToString:dic[key]]) {
             code = key;
         }
     }
+    
     return code;
 }
 

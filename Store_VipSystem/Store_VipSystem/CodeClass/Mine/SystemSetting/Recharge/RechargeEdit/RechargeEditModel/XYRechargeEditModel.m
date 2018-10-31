@@ -120,6 +120,11 @@
 
 + (NSMutableDictionary *)parametersWithDataList:(NSArray *)dataList {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+//    RP_Discount：优惠折扣、RP_GiveMoney：赠送金额、RP_ReduceMoney：减少金额
+    [parameters setValue:@(-1) forKey:@"RP_Discount"];
+    [parameters setValue:@(-1) forKey:@"RP_GiveMoney"];
+    [parameters setValue:@(-1) forKey:@"RP_ReduceMoney"];
+
     for (XYRechargeEditModel *model in dataList) {
         if (!model.detail.length && ![model.modelKey isEqualToString:@"RP_ValidType"]) {
             if (model.isRequired) {
@@ -178,6 +183,7 @@
             }
         }
     }
+    
     return parameters;
 }
 

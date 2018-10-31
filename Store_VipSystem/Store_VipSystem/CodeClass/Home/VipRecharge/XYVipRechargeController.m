@@ -76,14 +76,7 @@
     WeakSelf;
     self.dataOverload = ^{
         weakSelf.check.screenView.selected = YES;
-        XYVipRechargeModel *model = weakSelf.datalist[self.datalist.count-2];
-        model.detail = @"";
-        model.updateValue = @"";
-        XYVipRechargeModel *remark = weakSelf.datalist.lastObject;
-        remark.detail = @"";
-        XYVipRechargeCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        cell.textField.text = @"";
-        cell.model.detail = @"";
+        
         [weakSelf screenDel:weakSelf.check.screenView];
     };
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -142,6 +135,15 @@
     amountModel.detail = @"0.00";
     pointModel.detail = @"0";
     combinedModel.detail = @"0.00";
+    XYVipRechargeModel *model = self.datalist[self.datalist.count-2];
+    model.detail = @"";
+    model.updateValue = @"";
+    XYVipRechargeModel *remark = self.datalist.lastObject;
+    remark.detail = @"";
+    XYVipRechargeCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    cell.textField.text = @"";
+    cell.model.detail = @"";
+    self.basicView.searchField.text = @"";
     [self.tableView reloadData];
     
 }
@@ -418,6 +420,7 @@
 - (XYStaffManageController *)staff {
     if (!_staff) {
         _staff = [[XYStaffManageController alloc] init];
+        _staff.key = @"eM_TipRecharge";
     }
     return _staff;
 }

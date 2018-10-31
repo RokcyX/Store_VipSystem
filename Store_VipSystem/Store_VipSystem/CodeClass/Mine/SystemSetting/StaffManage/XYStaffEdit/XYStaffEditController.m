@@ -90,7 +90,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = RGBColor(244, 245, 246);
-    self.title = @"新增会员";
+    self.title = @"新增员工";
     if (self.model) {
         self.title = @"基本信息";
     }

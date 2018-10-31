@@ -262,6 +262,7 @@
 - (XYStaffManageController *)staff {
     if (!_staff) {
         _staff = [[XYStaffManageController alloc] init];
+        _staff.key = nil;
     }
     return _staff;
 }

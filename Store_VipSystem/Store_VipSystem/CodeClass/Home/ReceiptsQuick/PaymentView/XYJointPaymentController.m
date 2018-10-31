@@ -249,24 +249,32 @@
     
     WeakSelf;
     [AFNetworkManager postNetworkWithUrl:self.payUrl parameters:self.parameters succeed:^(NSDictionary *dic) {
-        [XYPrinterMaker sharedMaker].header.name = dic[@"data"][@"MR_Creator"];
-        [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"MR_PrepaidTime"];
-        [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"MR_Order"];
-        if (![XYPrinterMaker sharedMaker].header.name.length) {
-            [XYPrinterMaker sharedMaker].header.name = dic[@"data"][@"CO_Creator"];
-            [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"CO_UpdateTime"];
-            [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"CO_OrderCode"];
+        if ([dic[@"success"] boolValue]) {
+            [XYPrinterMaker sharedMaker].header.name = dic[@"data"][@"MR_Creator"];
+            [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"MR_PrepaidTime"];
+            [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"MR_Order"];
             if (![XYPrinterMaker sharedMaker].header.name.length) {
-                [XYPrinterMaker sharedMaker].header.name = dic[@"data"][@"MC_Creator"];
-                [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"MC_UpdateTime"];
-                [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"MC_Order"];
+                [XYPrinterMaker sharedMaker].header.name = dic[@"data"][@"CO_Creator"];
+                [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"CO_UpdateTime"];
+                [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"CO_OrderCode"];
+                if (![XYPrinterMaker sharedMaker].header.name.length) {
+                    [XYPrinterMaker sharedMaker].header.name = dic[@"data"][@"MC_Creator"];
+                    [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"MC_UpdateTime"];
+                    [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"MC_Order"];
+                }
+                
             }
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+                [XYPrinterMaker print];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [XYProgressHUD showMessage: dic[@"msg"]];
+            });
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.navigationController popViewControllerAnimated:YES];
-            [XYPrinterMaker print];
-        });
+        
+        
         
     } failure:^(NSError *error) {
         

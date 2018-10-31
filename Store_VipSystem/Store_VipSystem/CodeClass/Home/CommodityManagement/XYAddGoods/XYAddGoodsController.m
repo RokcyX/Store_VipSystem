@@ -359,7 +359,7 @@
     }
     
     [parameters setValue:imageUrl ? imageUrl : @"/img/product.png" forKey:@"PM_BigImg"];
-    [parameters setValue:@"" forKey:@"VIP_RegSource"];
+    [parameters setValue:@"4" forKey:@"VIP_RegSource"];
 
     
     return parameters;
@@ -456,6 +456,8 @@
             XYAddGoodsModel *lastModel = [weakSelf.handofflView.dataList.lastObject lastObject];
             if (classi.pT_SynType) {
                 lastModel.isWritable = 1;
+                lastModel.detail=@"同步";
+                lastModel.updateValue=@"1";
             } else {
                 lastModel.isWritable = 0;
                 lastModel.detail=@"不同步";

@@ -13,4 +13,6 @@
 
 @property (nonatomic, copy)void(^selectViewModel)(NSArray *models);
 
+@property (nonatomic, copy)NSString *key;
+
 @end

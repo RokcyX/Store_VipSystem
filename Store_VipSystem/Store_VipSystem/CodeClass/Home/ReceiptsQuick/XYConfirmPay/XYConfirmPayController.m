@@ -121,13 +121,13 @@
             }
             if (rechargeModel.rP_Discount > 0) {
                 //                优惠
-//                priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
+                priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
                 
             } else if (rechargeModel.rP_GiveMoney > 0) {
                 //                赠送
             } else if (rechargeModel.rP_ReduceMoney > 0) {
                 //                减少
-//                priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];
+                priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];
             }
         }
         self.footView.priceString = priceModel.detail;
@@ -338,6 +338,7 @@
 - (XYStaffManageController *)staff {
     if (!_staff) {
         _staff = [[XYStaffManageController alloc] init];
+        _staff.key = @"eM_TipFastConsume";
     }
     return _staff;
 }

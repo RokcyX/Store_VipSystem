@@ -104,7 +104,7 @@
             // 有特价折扣
             [self hasSpecialOfferValue];
         } else { // 无特价折扣
-            if (self.pM_MemPrice) { // 有会员价
+            if (self.pM_MemPrice >= 0) { // 有会员价
                 self.discountStr = @"会员折扣";
                 self.discountPrice = self.pM_MemPrice;
                 self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice*self.count];
@@ -130,7 +130,7 @@
         }
     } else {
         // 商品折扣关闭
-        if (self.pM_MemPrice) { // 有会员价
+        if (self.pM_MemPrice >= 0) { // 有会员价
             self.discountStr = @"会员折扣";
             self.discountPrice = self.pM_MemPrice;
             self.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.discountPrice*self.count];

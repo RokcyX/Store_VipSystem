@@ -10,8 +10,6 @@
 
 @implementation XYEM_TipModel
 
-
-
 + (NSArray *)eM_TipModelWithEmplModel:(XYEmplModel *)empl {
     NSArray *diclist = @[
                           @{@"EM_TipCard":@"售卡提成"},

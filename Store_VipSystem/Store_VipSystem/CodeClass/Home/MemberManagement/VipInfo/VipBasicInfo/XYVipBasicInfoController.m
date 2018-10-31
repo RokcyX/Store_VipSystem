@@ -11,6 +11,8 @@
 #import "XYVipLabelModel.h"
 #import <UIButton+WebCache.h>
 #import "SLScanQCodeViewController.h"
+#import "XYStaffManageController.h"
+
 //#import "SelectPhotoManager.h"
 @interface XYVipBasicInfoController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 @property (nonatomic, strong)NSMutableArray *dataList;
@@ -21,6 +23,9 @@
 @property (nonatomic, weak)UIButton *headerImageBtn;
 //@property (nonatomic, strong)WBPopOverView *popOverView;
 @property (nonatomic, strong)UIImage *headerImage;
+
+@property (nonatomic, strong) XYStaffManageController *staff;
+
 @end
 
 @implementation XYVipBasicInfoController
@@ -144,11 +149,14 @@
             model.updateValue = vipGrade.gID;
             XYVipBasicInfoModel *model1 = self.dataList[2][0];
             model1.detail = [NSString stringWithFormat:@"%.2lf", vipGrade.vG_CardAmount];
+            XYVipBasicInfoCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+            model1.vCH_Fee_PayTypeText = cell.payWays.count ? [cell.payWays.firstObject sS_Name] : nil;
             XYVipBasicInfoModel *model2 = self.dataList[2][1];
             model2.detail = [NSString stringWithFormat:@"%.2lf", vipGrade.vG_InitialAmount];
             XYVipBasicInfoModel *model3 = self.dataList[2][2];
             model3.detail =  [NSString stringWithFormat:@"%.2lf", vipGrade.vG_InitialIntegral];
             XYVipBasicInfoModel *model4 = self.dataList[2][3];
+            
             if (vipGrade.vG_IsTime) {
                 model4.isWritable = NO;
                 model4.detail = [self failureTimeWithNums:vipGrade.vG_IsTimeNum unit:vipGrade.vG_IsTimeUnit];
@@ -454,7 +462,7 @@
      GID        会员GID    String        否    0-100
      */
     NSMutableDictionary *parameters = [XYVipBasicInfoModel parametersWithDataList:self.dataList];
-    [parameters setValue:@"" forKey:@"VIP_RegSource"];
+    [parameters setValue:@"4" forKey:@"VIP_RegSource"];
 
     if (!parameters) {
         return nil;
@@ -628,12 +636,33 @@
     XYVipBasicInfoModel *model = self.dataList[indexPath.section][indexPath.row];
     if (!self.readOnly && !model.isWritable) {
         if ([model.title isEqualToString:@"开卡人员"]) {
-            [XYProgressHUD showMessage:ToDo];
+            self.staff.selectViewModel = ^(NSArray *models) {
+                NSMutableArray *names = [NSMutableArray array];
+                NSMutableArray *gids = [NSMutableArray array];
+                for (XYEmplModel *obj in models) {
+                    [names addObject:obj.eM_Name];
+                    [gids addObject:obj.gID];
+                }
+                model.detail = [names componentsJoinedByString:@","];
+                model.updateValue = [gids componentsJoinedByString:@","];
+                if (!models.count) {
+                    model.updateValue = model.detail = @"";
+                }
+                [tableView reloadData];
+            };
+            [self.navigationController pushViewController:self.staff animated:YES];
+//            [XYProgressHUD showMessage:ToDo];
         }
     }
 }
 
-
+- (XYStaffManageController *)staff {
+    if (!_staff) {
+        _staff = [[XYStaffManageController alloc] init];
+        _staff.key = @"eM_TipCard";
+    }
+    return _staff;
+}
 
 
 - (void)didReceiveMemoryWarning {

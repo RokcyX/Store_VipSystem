@@ -216,21 +216,21 @@
             if (self.vipModel) {
                 numModel.detail = @(self.vipNum + rechargeModel.rP_GivePoint).stringValue;
                 if (rechargeModel.rP_ISDouble) {
-                    numModel.detail =  [NSString stringWithFormat:@"%.lf", self.vipNum +priceModel.detail.floatValue / rechargeModel.rP_RechargeMoney *rechargeModel.rP_GivePoint];
+                    numModel.detail =  [NSString stringWithFormat:@"%.1lf", self.vipNum +priceModel.detail.floatValue / rechargeModel.rP_RechargeMoney *rechargeModel.rP_GivePoint];
                     
                 }
             }
             if (rechargeModel.rP_Discount > 0) {
                 //                优惠
-//                priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
-//                self.footView.priceString = priceModel.detail;
+                priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
+                self.footView.priceString = priceModel.detail;
 
             } else if (rechargeModel.rP_GiveMoney > 0) {
                 //                赠送
             } else if (rechargeModel.rP_ReduceMoney > 0) {
                 //                减少
-//                priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];
-//                self.footView.priceString = priceModel.detail;
+                priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];
+                self.footView.priceString = priceModel.detail;
             }
         }
         [self.tableView reloadData];
@@ -361,7 +361,8 @@
             [parameters setValue:self.vipModel.vCH_Card forKey:@"VIP_Card"];
             [parameters setValue:self.vipModel.gID forKey:@"VIP_GID"];
         } else {
-            [parameters setValue:@"00000" forKey:@"VIP_Card"];
+            [XYProgressHUD showMessage:@"请选择会员"];
+            return;
         }
         [parameters setValue:@"" forKey:@"MC_Remark"];
         [parameters setValue:model.detail forKey:@"AfterDiscount"];
@@ -575,6 +576,11 @@
 - (XYStaffManageController *)staff {
     if (!_staff) {
         _staff = [[XYStaffManageController alloc] init];
+        if (self.isConsume) {
+            _staff.key = @"eM_TipGoodsConsume";
+        } else {
+            _staff.key = @"eM_TipChargeTime";
+        }
     }
     return _staff;
 }

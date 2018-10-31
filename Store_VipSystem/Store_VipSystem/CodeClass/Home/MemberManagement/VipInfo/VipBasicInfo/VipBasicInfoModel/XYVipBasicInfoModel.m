@@ -101,12 +101,17 @@
                     return nil;
                 }
             } else {
+                if (model.detail.length) {
+                    [parameters setValue:model.detail forKey:model.modelKey];
+                }
                 if (model.updateKey) {
                     if (model.updateKey.length > 0 && model.updateValue.length > 0) {
-                        [parameters setValue:model.updateValue forKey:model.updateKey];
+                        id value = model.updateValue;
+                        if ([model.updateKey isEqualToString:@"EM_GIDList"]) {
+                            value = [model.updateValue componentsSeparatedByString:@","];
+                        }
+                        [parameters setValue:value forKey:model.updateKey];
                     }
-                } else {
-                    [parameters setValue:model.detail forKey:model.modelKey];
                 }
             }
         }
@@ -117,7 +122,7 @@
 
 @end
 
-
+//[2]    (null)    @"VG_GID" : @"1009916c-5275-40ed-9aa6-e319219094ea"    
 
 /*
  "updateKey":"VIP_Remark",

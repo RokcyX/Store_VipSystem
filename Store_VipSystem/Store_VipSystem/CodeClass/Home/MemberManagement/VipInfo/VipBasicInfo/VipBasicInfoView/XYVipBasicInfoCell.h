@@ -13,4 +13,6 @@
 - (void)setModel:(XYVipBasicInfoModel *)model readOnly:(BOOL)readOnly;
 @property (nonatomic, weak)NSArray *vipGradeList;
 @property (nonatomic, copy)void(^scan)(void);
+
+@property (nonatomic, strong)NSArray *payWays;
 @end

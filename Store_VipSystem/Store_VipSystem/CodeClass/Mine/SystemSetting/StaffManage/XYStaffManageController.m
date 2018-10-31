@@ -232,8 +232,12 @@
             
             XYEmplModel *model = weakSelf.staffList[indexPath.row];
             if (weakSelf.selectViewModel) {
-                model.isSelected = !model.isSelected;
-                [weakSelf.leftVerticalSegmentedControl reloadData];
+                if (self.key && [[model valueForKey:self.key] boolValue]) {
+                    model.isSelected = !model.isSelected;
+                    [weakSelf.leftVerticalSegmentedControl reloadData];
+                } else {
+                    [XYProgressHUD showMessage:@"该员工没有此类型提成"];
+                }
             } else {
                 XYStaffEditController *addClassi = [[XYStaffEditController alloc] init];
                 addClassi.model = model;

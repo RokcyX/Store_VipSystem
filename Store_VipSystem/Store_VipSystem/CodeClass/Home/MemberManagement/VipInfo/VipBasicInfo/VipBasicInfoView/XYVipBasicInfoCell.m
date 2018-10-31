@@ -9,7 +9,7 @@
 #import "XYVipBasicInfoCell.h"
 #import "XYKeyboardView.h"
 
-@interface XYVipBasicInfoCell ()
+@interface XYVipBasicInfoCell ()<UITextFieldDelegate>
 @property (nonatomic, strong)XYVipBasicInfoModel *model;
 @property (nonatomic, weak)UILabel *titleLabel;
 @property (nonatomic, weak)UITextField *detailField;
@@ -73,7 +73,7 @@
     endDetailField.leftViewMode = UITextFieldViewModeAlways;
     endDetailField.textAlignment = NSTextAlignmentCenter;
     endDetailField.hidden = YES;
-    
+    endDetailField.delegate = self;
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, CGRectGetHeight(self.frame))];
     lineView.backgroundColor = RGBColor(244, 245, 246);
     endDetailField.leftView = lineView;
@@ -87,15 +87,17 @@
     XYKeyboardToolbar *toolbar;
     XYKeyboardView *keyboard;
     keyboard = [XYKeyboardView keyBoardWithType:(KeyboardTypeStringPicker)];
-   
+//   103 106 105 101
     NSMutableArray *array = [NSMutableArray array];
     for (XYParameterSetModel *obj in [LoginModel shareLoginModel].parameterSets.firstObject[@"models"]) {
-        if (obj.sS_State && ![obj.sS_Name isEqualToString:@"默认支付"]) {
-            [array addObject:obj];
+        if (obj.sS_State) {
+            if (obj.sS_Code.integerValue == 101 ||obj.sS_Code.integerValue == 103 ||obj.sS_Code.integerValue == 105 ||obj.sS_Code.integerValue == 106) {
+                [array addObject:obj];
+            }
         }
     }
-    [array insertObject:[[LoginModel shareLoginModel].parameterSets.firstObject[@"models"] lastObject] atIndex:0];
-     keyboard.count = array.count;
+    self.payWays = array;
+    keyboard.count = array.count;
     keyboard.titleForRow = ^NSString *(NSInteger row) {
         return [array[row] sS_Name];
     };
@@ -105,9 +107,6 @@
         if (success) {
             weakSelf.endDetailField.text = keyboard.string;
             weakSelf.model.vCH_Fee_PayTypeText = keyboard.string;
-            if ([keyboard.string isEqualToString:@"默认支付"]) {
-                weakSelf.model.vCH_Fee_PayTypeText = [array.firstObject sS_Value].length ? [array.firstObject sS_Value] : @"现金支付";
-            }
         }
         [weakSelf.endDetailField resignFirstResponder];
     };
@@ -119,6 +118,13 @@
         make.width.mas_equalTo(endDetailFieldWidth+20);
     }];
     
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (!self.payWays.count) {
+        [XYProgressHUD showMessage:@"没有支付方式"];
+    }
+    return self.payWays.count;
 }
 
 - (void)setModel:(XYVipBasicInfoModel *)model readOnly:(BOOL)readOnly {

@@ -67,7 +67,13 @@
     }
     if (showMsg) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [XYProgressHUD showSuccess:dic[@"msg"]];
+            
+            if (![dic[@"success"] boolValue]) {
+                [XYProgressHUD showSuccess:dic[@"msg"]];
+            } else {
+                [[XYProgressHUD sharedHUD] setShowNow:NO];
+                [[XYProgressHUD sharedHUD] hideAnimated:YES];
+            }
         });
     }
     

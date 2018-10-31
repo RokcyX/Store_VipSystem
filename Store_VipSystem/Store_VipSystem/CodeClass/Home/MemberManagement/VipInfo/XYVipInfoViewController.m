@@ -23,6 +23,7 @@
     self.title = @"会员信息";
     [self setNaviUI];
     [self setupUI];
+   
 }
 
 - (void)setNaviUI {
