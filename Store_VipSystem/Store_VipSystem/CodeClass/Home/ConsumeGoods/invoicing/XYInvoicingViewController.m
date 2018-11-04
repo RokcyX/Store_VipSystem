@@ -133,7 +133,6 @@
 - (void)setVipModel:(XYMemberManageModel *)vipModel {
     _vipModel = vipModel;
     self.rechargeModel = nil;
-    self.vipNum = 0;
     [self getDiscountedAmount];
 
     XYConfirmPayModel *offersModel = self.datalist[1];
@@ -143,17 +142,41 @@
         offersModel.updateValue = @"";
         offersModel.updateValue = [NSString stringWithFormat:@"%.2lf",self.vipPrice];
     }
-    // 获得积分
+    [self reSetVipNum];
     XYConfirmPayModel *numModel = self.datalist[self.datalist.count-2];
-    numModel.detail = @"0";
-    if (vipModel) {
-        if (vipModel.vS_Value) {
-            self.vipNum = @(self.vipPrice *vipModel.vS_Value).integerValue;
-            numModel.detail = @(self.vipNum).stringValue;
-        }
-    }
+    numModel.detail = @(self.vipNum).stringValue;
+
     [self.tableView reloadData];
     
+}
+
+- (void)reSetVipNum {
+    // 获得积分
+    self.vipNum = 0;
+    if (_vipModel) {
+        NSInteger vipNum = 0;
+        for (XYCommodityModel *obj in self.goodslist) {
+            switch (obj.pM_IsPoint) {
+                case 1:
+                    // 会员等级积分
+                    if (_vipModel.vS_Value) {
+                        vipNum += obj.discountPriceStr.floatValue *_vipModel.vS_Value;
+                    }
+                    break;
+                case 2:
+                    // 固定积分
+                    vipNum += obj.count *obj.pM_FixedIntegralValue;
+                    
+                    break;
+                case 3:
+                    // 不积分
+                    break;
+                default:
+                    break;
+            }
+        }
+        self.vipNum = vipNum;
+    }
 }
 
 - (void)setDiscountedAmount {
@@ -181,6 +204,13 @@
     
     XYConfirmPayCell *pricecell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.datalist.count-3 inSection:1]];
     pricecell.model = priceModel;
+    
+    // 获得积分
+    XYConfirmPayModel *numModel = self.datalist[self.datalist.count-2];
+    [self reSetVipNum];
+    numModel.detail = @(self.vipNum).stringValue;
+    XYConfirmPayCell *numcell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.datalist.count-2 inSection:1]];
+    numcell.model = numModel;
     
     self.sectionFootView.attributedStr = self.sectionStr;
     self.footView.priceString = priceModel.detail;

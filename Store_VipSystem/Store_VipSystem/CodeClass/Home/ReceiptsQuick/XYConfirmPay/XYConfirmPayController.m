@@ -116,18 +116,18 @@
     XYConfirmPayModel *numModel = self.datalist[5];
     if (rechargeModel) {
         if (priceModel.detail.floatValue > rechargeModel.rP_RechargeMoney) {
-            if (self.vipModel) {
-                numModel.detail = [NSString stringWithFormat:@"%.1lf", self.vipNum + rechargeModel.rP_GivePoint];
-            }
             if (rechargeModel.rP_Discount > 0) {
                 //                优惠
                 priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
-                
             } else if (rechargeModel.rP_GiveMoney > 0) {
                 //                赠送
             } else if (rechargeModel.rP_ReduceMoney > 0) {
                 //                减少
                 priceModel.detail = [NSString stringWithFormat:@"%.2lf",self.vipPrice -rechargeModel.rP_ReduceMoney];
+            }
+            if (self.vipModel) {
+                self.vipNum = @(priceModel.detail.floatValue *self.vipModel.vS_Value).floatValue;
+                numModel.detail = [NSString stringWithFormat:@"%.1lf", self.vipNum + rechargeModel.rP_GivePoint];
             }
         }
         self.footView.priceString = priceModel.detail;
