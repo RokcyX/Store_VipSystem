@@ -17,7 +17,11 @@
 @property (nonatomic, weak)XYPitchOnControl *notDoubleControl;
 @end
 
-@implementation XYSpecialOffersEditController
+@implementation XYSpecialOffersEditController{
+    BOOL notDoubleControlSelected;
+    XYPitchOnControl *notDoubleControl;
+    XYPitchOnControl *doubleControl;
+}
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -159,13 +163,21 @@
     if (model.isRequired) {
         XYRechargeEditHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"XYRechargeEditHeaderView"];
         headerView.model = model;
+        if ([model.title isEqualToString:@"优惠规则"]) {//判断是否是优惠规则，如果是则监听值改变，当值为“优惠折扣”时，禁用翻倍按钮，并设置默认选中不翻倍按钮
+            __block typeof(self) blockSelf=self;
+            __block typeof(headerView) blockHeaderView=headerView;
+            headerView.valueDidChangedBlock = ^{
+                blockSelf -> notDoubleControlSelected=[blockHeaderView.model.modelKey isEqualToString:@"RP_Discount"];
+                [blockSelf.tableView reloadData];
+            };
+        }
         return headerView;
     } else {
         UITableViewHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"UITableViewHeaderFooterView"];
         headerView.contentView.backgroundColor = [UIColor whiteColor];
         if (!self.doubleControl) {
             WeakSelf;
-            XYPitchOnControl *doubleControl = [[XYPitchOnControl alloc] init];
+            doubleControl = [[XYPitchOnControl alloc] init];
             doubleControl.title = @"翻倍";
             doubleControl.selected = model.updateValue.boolValue;
             doubleControl.selectControl = ^{
@@ -177,7 +189,7 @@
                 make.left.top.bottom.equalTo(headerView.contentView);
             }];
             
-            XYPitchOnControl *notDoubleControl = [[XYPitchOnControl alloc] init];
+            notDoubleControl = [[XYPitchOnControl alloc] init];
             notDoubleControl.title = @"不翻倍";
             notDoubleControl.selected = !model.updateValue.boolValue;
             notDoubleControl.selectControl = ^{
@@ -192,6 +204,16 @@
             }];
         }
 //        headerView.model = model;
+        if (notDoubleControlSelected) {
+            doubleControl.selected=NO;
+            notDoubleControl.selected=YES;
+        }
+        doubleControl.checkBtn.enabled=!notDoubleControlSelected;
+        doubleControl.titleBtn.enabled=!notDoubleControlSelected;
+//        notDoubleControl.checkBtn.enabled=!notDoubleControlSelected;
+        notDoubleControl.titleBtn.enabled=!notDoubleControlSelected;
+        
+        //这里这里
         return headerView;
     }
     

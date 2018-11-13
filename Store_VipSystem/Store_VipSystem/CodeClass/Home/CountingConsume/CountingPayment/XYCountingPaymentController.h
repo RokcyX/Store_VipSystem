@@ -15,4 +15,6 @@
 
 @property (nonatomic, strong)NSArray *countingModels;
 
+@property (nonatomic,copy)void(^confirmBlock)();
+
 @end

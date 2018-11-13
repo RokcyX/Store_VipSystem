@@ -193,6 +193,10 @@
     XYCountingPaymentController *payment = [[XYCountingPaymentController alloc] init];
     payment.vipModel = self.vipModel;
     payment.countingModels = array;
+    __weak typeof(self) weakSelf=self;
+    payment.confirmBlock = ^{
+        [weakSelf screenDel:weakSelf.check.screenView];
+    };
     [self.navigationController pushViewController:payment animated:YES];
 }
 

@@ -69,6 +69,38 @@
             [self.dataList insertObject:[XYVipBasicInfoModel modelConfigureWithArray:dic[key] memberModel:self.model] atIndex:key.integerValue-1];
         }
     }
+    NSMutableArray *array = [NSMutableArray array];
+    for (XYParameterSetModel *obj in [LoginModel shareLoginModel].parameterSets.firstObject[@"models"]) {
+        if (obj.sS_State) {
+            if (obj.sS_Code.integerValue == 101 ||obj.sS_Code.integerValue == 103 ||obj.sS_Code.integerValue == 105 ||obj.sS_Code.integerValue == 106) {
+                [array addObject:obj];
+            }
+        }
+    }
+    if (!self.model) {
+        XYVipBasicInfoModel *model = self.dataList[1][1];
+        for (XYVipGradeModel *vipGrade in self.vipGradeList) {
+            if ([model.detail isEqualToString:vipGrade.vG_Name]) {
+                model.updateValue = vipGrade.gID;
+                XYVipBasicInfoModel *model1 = self.dataList[2][0];
+                model1.detail = [NSString stringWithFormat:@"%.2lf", vipGrade.vG_CardAmount];
+                model1.vCH_Fee_PayTypeText = vipGrade.vG_CardAmount > 0 ? array.count ? [array.firstObject sS_Name] : nil : nil;
+                XYVipBasicInfoModel *model2 = self.dataList[2][1];
+                model2.detail = [NSString stringWithFormat:@"%.2lf", vipGrade.vG_InitialAmount];
+                XYVipBasicInfoModel *model3 = self.dataList[2][2];
+                model3.detail =  [NSString stringWithFormat:@"%.2lf", vipGrade.vG_InitialIntegral];
+                XYVipBasicInfoModel *model4 = self.dataList[2][3];
+                
+                if (vipGrade.vG_IsTime) {
+                    model4.isWritable = NO;
+                    model4.detail = [self failureTimeWithNums:vipGrade.vG_IsTimeNum unit:vipGrade.vG_IsTimeUnit];
+                } else {
+                    model4.isWritable = YES;
+                    model4.detail = @"";
+                }
+            }
+        }
+    }
     [self.tableView reloadData];
     
     [self.headerImageBtn sd_setImageWithURL:[NSURL URLWithString:self.model.vIP_HeadImg] forState:(UIControlStateNormal) placeholderImage:[UIImage imageNamed:@"vip_basicInfo_head"]];
@@ -150,7 +182,7 @@
             XYVipBasicInfoModel *model1 = self.dataList[2][0];
             model1.detail = [NSString stringWithFormat:@"%.2lf", vipGrade.vG_CardAmount];
             XYVipBasicInfoCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
-            model1.vCH_Fee_PayTypeText = cell.payWays.count ? [cell.payWays.firstObject sS_Name] : nil;
+            model1.vCH_Fee_PayTypeText = vipGrade.vG_CardAmount > 0 ? cell.payWays.count ? [cell.payWays.firstObject sS_Name] : nil : nil;
             XYVipBasicInfoModel *model2 = self.dataList[2][1];
             model2.detail = [NSString stringWithFormat:@"%.2lf", vipGrade.vG_InitialAmount];
             XYVipBasicInfoModel *model3 = self.dataList[2][2];
@@ -165,7 +197,6 @@
                 model4.detail = @"";
             }
             [self.tableView reloadData];
-            
         }
     }
 }

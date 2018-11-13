@@ -144,7 +144,7 @@
     }
     [self reSetVipNum];
     XYConfirmPayModel *numModel = self.datalist[self.datalist.count-2];
-    numModel.detail = @(self.vipNum).stringValue;
+    numModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipNum];
 
     [self.tableView reloadData];
     

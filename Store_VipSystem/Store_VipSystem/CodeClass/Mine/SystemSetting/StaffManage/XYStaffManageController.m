@@ -245,7 +245,7 @@
                 addClassi.deptList = weakSelf.deptList;
                 [weakSelf.navigationController pushViewController:addClassi animated:YES];
                 weakSelf.dataOverload = ^{
-                    [weakSelf.rightVerticalSegmentedControl reloadData];
+                    [weakSelf queryEmplList];
                 };
             }
         };

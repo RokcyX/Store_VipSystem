@@ -211,10 +211,13 @@
      PayMoney     金额    decimal?
      PayPoint    抵扣积分    decimal?
      GID     优惠券关系表GID    string
-     
      */
     XYJointPaymentModel *model0 = self.dataList.firstObject;
     XYJointPaymentModel *model1 = self.dataList[1];
+    if (model1.detail.floatValue < 0) {
+        [XYProgressHUD showMessage:[NSString stringWithFormat:@"应付%@元还差%@", model0.detail, @(-model1.detail.floatValue).stringValue]];
+        return;
+    }
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{@"DisMoney":model0.detail, @"PayTotalMoney":@(model0.detail.floatValue + model1.detail.floatValue).stringValue, @"GiveChange":model1.detail}];
     XYJointPaymentModel *pointModel = self.dataList[self.dataList.count-4];
     XYJointPaymentModel *gidModel = self.dataList.lastObject;

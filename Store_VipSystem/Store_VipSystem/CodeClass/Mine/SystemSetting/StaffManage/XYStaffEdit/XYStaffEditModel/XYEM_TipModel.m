@@ -17,7 +17,7 @@
                           @{@"EM_TipChargeTime":@"充次提成"},
                           @{@"EM_TipGoodsConsume":@"商品消费提成"},
                           @{@"EM_TipFastConsume":@"快速消费提成"},
-                          @{@"EM_TipTimesConsume":@"签到提成"} ,
+                          @{@"EM_TipTimesConsume":@"计次消费提成"} ,
                           @{@"EM_TipComboConsume":@"套餐消费提成"}
                           ];
     NSMutableArray *array = [NSMutableArray array];

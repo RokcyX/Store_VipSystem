@@ -27,6 +27,7 @@
 @property (nonatomic , copy) NSString              * pS_StylusPrintingName;
 @property (nonatomic , copy) NSString              * pS_PrinterName;
 @property (nonatomic , copy) NSArray<PrintTimes *>              * printTimesList;
+@property (nonatomic , copy) NSArray<PrintTimes *>              * paramPrintTimes;
 @property (nonatomic , copy) NSString              * pS_CYGID;
 
 @property (nonatomic , strong) NSMutableDictionary        * parameters;

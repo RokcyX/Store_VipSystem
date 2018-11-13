@@ -11,7 +11,7 @@
 
 @interface AFNetworkManager : NSObject
 
-+ (void)postNetworkWithUrl:(NSString *)url parameters:(NSDictionary *)parameters succeed:(void (^)(NSDictionary *dic))succeed failure:(void (^)(NSError *error))failure showMsg:(BOOL)showMsg;
++ (NSURLSessionDataTask *)postNetworkWithUrl:(NSString *)url parameters:(NSDictionary *)parameters succeed:(void (^)(NSDictionary *dic))succeed failure:(void (^)(NSError *error))failure showMsg:(BOOL)showMsg;
 
 +(NSDictionary *)parseJSONStringToNSDictionary:(NSString *)jsonString;
 

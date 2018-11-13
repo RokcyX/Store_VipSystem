@@ -22,6 +22,8 @@
 @property (nonatomic, strong)NSMutableArray *datalist;
 @property (nonatomic, strong)NSArray *classifylist;
 @property (nonatomic, assign)BOOL isAll;
+
+@property (nonatomic, strong) NSURLSessionDataTask *task;
 @end
 
 @implementation XYCommodityManageController
@@ -30,7 +32,7 @@
 //    /api/ProductManger/QueryDataList
     WeakSelf;
     
-    [AFNetworkManager postNetworkWithUrl:@"api/ProductManger/QueryDataList" parameters:self.parameters succeed:^(NSDictionary *dic) {
+    self.task = [AFNetworkManager postNetworkWithUrl:@"api/ProductManger/QueryDataList" parameters:self.parameters succeed:^(NSDictionary *dic) {
         if ([dic[@"success"] boolValue]) {
             weakSelf.pageTotal = [dic[@"data"][@"PageTotal"] integerValue];
             if ([dic[@"data"][@"PageIndex"] integerValue] == 1) {
@@ -198,10 +200,12 @@
 // 搜索
 - (void)searchDataAcion:(UITextField *)textField {
     [self.parameters setValue:textField.text forKey:@"PM_Code"];
-    [self firstLoadData];
+    //当检测到textfield发生变化0.7秒后会调用该方法
+    [self performSelector:@selector(firstLoadData) withObject:nil afterDelay:0.7f];
 }
 
 - (void)firstLoadData {
+    [self.task cancel];
     [self.parameters setValue:@1 forKey:@"PageIndex"];
     [self loadData];
 }

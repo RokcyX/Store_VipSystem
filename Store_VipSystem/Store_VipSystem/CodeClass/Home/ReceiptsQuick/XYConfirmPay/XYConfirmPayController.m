@@ -115,7 +115,7 @@
     XYConfirmPayModel *priceModel = self.datalist[4];
     XYConfirmPayModel *numModel = self.datalist[5];
     if (rechargeModel) {
-        if (priceModel.detail.floatValue > rechargeModel.rP_RechargeMoney) {
+//        if (priceModel.detail.floatValue > rechargeModel.rP_RechargeMoney) {
             if (rechargeModel.rP_Discount > 0) {
                 //                优惠
                 priceModel.detail = [NSString stringWithFormat:@"%.2lf", self.vipPrice *(rechargeModel.rP_Discount/10)];
@@ -129,7 +129,7 @@
                 self.vipNum = @(priceModel.detail.floatValue *self.vipModel.vS_Value).floatValue;
                 numModel.detail = [NSString stringWithFormat:@"%.1lf", self.vipNum + rechargeModel.rP_GivePoint];
             }
-        }
+//        }
         self.footView.priceString = priceModel.detail;
         [self.tableView reloadData];
     }
@@ -312,6 +312,7 @@
             model.detail = obj.rP_Name;
             model.updateValue = obj.gID;
             weakSelf.rechargeModel = obj;
+            [weakSelf.tableView reloadData];
         };
         [self.navigationController pushViewController:offers animated:YES];
     }

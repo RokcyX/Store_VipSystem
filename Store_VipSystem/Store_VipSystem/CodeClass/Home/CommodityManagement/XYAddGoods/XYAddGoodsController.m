@@ -440,6 +440,9 @@
         for (XYAddGoodsModel *obj in self.handofflView.dataList[indexPath.section]) {
             if ([obj.title isEqualToString:@"特价折扣"] || [obj.title isEqualToString:@"最低折扣"]) {
                 obj.isWritable = model.updateValue.boolValue;
+                if (!model.updateValue.boolValue) {
+                    obj.detail = @"";
+                }
             }
         }
     }

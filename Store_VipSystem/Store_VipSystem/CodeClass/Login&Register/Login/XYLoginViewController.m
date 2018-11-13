@@ -204,12 +204,11 @@
         return;
     }
 //    WeakSelf;
-    [AFNetworkManager postNetworkWithUrl:@"api/UserManager/Login" parameters:@{@"UserAcount":self.userNameField.text, @"PassWord":self.passWordField.text, @"Type":@4} succeed:^(NSDictionary *dic) {
-        
+    [AFNetworkManager postNetworkWithUrl:@"api/UserManager/Login" parameters:@{@"UserAcount":self.userNameField.text, @"PassWord":self.passWordField.text, @"Type":@(4)} succeed:^(NSDictionary *dic) {
         if ([dic[@"success"] boolValue]) {
             [LoginModel modelConfigureDic:dic[@"data"]];
+            Set_UserDefaults(self.userNameField.text, UserNameText);
             if ([Get_UserDefaults(RememberPassword) boolValue]) {
-                Set_UserDefaults(self.userNameField.text, UserNameText);
                 Set_UserDefaults(self.passWordField.text, PasswordText);
             }
             // 进入首页

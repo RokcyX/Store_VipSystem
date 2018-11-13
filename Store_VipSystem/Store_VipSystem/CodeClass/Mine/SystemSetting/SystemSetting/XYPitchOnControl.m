@@ -9,8 +9,7 @@
 #import "XYPitchOnControl.h"
 
 @interface XYPitchOnControl ()
-@property (nonatomic, weak)UIButton *checkBtn;
-@property (nonatomic, weak)UIButton *titleBtn;
+
 @end
 
 @implementation XYPitchOnControl

@@ -120,10 +120,10 @@
 
 - (void)textFieldEditingChanged:(UITextField *)textField {
     self.model.discountPriceStr = textField.text;
-//    if (textField.text.floatValue > self.model.pM_UnitPrice) {
+    if (textField.text.floatValue > self.model.pM_UnitPrice) {
 //        [XYProgressHUD showMessage:@"折后金额不能大于原价"];
-//        textField.text = self.model.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.model.discountPrice *self.model.count];
-//    }
+        textField.text = self.model.discountPriceStr = [NSString stringWithFormat:@"%.2lf", self.model.discountPrice *self.model.count];
+    }
     textField.text = self.model.discountPriceStr;
     if (self.changeDiscount) {
         self.changeDiscount();

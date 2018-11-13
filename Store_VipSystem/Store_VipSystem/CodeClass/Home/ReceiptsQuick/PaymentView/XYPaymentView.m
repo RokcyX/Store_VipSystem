@@ -180,21 +180,20 @@
                     [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"MC_UpdateTime"];
                     [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"MC_Order"];
                 }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [UIView animateWithDuration:.1 animations:^{
-                        weakSelf.view.backgroundColor = [UIColor colorWithWhite:0.1f alpha:0];
-                    } completion:^(BOOL finished) {
-                        [weakSelf dismissViewControllerAnimated:YES completion:^{
-                            [XYPrinterMaker print];
-                        }];
-                    }];
-                });
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [XYProgressHUD showMessage: dic[@"msg"]];
-                });
             }
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:.1 animations:^{
+                    weakSelf.view.backgroundColor = [UIColor colorWithWhite:0.1f alpha:0];
+                } completion:^(BOOL finished) {
+                    [weakSelf dismissViewControllerAnimated:YES completion:^{
+                        [XYPrinterMaker print];
+                    }];
+                }];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [XYProgressHUD showMessage: dic[@"msg"]];
+            });
         }
     } failure:^(NSError *error) {
         
@@ -312,6 +311,12 @@
 
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    CGPoint point = [[touches anyObject] locationInView:self.view];
+    point = [self.alertView.layer convertPoint:point fromLayer:self.view.layer]; //get layer using containsPoint:
+    if ([self.alertView.layer containsPoint:point]) {
+        //convert point to blueLayer’s coordinates
+        return;
+    }
     [self dismissView];
 }
 

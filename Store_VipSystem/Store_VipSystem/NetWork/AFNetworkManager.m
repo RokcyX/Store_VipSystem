@@ -16,11 +16,11 @@
 
 @implementation AFNetworkManager
 
-+ (void)postNetworkWithUrl:(NSString *)url parameters:(NSDictionary *)parameters succeed:(void (^)(NSDictionary *dic))succeed failure:(void (^)(NSError *error))failure showMsg:(BOOL)showMsg {
++ (NSURLSessionDataTask *)postNetworkWithUrl:(NSString *)url parameters:(NSDictionary *)parameters succeed:(void (^)(NSDictionary *dic))succeed failure:(void (^)(NSError *error))failure showMsg:(BOOL)showMsg {
     // 网络检测
     if (![self availableNetwork]) {
         [XYProgressHUD showMessage:@"网络未连接"];
-        return;
+        return nil;
     }
     
     url = [BaseUrl stringByAppendingString:url];
@@ -43,7 +43,7 @@
     if (showMsg) {
         [XYProgressHUD showLoading:@"加载中..."];
     }
-    [manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    return [manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [self retuenResponseObject:responseObject succeed:succeed showMsg:showMsg];
@@ -59,8 +59,8 @@
     if (!JSONResponse) {
         NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         string = [string stringByReplacingOccurrencesOfString:@"00:00:00" withString:@""];
-//        "PS_PrintTimes": "[{\"PT_Code\":\"\",\"PT_Times\":0}]",
-//        "PS_PrintTimes": "[{\"PT_Code\": "",\"PT_Times\":0}]",
+        //        "PS_PrintTimes": "[{\"PT_Code\":\"\",\"PT_Times\":0}]",
+        //        "PS_PrintTimes": "[{\"PT_Code\": "",\"PT_Times\":0}]",
         string = [string stringByReplacingOccurrencesOfString:@"\\\":null" withString:@"\\\":\\\"\\\""];
         string = [string stringByReplacingOccurrencesOfString:@":null" withString:@":\"\""];
         dic = [self parseJSONStringToNSDictionary:string];
@@ -79,22 +79,22 @@
     
     if ([dic[@"code"] isKindOfClass:[NSString class]])
         if ([dic[@"code"] isEqualToString:@"LoginTimeout"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            ApplicationRootVC([XYAppDelegate rootViewController]);
-        });
-    }
-//    if ([dic[@"success"] boolValue]) {
-        if (succeed && responseObject != NULL) {
-            succeed(dic);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                ApplicationRootVC([XYAppDelegate rootViewController]);
+            });
         }
-//    }
+    //    if ([dic[@"success"] boolValue]) {
+    if (succeed && responseObject != NULL) {
+        succeed(dic);
+    }
+    //    }
 }
 
 + (void)returnError:(NSError *)error failure:(void (^)(NSError *))failure showMsg:(BOOL)showMsg {
     if (failure) {
         failure(error);
     }
-    if (showMsg) {
+    if (showMsg && error.code != -999) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [XYProgressHUD showError:@"网络出错"];
         });

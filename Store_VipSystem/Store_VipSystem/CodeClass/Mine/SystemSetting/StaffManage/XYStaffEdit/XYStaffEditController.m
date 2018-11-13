@@ -190,7 +190,7 @@
     [AFNetworkManager postNetworkWithUrl:@"api/Empl/DelEmpl" parameters:@{@"GID":self.model.gID} succeed:^(NSDictionary *dic) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([dic[@"success"] boolValue]) {
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+                [weakSelf.navigationController popToViewController:vc animated:YES];
                 if (weakSelf.model) {
                     if (vc.dataOverload) {
                         vc.dataOverload();

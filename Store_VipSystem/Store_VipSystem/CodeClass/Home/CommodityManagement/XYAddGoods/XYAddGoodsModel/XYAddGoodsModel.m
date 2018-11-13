@@ -41,8 +41,14 @@
             if ([model.title isEqualToString:@"商品库存"]) {
                 model.isWritable = 0;
             }
+            
             if (detail) {
                 model.detail = [NSString stringWithFormat:@"%@", detail];
+                if ([model.modelKey isEqualToString:@"PM_MemPrice"]) {
+                    if ([detail floatValue]==0) {
+                        model.detail=@"";
+                    }
+                }
                 if ([model.modelKey isEqualToString:@"PM_IsDiscount"]) {
                     model.detail = @"";
                 }
@@ -54,7 +60,7 @@
                     }
                     
                     if ([model.modelKey isEqualToString:@"PM_SynType"]) {
-                        
+                        model.isWritable = 0;
                         model.detail = model.selectList[model.updateValue.integerValue];
                     }
                 }

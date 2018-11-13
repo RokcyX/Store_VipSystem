@@ -12,6 +12,9 @@
 
 @interface XYPitchOnControl : UIView
 
+@property (nonatomic, weak)UIButton *checkBtn;
+@property (nonatomic, weak)UIButton *titleBtn;
+
 @property (nonatomic, strong)NSString *title;
 
 @property (nonatomic, assign) BOOL selected;

@@ -20,6 +20,8 @@
 @property (nonatomic, strong)NSMutableArray *datalist;
 @property (nonatomic, strong)NSMutableDictionary *parameters;
 
+@property (nonatomic, strong) NSURLSessionDataTask *task;
+
 @end
 
 @implementation XYVipSelectionController
@@ -27,13 +29,13 @@
 - (void)loadDataWithLastPage:(BOOL)islast {
     // /api/VIP/QueryDataList
     WeakSelf;
-    
+    [self.task cancel];
     BOOL showMsg = YES;
     if ([self.parameters[@"PageIndex"] integerValue] > 1 || [self.parameters[@"CardOrNameOrCellPhoneOrFace"] length] > 0 || islast) {
         showMsg = NO;
     }
     
-    [AFNetworkManager postNetworkWithUrl:@"api/VIP/QueryDataList" parameters:self.parameters succeed:^(NSDictionary *dic) {
+    self.task = [AFNetworkManager postNetworkWithUrl:@"api/VIP/QueryDataList" parameters:self.parameters succeed:^(NSDictionary *dic) {
         if ([dic[@"success"] boolValue]) {
             weakSelf.pageTotal = [dic[@"data"][@"PageTotal"] integerValue];
             if ([dic[@"data"][@"PageIndex"] integerValue] == 1) {
@@ -182,13 +184,13 @@
 - (void)searchDataAcion:(UITextField *)textField {
     [self.parameters setValue:@1 forKey:@"PageIndex"];
     [self.parameters setValue:textField.text forKey:@"CardOrNameOrCellPhoneOrFace"];
-    [self loadDataWithLastPage:NO];
+    [self performSelector:@selector(loadDataWithLastPage:) withObject:@(NO) afterDelay:0.7f];
 }
 
 - (void)searchFromLastPageWithCode:(NSString *)code {
     [self.parameters setValue:@1 forKey:@"PageIndex"];
     [self.parameters setValue:code forKey:@"CardOrNameOrCellPhoneOrFace"];
-    [self loadDataWithLastPage:YES];
+    [self performSelector:@selector(loadDataWithLastPage:) withObject:@(YES) afterDelay:0.7f];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {

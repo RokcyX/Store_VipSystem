@@ -140,7 +140,7 @@
 // 获取验证码事件
 - (void)captchaAction {
     if (!self.userNameField.text.length) {
-        [XYProgressHUD showMessage:@"手机/邮箱验证码"];
+        [XYProgressHUD showMessage:@"请输入手机或邮箱"];
         return;
     } else {
         [self openCountdown];

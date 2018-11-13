@@ -8,6 +8,13 @@
 
 #import "XYHomeBasicView.h"
 
+@interface XYHomeBasicView ()
+
+//@property (nonatomic, weak)UITextField *searchField;
+//@property (nonatomic, weak)UIButton *scanBtn;
+
+@end
+
 @implementation XYHomeBasicView
 
 - (instancetype)init

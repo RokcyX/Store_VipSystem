@@ -13,4 +13,6 @@
 @property (nonatomic, weak)UITextField *searchField;
 @property (nonatomic, weak)UIButton *scanBtn;
 
+
+
 @end

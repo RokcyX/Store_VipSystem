@@ -25,6 +25,9 @@
 @property (nonatomic, strong)NSMutableArray *datalist;
 @property (nonatomic, strong)XYScreenViewController *screenView;
 @property (nonatomic, weak)XYMemberManageModel *addModel;
+
+@property (nonatomic, strong) NSURLSessionDataTask *task;
+
 @end
 
 @implementation XYMemberManagementController
@@ -32,13 +35,13 @@
 - (void)loadData {
     // /api/VIP/QueryDataList
     WeakSelf;
-    
+    [self.task cancel];
     BOOL showMsg = YES;
     if ([self.parameters[@"PageIndex"] integerValue] > 1 || [self.parameters[@"CardOrNameOrCellPhoneOrFace"] length] > 0) {
         showMsg = NO;
     }
     
-    [AFNetworkManager postNetworkWithUrl:@"api/VIP/QueryDataList" parameters:self.parameters succeed:^(NSDictionary *dic) {
+    self.task = [AFNetworkManager postNetworkWithUrl:@"api/VIP/QueryDataList" parameters:self.parameters succeed:^(NSDictionary *dic) {
         if ([dic[@"success"] boolValue]) {
             weakSelf.pageTotal = [dic[@"data"][@"PageTotal"] integerValue];
             if ([dic[@"data"][@"PageIndex"] integerValue] == 1) {
@@ -50,7 +53,7 @@
                         weakSelf.checkAllBtn.selected = NO;
                     }
                 });
-            }            
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.tableView reloadData];
                 if (weakSelf.datalist.count) {
@@ -78,26 +81,26 @@
     self.title = @"会员列表";
     if ([LoginModel judgeAuthorityWithString:self.title]) {
         self.datalist = [NSMutableArray array];
-
+        
         self.parameters = @{
-                                     @"PageIndex":@1,
-                                     @"PageSize":KPageSize
-//                                     ,
-//                                     @"CardOrNameOrCellPhoneOrFace":@"",
-//                                     @"VG_GID":@"",
-//                                     @"VIP_Label":@"",
-//                                     @"SM_GID":@"",
-//                                     @"VIP_IsForver":@"",
-//                                     @"VIP_State":@"",
-//                                     @"VIP_CellPhone":@"",
-//                                     @"DayType":@"",
-//                                     @"ExpireDayType":@"",
-//                                     @"DayRegisterType":@"",
-//                                     @"NewAddType":@"",
-//                                     @"CustDataType":@"",
-//                                     @"EM_GID":@"",
-//                                     @"EC_GID":@""
-                                     }.mutableCopy;
+                            @"PageIndex":@1,
+                            @"PageSize":KPageSize
+                            //                                     ,
+                            //                                     @"CardOrNameOrCellPhoneOrFace":@"",
+                            //                                     @"VG_GID":@"",
+                            //                                     @"VIP_Label":@"",
+                            //                                     @"SM_GID":@"",
+                            //                                     @"VIP_IsForver":@"",
+                            //                                     @"VIP_State":@"",
+                            //                                     @"VIP_CellPhone":@"",
+                            //                                     @"DayType":@"",
+                            //                                     @"ExpireDayType":@"",
+                            //                                     @"DayRegisterType":@"",
+                            //                                     @"NewAddType":@"",
+                            //                                     @"CustDataType":@"",
+                            //                                     @"EM_GID":@"",
+                            //                                     @"EC_GID":@""
+                            }.mutableCopy;
         [self loadData];
         [self setNaviUI];
         [self setupUI];
@@ -124,6 +127,15 @@
             }
             [weakSelf.tableView.mj_footer endRefreshing];
         }];
+    
+//        self.tableView.mj_footer=[MJRefreshBackFooter footerWithRefreshingBlock:^{
+//            NSInteger pageIndex = [weakSelf.parameters[@"PageIndex"] integerValue];
+//            if (pageIndex < weakSelf.pageTotal) {
+//                [weakSelf.parameters setValue:@(pageIndex+1) forKey:@"PageIndex"];
+//                [weakSelf loadData];
+//            }
+//            [weakSelf.tableView.mj_footer endRefreshing];
+//        }];
     }
 }
 
@@ -214,10 +226,10 @@
     [addBtn setImage:[UIImage imageNamed:@"member_vip_add"] forState:(UIControlStateNormal)];
     [addBtn addTarget:self action:@selector(addVipAction) forControlEvents:(UIControlEventTouchUpInside)];
     addBtn.backgroundColor = [UIColor whiteColor];
-//    addBtn.layer.cornerRadius = 30;
-//    addBtn.layer.shadowOffset = CGSizeMake(1, 1);
-//    addBtn.layer.shadowOpacity = 0.5;
-//    addBtn.layer.shadowColor = [UIColor blackColor].CGColor;
+    //    addBtn.layer.cornerRadius = 30;
+    //    addBtn.layer.shadowOffset = CGSizeMake(1, 1);
+    //    addBtn.layer.shadowOpacity = 0.5;
+    //    addBtn.layer.shadowColor = [UIColor blackColor].CGColor;
     [self.basicView addSubview:addBtn];
     [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(weakSelf.basicView.mas_right).offset(-20);
@@ -232,9 +244,9 @@
     [sendMsgBtn addTarget:self action:@selector(sendMsgAction) forControlEvents:(UIControlEventTouchUpInside)];
     sendMsgBtn.layer.cornerRadius = 5;
     sendMsgBtn.backgroundColor = RGBColor(252, 105, 67);
-//    sendMsgBtn.layer.shadowOffset = CGSizeMake(1, 1);
-//    sendMsgBtn.layer.shadowOpacity = 0.5;
-//    sendMsgBtn.layer.shadowColor = [UIColor blackColor].CGColor;
+    //    sendMsgBtn.layer.shadowOffset = CGSizeMake(1, 1);
+    //    sendMsgBtn.layer.shadowOpacity = 0.5;
+    //    sendMsgBtn.layer.shadowColor = [UIColor blackColor].CGColor;
     [self.basicView addSubview:self.sendMsgBtn=sendMsgBtn];
     [sendMsgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(weakSelf.basicView.mas_right).offset(-15);
@@ -264,7 +276,7 @@
 - (void)searchDataAcion:(UITextField *)textField {
     [self.parameters setValue:@1 forKey:@"PageIndex"];
     [self.parameters setValue:textField.text forKey:@"CardOrNameOrCellPhoneOrFace"];
-    [self loadData];
+    [self performSelector:@selector(loadData) withObject:nil afterDelay:0.7f];
 }
 
 // 全选
@@ -331,13 +343,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

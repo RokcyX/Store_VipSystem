@@ -129,6 +129,9 @@
                         model.seletTitle = obj.title;
                         model.placeholder = obj.placeholder;
                         model.detail = obj.detail;
+                        if (self.valueDidChangedBlock) {
+                            self.valueDidChangedBlock();
+                        }
                     }
                 }
                 weakSelf.seletField.text = model.seletTitle;

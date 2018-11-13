@@ -346,10 +346,10 @@
             combinedModel.detail = result;
             weakSelf.footView.priceString = result;
             weakSelf.recharge = recharge;
-            pointModel.detail = @(@(result.floatValue *self.vipModel.rS_Value).integerValue).stringValue;
+            pointModel.detail = [NSString stringWithFormat:@"%.2lf", result.floatValue *self.vipModel.rS_Value];
             amountModel.detail = @"0.00";
             if (recharge) {
-                pointModel.detail = @(recharge.rP_GivePoint + @(result.floatValue *self.vipModel.rS_Value).integerValue).stringValue;
+                pointModel.detail =[NSString stringWithFormat:@"%.2lf",recharge.rP_GivePoint + result.floatValue *self.vipModel.rS_Value];
                 if (recharge.rP_Discount > 0) {
                     //                优惠
                     weakSelf.footView.priceString = [NSString stringWithFormat:@"%.2lf", result.floatValue *(recharge.rP_Discount/10)];

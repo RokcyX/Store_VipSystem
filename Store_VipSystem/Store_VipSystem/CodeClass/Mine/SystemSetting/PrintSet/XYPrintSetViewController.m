@@ -30,10 +30,11 @@
     WeakSelf;
     if ([LoginModel shareLoginModel].printSetModel) {
         weakSelf.model = [LoginModel shareLoginModel].printSetModel;
-        [weakSelf.tableView reloadData];
+        
         weakSelf.onControl.selected = weakSelf.model.pS_IsEnabled;
         weakSelf.offControl.selected = !weakSelf.model.pS_IsEnabled;
     }
+    [weakSelf.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -151,8 +152,8 @@
 //    WeakSelf;
     [self.model.parameters setValue:@(self.onControl.selected) forKey:@"PS_IsEnabled"];
     NSMutableArray *array = [NSMutableArray array];
-    for (PrintTimes *times in self.model.printTimesList) {
-        [array addObject:@{@"":times.pT_Code, @"":@(times.pT_Times)}];
+    for (PrintTimes *times in self.model.paramPrintTimes) {
+        [array addObject:@{@"PT_Code":times.pT_Code, @"PT_Times":@(times.pT_Times)}];
     }
     [self.model.parameters setValue:array forKey:@"PrintTimesList"];
     [AFNetworkManager postNetworkWithUrl:@"api/PrintSet/EditPrintSet" parameters:self.model.parameters succeed:^(NSDictionary *dic) {
@@ -192,8 +193,10 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
-    cell = [cell initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"UITableViewCell"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
+    if (!cell) {
+        cell = [cell initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"UITableViewCell"];
+    }
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
 //    [cell setSeparatorInset:UIEdgeInsetsMake(0, 15, 0, 0)];
     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -249,20 +252,5 @@
         [self.navigationController pushViewController:XYBluetoothSetController.new animated:YES];
     }
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

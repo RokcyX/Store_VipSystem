@@ -155,7 +155,6 @@
             [XYPrinterMaker sharedMaker].header.date = dic[@"data"][@"WO_UpdateTime"];
             [XYPrinterMaker sharedMaker].header.order = dic[@"data"][@"WO_OrderCode"];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [XYProgressHUD showSuccess:@"消费完成"];
                 for (XYCountingConsumeModel *model in weakSelf.countingModels) {
                     model.mCA_HowMany -= model.count;
                     model.count = 0;
@@ -168,6 +167,9 @@
                 
                 if (print) {
                     [XYPrinterMaker print];
+                }
+                if (weakSelf.confirmBlock) {
+                    weakSelf.confirmBlock();
                 }
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             });
@@ -262,7 +264,7 @@
 - (XYStaffManageController *)staff {
     if (!_staff) {
         _staff = [[XYStaffManageController alloc] init];
-        _staff.key = nil;
+        _staff.key = @"eM_TipTimesConsume";
     }
     return _staff;
 }
