@@ -351,7 +351,7 @@
             [parameters setValue:@"00000" forKey:@"VIP_Card"];
         }
         for (XYConfirmPayModel *model in self.datalist) {
-            if ([model.modelKey isEqualToString:@"CC_GID"]) {
+            if ([model.modelKey isEqualToString:@"CC_GID"]&&model.updateValue.floatValue!=0) {
                 [parameters setValue:model.updateValue forKey:model.modelKey];
             }
         }

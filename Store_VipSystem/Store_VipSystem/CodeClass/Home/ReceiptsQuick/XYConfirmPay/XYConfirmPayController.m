@@ -236,7 +236,9 @@
     [[XYPrinterMaker sharedMaker].paymentlist addObject:@{@"title":@"消费金额:", @"detail":[@"￥" stringByAppendingString: parameters[@"CO_Monetary"]]}];
     [[XYPrinterMaker sharedMaker].paymentlist addObject:@{@"title":@"会员折扣:", @"detail":price}];
     [[XYPrinterMaker sharedMaker].paymentlist addObject:@{@"title":@"折后金额:", @"detail":[@"￥" stringByAppendingString:parameters[@"DisMoney"]]}];
-
+    if ([parameters valueForKey:@"CC_GID"]&&[[parameters valueForKey:@"CC_GID"] length]<10) {
+        [parameters removeObjectForKey:@"CC_GID"];
+    }
     WeakSelf;
     [AFNetworkManager postNetworkWithUrl:@"API/ConsumeOrder/SubmitCelerityOrder" parameters:parameters succeed:^(NSDictionary *dic) {
         if ([dic[@"success"] boolValue]) {

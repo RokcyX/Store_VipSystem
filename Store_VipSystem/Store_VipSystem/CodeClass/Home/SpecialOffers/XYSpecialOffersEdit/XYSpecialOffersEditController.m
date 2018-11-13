@@ -210,8 +210,8 @@
         }
         doubleControl.checkBtn.enabled=!notDoubleControlSelected;
         doubleControl.titleBtn.enabled=!notDoubleControlSelected;
-//        notDoubleControl.checkBtn.enabled=!notDoubleControlSelected;
-        notDoubleControl.titleBtn.enabled=!notDoubleControlSelected;
+        notDoubleControl.checkBtn.userInteractionEnabled=!notDoubleControlSelected;
+        notDoubleControl.titleBtn.userInteractionEnabled=!notDoubleControlSelected;
         
         //这里这里
         return headerView;

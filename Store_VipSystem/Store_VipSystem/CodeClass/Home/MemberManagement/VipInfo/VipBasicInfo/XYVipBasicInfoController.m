@@ -113,6 +113,7 @@
     [AFNetworkManager postNetworkWithUrl:@"api/VIPGrade/QueryDataList" parameters:@{@"GID":@"",@"GradeName":@""} succeed:^(NSDictionary *dic) {
          if ([dic[@"success"] boolValue]) {
              weakSelf.vipGradeList = [XYVipGradeModel modelConfigureWithArray:dic[@"data"]];
+             [[NSNotificationCenter defaultCenter] postNotificationName:UIKeyboardDidHideNotification object:nil];
          }
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
@@ -156,6 +157,7 @@
     [self setupUI];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    
 }
 
 #pragma mark --- 键盘弹出 消失 通知

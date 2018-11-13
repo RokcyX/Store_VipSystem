@@ -80,6 +80,10 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     for (NSArray *array in dataList) {
         for (XYAddGoodsModel *model in array) {
+            if ([model.modelKey isEqualToString:@"PM_IsPoint"]&&([model.detail length]<1||[model.updateValue length]<1)) {
+                [XYProgressHUD showMessage:@"请选择商品积分"];
+                return nil;
+            }
             if (!model.detail.length && !model.updateValue.length) {
                 if (model.updateKey) {
                     [parameters setValue:@"" forKey:model.updateKey];

@@ -42,6 +42,7 @@
     }
     
     self.task = [AFNetworkManager postNetworkWithUrl:@"api/VIP/QueryDataList" parameters:self.parameters succeed:^(NSDictionary *dic) {
+        weakSelf.tableView.mj_footer.state=MJRefreshStateIdle;
         if ([dic[@"success"] boolValue]) {
             weakSelf.pageTotal = [dic[@"data"][@"PageTotal"] integerValue];
             if ([dic[@"data"][@"PageIndex"] integerValue] == 1) {
@@ -125,7 +126,6 @@
                 [weakSelf.parameters setValue:@(pageIndex+1) forKey:@"PageIndex"];
                 [weakSelf loadData];
             }
-            [weakSelf.tableView.mj_footer endRefreshing];
         }];
     
 //        self.tableView.mj_footer=[MJRefreshBackFooter footerWithRefreshingBlock:^{
