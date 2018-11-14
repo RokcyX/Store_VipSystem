@@ -103,7 +103,9 @@
             keyboard.titleForRow = ^NSString *(NSInteger row) {
                 if ([model.selectList[row] isKindOfClass:[NSString class]]) {
                     return model.selectList[row];
-                } else {
+                } else if ([model.selectList[row] isKindOfClass:[ShopModel class]]) {
+                    return [model.selectList[row] sM_Name];
+                }else{
                     if ([model.selectList[row] respondsToSelector:@selector(dM_Name)]) {
                         return [model.selectList[row] dM_Name];
                     }

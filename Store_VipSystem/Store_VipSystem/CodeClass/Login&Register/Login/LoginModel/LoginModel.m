@@ -109,6 +109,7 @@
         if ([dic[@"success"] boolValue]) {
             weakSelf.printSetModel = [XYPrintSetModel modelConfigureDic:dic[@"data"][@"PrintSet"]];
             weakSelf.parameterSets = [XYParameterSetModel modelConfigureWithArray:dic[@"data"][@"GetSysSwitchList"]];
+           [LoginModel shareLoginModel].shopModels = [ShopModel modelConfigureArray:dic[@"data"][@"ShopList"]];
             Set_UserDefaults([XYParameterSetModel parametersWithSaveList:weakSelf.parameterSets], ParameterSets);
             // 暂时关闭 防止 刚添加的 活动 在可用的 界面没显示
 //            weakSelf.rechargeValidList = [XYRechargeModel modelConfigureWithArray:dic[@"data"][@"Active"] type:1];

@@ -329,6 +329,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     XYVipInfoViewController *vipInfo = [[XYVipInfoViewController alloc] init];
     vipInfo.model = self.datalist[indexPath.row];
+    vipInfo.model.vCH_Fee=10;
     [self.navigationController pushViewController:vipInfo animated:YES];
     [XYAppDelegate.window endEditing:YES];
 }

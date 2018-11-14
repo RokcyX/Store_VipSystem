@@ -12,6 +12,8 @@
 @property (nonatomic, weak)UITableView *tableView;
 @property (nonatomic, strong)NSArray *datalist;
 
+@property (nonatomic,strong) ShopModel *shopModel;
+
 @end
 
 @implementation XYSettingViewController
@@ -23,17 +25,17 @@
         NSString *storeType = [LoginModel shareLoginModel].shopModel.sM_Type == 0 ? @"免费" : [LoginModel shareLoginModel].shopModel.sM_Type == 1 ? @"高级年费" : @"高级永久";
         if ([LoginModel shareLoginModel].shopModel) {
             _datalist = @[@[@{@"title":@"店铺LOGO", @"detail":@""}],
-                          @[@{@"title":@"店铺名称", @"detail":[LoginModel shareLoginModel].shopModel.sM_Name},
-                            @{@"title":@"联系人", @"detail":[LoginModel shareLoginModel].shopModel.sM_Contacter},
-                            @{@"title":@"联系电话", @"detail":[LoginModel shareLoginModel].shopModel.sM_Phone},
+                          @[@{@"title":@"店铺名称", @"detail":self.shopModel?self.shopModel.ShopName:[LoginModel shareLoginModel].shopModel.sM_Name},
+                            @{@"title":@"联系人", @"detail":self.shopModel?self.shopModel.ShopContact:[LoginModel shareLoginModel].shopModel.sM_Contacter},
+                            @{@"title":@"联系电话", @"detail":self.shopModel?self.shopModel.ShopTel:[LoginModel shareLoginModel].shopModel.sM_Phone},
                             @{@"title":@"密码", @"detail":@""}
                             ],
-                          @[@{@"title":@"店铺类型", @"detail":[LoginModel shareLoginModel].shopModel.ShopType},
-                            @{@"title":@"会员总数", @"detail":[LoginModel shareLoginModel].shopModel.ShopMbers},
-                            @{@"title":@"商品数", @"detail":[LoginModel shareLoginModel].shopModel.ShopGoods},
-                            @{@"title":@"用户数", @"detail":[LoginModel shareLoginModel].shopModel.ShopUsers},
+                          @[@{@"title":@"店铺类型", @"detail":self.shopModel?self.shopModel.ShopType:[LoginModel shareLoginModel].shopModel.ShopType},
+                            @{@"title":@"会员总数", @"detail":self.shopModel?self.shopModel.ShopMbers:[LoginModel shareLoginModel].shopModel.ShopMbers},
+                            @{@"title":@"商品数", @"detail":self.shopModel?self.shopModel.ShopGoods:[LoginModel shareLoginModel].shopModel.ShopGoods},
+                            @{@"title":@"用户数", @"detail":self.shopModel?self.shopModel.ShopUsers:[LoginModel shareLoginModel].shopModel.ShopUsers},
                             @{@"title":@"短信库存", @"detail":@([LoginModel shareLoginModel].smsStock.UStorage).stringValue},
-                            @{@"title":@"到期时间", @"detail":[LoginModel shareLoginModel].shopModel.ShopOverTime}
+                            @{@"title":@"到期时间", @"detail":self.shopModel?self.shopModel.ShopOverTime:[LoginModel shareLoginModel].shopModel.ShopOverTime}
                             ]
                           ];
         } else {
@@ -43,12 +45,12 @@
                             @{@"title":@"联系电话", @"detail":@""},
                             @{@"title":@"密码", @"detail":@""}
                             ],
-                          @[@{@"title":@"店铺类型", @"detail":storeType},
-                            @{@"title":@"会员总数", @"detail":[NSString stringWithFormat:@"%ld/%@",[LoginModel shareLoginModel].shopModel.vipNumber, [LoginModel shareLoginModel].shopModel.sM_Type==0?@"365":@"无上限"]},
-                            @{@"title":@"商品数", @"detail":[NSString stringWithFormat:@"%ld/%@",[LoginModel shareLoginModel].shopModel.proNumber, [LoginModel shareLoginModel].shopModel.sM_Type==0?@"100":@"无上限"]},
-                            @{@"title":@"用户数", @"detail":[NSString stringWithFormat:@"%ld/%@",[LoginModel shareLoginModel].shopModel.sM_AcountNum, [LoginModel shareLoginModel].shopModel.sM_Type==0?@"1":@"10"]},
+                          @[@{@"title":@"店铺类型", @"detail":self.shopModel?self.shopModel.ShopType:storeType},
+                            @{@"title":@"会员总数", @"detail":self.shopModel?self.shopModel.ShopMbers:[NSString stringWithFormat:@"%ld/%@",[LoginModel shareLoginModel].shopModel.vipNumber, [LoginModel shareLoginModel].shopModel.sM_Type==0?@"365":@"无上限"]},
+                            @{@"title":@"商品数", @"detail":self.shopModel?self.shopModel.ShopGoods:[NSString stringWithFormat:@"%ld/%@",[LoginModel shareLoginModel].shopModel.proNumber, [LoginModel shareLoginModel].shopModel.sM_Type==0?@"100":@"无上限"]},
+                            @{@"title":@"用户数", @"detail":self.shopModel?self.shopModel.ShopUsers:[NSString stringWithFormat:@"%ld/%@",[LoginModel shareLoginModel].shopModel.sM_AcountNum, [LoginModel shareLoginModel].shopModel.sM_Type==0?@"1":@"10"]},
                             @{@"title":@"短信库存", @"detail":@""},
-                            @{@"title":@"到期时间", @"detail":@""}
+                            @{@"title":@"到期时间", @"detail":self.shopModel?self.shopModel.ShopOverTime:@""}
                             ]
                           ];
         }
@@ -69,6 +71,8 @@
     // Do any additional setup after loading the view.
     self.title = @"店铺设置";
     [self setupUI];
+    
+    [self loadData];
 }
 
 - (void)setupUI {
@@ -88,6 +92,24 @@
         make.right.equalTo(weakSelf.view).offset(-10);
     }];
 }
+
+- (void)loadData {
+    WeakSelf;
+    [AFNetworkManager postNetworkWithUrl:@"api/Shops/GetShopInfo" parameters:nil succeed:^(NSDictionary *dic) {
+        if ([dic[@"success"] boolValue]) {
+            ShopModel *shopModel=[[ShopModel alloc] init];
+            [shopModel setValuesForKeysWithDictionary:dic[@"data"]];
+            weakSelf.shopModel=shopModel;
+            weakSelf.datalist=nil;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.tableView reloadData];
+            });
+        }
+    } failure:^(NSError *error) {
+        
+    } showMsg:NO];
+}
+
 
 #pragma mark -TableViewDataSource && Delegate
 
@@ -142,7 +164,7 @@
     }
     cell.textLabel.text = title;
     cell.detailTextLabel.text = detail;
-    [imageView sd_setImageWithURL:[NSURL URLWithString:[LoginModel shareLoginModel].shopModel.ShopImg] placeholderImage:[UIImage imageNamed:@"user_setting_Header"]];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:self.shopModel?self.shopModel.ShopImg:[LoginModel shareLoginModel].shopModel.ShopImg] placeholderImage:[UIImage imageNamed:@"user_setting_Header"]];
     
     return cell;
 }

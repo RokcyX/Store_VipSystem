@@ -49,7 +49,7 @@
 @implementation XYInvoicingViewController
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 
 }
 - (NSString *)priceString {
@@ -91,6 +91,16 @@
         }
         [weakSelf.navigationController popViewControllerAnimated:YES];
     };
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
@@ -154,12 +164,16 @@
     // 获得积分
     self.vipNum = 0;
     if (_vipModel) {
-        NSInteger vipNum = 0;
+        CGFloat vipNum = 0;
         for (XYCommodityModel *obj in self.goodslist) {
             switch (obj.pM_IsPoint) {
                 case 1:
                     // 会员等级积分
                     if (_vipModel.vS_Value) {
+//                        CGFloat a=obj.discountPriceStr.floatValue;
+//                        CGFloat b=_vipModel.vS_Value;
+//                        CGFloat c=a*b;
+//                        vipNum+=c;
                         vipNum += obj.discountPriceStr.floatValue *_vipModel.vS_Value;
                     }
                     break;

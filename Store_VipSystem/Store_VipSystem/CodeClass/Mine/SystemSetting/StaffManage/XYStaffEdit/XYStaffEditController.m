@@ -38,17 +38,17 @@
 // 会员等级
 - (void)loadShopsModelList {
     //    api/Shops/GetShops
-    WeakSelf;
-    [AFNetworkManager postNetworkWithUrl:@"api/Shops/GetShops" parameters:@{@"GID":@""} succeed:^(NSDictionary *dic) {
-        if ([dic[@"success"] boolValue]) {
-            [LoginModel shareLoginModel].shopModels = [ShopModel modelConfigureArray:dic[@"data"]];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.tableView reloadData];
-        });
-    } failure:^(NSError *error) {
-
-    } showMsg:NO];
+//    WeakSelf;
+//    [AFNetworkManager postNetworkWithUrl:@"api/Shops/GetShops" parameters:@{@"GID":@""} succeed:^(NSDictionary *dic) {
+//        if ([dic[@"success"] boolValue]) {
+//            [LoginModel shareLoginModel].shopModels = [ShopModel modelConfigureArray:dic[@"data"]];
+//        }
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [weakSelf.tableView reloadData];
+//        });
+//    } failure:^(NSError *error) {
+//
+//    } showMsg:NO];
 }
 
 // 会员标签

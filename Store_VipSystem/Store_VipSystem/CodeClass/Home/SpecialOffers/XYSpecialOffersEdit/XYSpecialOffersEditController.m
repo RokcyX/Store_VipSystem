@@ -213,7 +213,6 @@
         notDoubleControl.checkBtn.userInteractionEnabled=!notDoubleControlSelected;
         notDoubleControl.titleBtn.userInteractionEnabled=!notDoubleControlSelected;
         
-        //这里这里
         return headerView;
     }
     
