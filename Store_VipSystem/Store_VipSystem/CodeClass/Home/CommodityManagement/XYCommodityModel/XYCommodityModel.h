@@ -24,7 +24,7 @@
 @property (nonatomic , assign) CGFloat              stock_Number;
 @property (nonatomic , copy) NSString              * pM_Code;
 @property (nonatomic , copy) NSString              * cY_GID;
-@property (nonatomic , assign) CGFloat              pM_MemPrice;
+@property (nonatomic , strong) NSNumber              *pM_MemPrice;
 @property (nonatomic , copy) NSString              * pT_Name;
 @property (nonatomic , copy) NSString              * pM_SimpleCode;
 @property (nonatomic , copy) NSString              * pM_BigImg;

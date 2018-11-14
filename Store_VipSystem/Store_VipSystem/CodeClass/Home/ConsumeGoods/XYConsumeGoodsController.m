@@ -46,7 +46,7 @@
         if ([dic[@"success"] boolValue]) {
             weakSelf.pageTotal = [dic[@"data"][@"PageTotal"] integerValue];
             if ([dic[@"data"][@"PageIndex"] integerValue] == 1) {
-                weakSelf.datalist = [XYCommodityModel modelConfigureWithArray:dic[@"data"][@"DataList"] alldataList:self.dataALLlist];
+                weakSelf.datalist = [XYCommodityModel modelConfigureWithArray:dic[@"data"][@"DataList"] alldataList:weakSelf.dataALLlist];
                 if (weakSelf.isScanForGoods) {
                     weakSelf.isScanForGoods =NO;
                     XYCommodityModel *model = weakSelf.datalist.firstObject;
